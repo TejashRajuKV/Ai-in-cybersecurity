@@ -586,3 +586,70 @@
 .ticker-line.ok {
     color: var(--cyan);
 }
+
+/* ─────────────────────────────────────────
+   Phishing Detector: URL Trace
+───────────────────────────────────────── */
+.trace-container {
+    margin: 24px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.trace-svg {
+    width: 100%;
+}
+
+.trace-line {
+    stroke: var(--border);
+}
+
+.checkpoint circle {
+    fill: var(--surface);
+    stroke: var(--muted);
+    stroke-width: 2;
+}
+
+.cp-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    fill: var(--muted);
+    text-anchor: middle;
+    letter-spacing: 1px;
+}
+
+.trace-indicator {
+    fill: var(--cyan);
+    filter: drop-shadow(0 0 5px var(--cyan));
+}
+
+.url-deconstruction {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    font-size: 14px;
+}
+
+.url-part {
+    color: var(--muted);
+}
+
+.url-part.domain {
+    color: var(--white);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--cyan);
+}
+
+.error-box {
+    margin-top: 16px;
+    padding: 16px;
+    background: rgba(255, 45, 85, 0.1);
+    border: 1px solid rgba(255, 45, 85, 0.3);
+    border-radius: 6px;
+    color: var(--red);
+    font-size: 13px;
+}

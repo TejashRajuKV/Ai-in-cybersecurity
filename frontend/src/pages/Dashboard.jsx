@@ -4,6 +4,7 @@ import ScamRadar        from "../modules/ScamRadar";
 import BehaviorMonitor  from "../modules/BehaviorMonitor";
 import FakeNewsChecker  from "../modules/FakeNewsChecker";
 import LoanRiskScanner  from "../modules/LoanRiskScanner";
+import PhishingDetector from "../modules/PhishingDetector";
 import "../styles/dashboard.css";
 
 const TABS = [
@@ -11,6 +12,7 @@ const TABS = [
   { id: "behavior", icon: "📊", label: "Behavior Monitor",  component: <BehaviorMonitor /> },
   { id: "news",     icon: "📰", label: "Fake News",         component: <FakeNewsChecker /> },
   { id: "loan",     icon: "⚠️", label: "Loan Risk",         component: <LoanRiskScanner /> },
+  { id: "phishing", icon: "🎣", label: "Phishing Link",     component: <PhishingDetector /> },
 ];
 
 export default function Dashboard() {

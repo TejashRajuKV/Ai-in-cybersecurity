@@ -59,6 +59,15 @@ export const getLoanRules = async () => {
 
 
 // ─────────────────────────────────────────
+// Phishing Detector
+// ─────────────────────────────────────────
+export const analyzePhishing = async (url) => {
+  const response = await api.post(ENDPOINTS.PHISHING, { url });
+  return response.data;
+};
+
+
+// ─────────────────────────────────────────
 // Health Check
 // ─────────────────────────────────────────
 export const checkHealth = async () => {

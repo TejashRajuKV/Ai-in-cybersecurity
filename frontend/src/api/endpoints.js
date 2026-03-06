@@ -13,6 +13,7 @@ const ENDPOINTS = {
     FAKENEWS: `${BASE_URL}/api/fakenews`,
     LOAN: `${BASE_URL}/api/loan`,
     LOAN_RULES: `${BASE_URL}/api/loan/rules`,
+    PHISHING: `${BASE_URL}/api/phishing`,
 
     // ── System ──
     HEALTH: `${BASE_URL}/api/health`,
