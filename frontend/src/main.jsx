@@ -1,10 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './styles/global.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+// ── Import Google Fonts ──
+const link = document.createElement("link");
+link.href  = "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap";
+link.rel   = "stylesheet";
+document.head.appendChild(link);
+
+// ── Import global styles ──
+import "./styles/global.css";
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
     <App />
-  </React.StrictMode>,
-)
+  </StrictMode>
+);

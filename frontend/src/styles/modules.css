@@ -1,0 +1,237 @@
+/* ─────────────────────────────────────────
+   Risk Badge
+───────────────────────────────────────── */
+.risk-badge {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           8px;
+  padding:       10px 20px;
+  border-radius: 6px;
+  font-family:   'JetBrains Mono', monospace;
+  font-size:     14px;
+  font-weight:   700;
+  letter-spacing: 2px;
+  border:        1px solid;
+}
+
+/* ─────────────────────────────────────────
+   Confidence Bar
+───────────────────────────────────────── */
+.confidence-wrap {
+  margin:  16px 0;
+}
+
+.confidence-label {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  margin-bottom:   8px;
+  font-family:     'JetBrains Mono', monospace;
+  font-size:       11px;
+  color:           var(--muted);
+}
+
+.confidence-value {
+  font-size:   18px;
+  font-weight: 700;
+  color:       var(--white);
+}
+
+.confidence-track {
+  height:        8px;
+  background:    var(--surface);
+  border-radius: 4px;
+  overflow:      hidden;
+  border:        1px solid var(--border);
+}
+
+.confidence-fill {
+  height:        100%;
+  border-radius: 4px;
+  transition:    width 0s;
+}
+
+/* ─────────────────────────────────────────
+   Result Panel
+───────────────────────────────────────── */
+.result-panel {
+  background:    var(--surface);
+  border:        1px solid var(--border);
+  border-radius: 6px;
+  padding:       20px;
+  margin-top:    16px;
+}
+
+.result-section {
+  margin-bottom: 16px;
+}
+
+.result-section:last-child {
+  margin-bottom: 0;
+}
+
+.result-label {
+  font-family:   'JetBrains Mono', monospace;
+  font-size:     9px;
+  letter-spacing: 3px;
+  color:         var(--muted);
+  margin-bottom: 8px;
+  display:       block;
+}
+
+.result-reason {
+  font-size:   14px;
+  color:       var(--text);
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────
+   Flagged Words
+───────────────────────────────────────── */
+.flagged-words {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       8px;
+  margin-top: 8px;
+}
+
+.flagged-word {
+  font-family:   'JetBrains Mono', monospace;
+  font-size:     11px;
+  padding:       4px 10px;
+  border-radius: 3px;
+  background:    rgba(255, 45, 85, 0.15);
+  color:         var(--red);
+  border:        1px solid rgba(255, 45, 85, 0.3);
+}
+
+/* ─────────────────────────────────────────
+   Safety Tip
+───────────────────────────────────────── */
+.safety-tip {
+  padding:       16px 20px;
+  border-left:   3px solid var(--green);
+  background:    rgba(0, 255, 157, 0.05);
+  border-radius: 0 6px 6px 0;
+  font-size:     13px;
+  color:         #7AE8B8;
+  line-height:   1.6;
+  margin-top:    16px;
+}
+
+.safety-tip-label {
+  font-family:   'JetBrains Mono', monospace;
+  font-size:     9px;
+  letter-spacing: 3px;
+  color:         var(--green);
+  display:       block;
+  margin-bottom: 6px;
+}
+
+/* ─────────────────────────────────────────
+   Loader
+───────────────────────────────────────── */
+.loader-wrap {
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  padding:         48px;
+  gap:             16px;
+}
+
+.loader-ring {
+  width:         48px;
+  height:        48px;
+  border:        3px solid var(--border);
+  border-top:    3px solid var(--cyan);
+  border-radius: 50%;
+}
+
+.loader-text {
+  font-family:   'JetBrains Mono', monospace;
+  font-size:     12px;
+  color:         var(--muted);
+  letter-spacing: 2px;
+}
+
+/* ─────────────────────────────────────────
+   Loan Checklist
+───────────────────────────────────────── */
+.checklist {
+  display:        flex;
+  flex-direction: column;
+  gap:            10px;
+  margin:         20px 0;
+}
+
+.checklist-item {
+  display:       flex;
+  align-items:   center;
+  gap:           12px;
+  padding:       12px 16px;
+  background:    var(--surface);
+  border:        1px solid var(--border);
+  border-radius: 6px;
+  cursor:        pointer;
+  transition:    border-color 0.2s;
+}
+
+.checklist-item:hover {
+  border-color: var(--cyan);
+}
+
+.checklist-item.checked {
+  border-color: rgba(255, 45, 85, 0.4);
+  background:   rgba(255, 45, 85, 0.05);
+}
+
+.checklist-checkbox {
+  width:         18px;
+  height:        18px;
+  border:        2px solid var(--muted);
+  border-radius: 3px;
+  flex-shrink:   0;
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  transition:    all 0.2s;
+}
+
+.checklist-item.checked .checklist-checkbox {
+  background:   var(--red);
+  border-color: var(--red);
+  color:        white;
+}
+
+.checklist-text {
+  font-size:   13px;
+  color:       var(--text);
+  flex:        1;
+}
+
+.checklist-score {
+  font-family: 'JetBrains Mono', monospace;
+  font-size:   11px;
+  color:       var(--red);
+  font-weight: 700;
+}
+
+/* ─────────────────────────────────────────
+   Behavior Form
+───────────────────────────────────────── */
+.behavior-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap:                   16px;
+  margin-bottom:         24px;
+}
+
+.behavior-field label {
+  display:       block;
+  font-family:   'JetBrains Mono', monospace;
+  font-size:     10px;
+  letter-spacing: 2px;
+  color:         var(--muted);
+  margin-bottom: 8px;
+}

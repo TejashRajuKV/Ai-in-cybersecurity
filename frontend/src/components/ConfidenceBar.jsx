@@ -1,9 +1,47 @@
-import React from 'react';
+import { useEffect, useRef } from "react";
+import { animateCounter, animateProgressBar } from "../animations/counterAnimation";
+import { getRiskColor } from "../utils/riskHelpers";
+import "../styles/modules.css";
 
-const ConfidenceBar = ({ value }) => (
-  <div className="confidence-bar">
-    <div className="fill" style={{ width: `${value}%` }}></div>
-  </div>
-);
+export default function ConfidenceBar({ confidence, color }) {
+  const fillRef    = useRef(null);
+  const counterRef = useRef(null);
 
-export default ConfidenceBar;
+  useEffect(() => {
+    if (fillRef.current) {
+      // Animate bar fill
+      animateProgressBar(fillRef.current, confidence);
+    }
+    if (counterRef.current) {
+      // Animate counter
+      animateCounter(`#confidence-counter`, confidence);
+    }
+  }, [confidence]);
+
+  return (
+    <div className="confidence-wrap">
+      <div className="confidence-label">
+        <span>CONFIDENCE LEVEL</span>
+        <span
+          id="confidence-counter"
+          ref={counterRef}
+          className="confidence-value"
+          style={{ color: getRiskColor(color) }}
+        >
+          0%
+        </span>
+      </div>
+      <div className="confidence-track">
+        <div
+          ref={fillRef}
+          className="confidence-fill"
+          style={{
+            width:      "0%",
+            background: getRiskColor(color),
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
