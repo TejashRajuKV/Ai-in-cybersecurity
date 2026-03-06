@@ -303,3 +303,254 @@
     font-family: var(--font-mono);
     font-size: 12px;
 }
+
+/* ── Neural Radar (Behavior Monitor) ── */
+.radar-container {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    margin: 40px auto;
+    background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radar-ringring {
+    position: absolute;
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.ring-1 {
+    width: 100%;
+    height: 100%;
+}
+
+.ring-2 {
+    width: 66%;
+    height: 66%;
+}
+
+.ring-3 {
+    width: 33%;
+    height: 33%;
+}
+
+.radar-sweep {
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(to right, var(--cyan), transparent);
+    top: 50%;
+    left: 50%;
+    transform-origin: left center;
+    z-index: 2;
+}
+
+.radar-hub {
+    width: 12px;
+    height: 12px;
+    background: var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--cyan);
+    z-index: 3;
+    position: relative;
+}
+
+.radar-node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transform: translate(-50%, -50%);
+}
+
+.node-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--muted);
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.radar-node.flagged .node-dot {
+    background: var(--red);
+    box-shadow: 0 0 10px var(--red);
+    transform: scale(1.5);
+}
+
+.node-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+}
+
+.radar-node.flagged .node-label {
+    color: var(--red);
+}
+
+/* ── Truth Gauge (Fake News) ── */
+.gauge-wrap {
+    margin: 40px auto;
+    text-align: center;
+}
+
+.gauge-svg-container {
+    margin-bottom: 16px;
+}
+
+.gauge-marker {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--muted);
+    letter-spacing: 1px;
+}
+
+.gauge-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.gauge-label span {
+    color: var(--white);
+    font-weight: 700;
+}
+
+/* ── Security Shield (Loan Risk) ── */
+.sentinel-wrap {
+    position: relative;
+    padding: 60px;
+    margin: 40px 0;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    min-height: 320px;
+}
+
+.heatmap-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.grid-cell {
+    border: 0.5px solid var(--border);
+}
+
+.grid-cell.hot {
+    background: var(--red);
+    animation: pulse-red 2s infinite;
+}
+
+.sentinel-main {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 48px;
+    align-items: center;
+}
+
+.shield-viz {
+    width: 200px;
+    height: 200px;
+    position: relative;
+}
+
+.shield-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.shield-ring {
+    fill: none;
+    stroke: var(--cyan);
+    stroke-width: 1;
+    stroke-dasharray: 4 2;
+    opacity: 0.3;
+}
+
+.shield-core {
+    fill: var(--cyan);
+    opacity: 0.8;
+}
+
+.shield-core.broken {
+    fill: var(--red);
+    animation: flicker 0.5s infinite;
+}
+
+.integrity-val {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--white);
+    font-family: var(--font-mono);
+}
+
+.integrity-val .sub {
+    display: block;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 2px;
+}
+
+.metadata-ticker {
+    flex: 1;
+    height: 120px;
+    overflow: hidden;
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.ticker-line {
+    color: var(--muted);
+    font-family: var(--font-mono);
+}
+
+.ticker-line.err {
+    color: var(--red);
+}
+
+.ticker-line.ok {
+    color: var(--green);
+}
+
+@keyframes pulse-red {
+
+    0%,
+    100% {
+        opacity: 0.1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes flicker {
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}

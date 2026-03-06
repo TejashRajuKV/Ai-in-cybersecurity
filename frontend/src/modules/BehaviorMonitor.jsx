@@ -137,43 +137,53 @@ export default function BehaviorMonitor() {
         </button>
       </div>
 
-      {/* ── Technical Inputs ── */}
-      <div className="behavior-grid">
-        {fields.map((field) => (
-          <div key={field.key} className="forensic-input-group">
-            <span className="forensic-label mono">{field.label}</span>
-            <div className="input-bracket-wrap">
-              <input
-                type="number"
-                className="forensic-input"
-                min={field.min}
-                max={field.max}
-                step={field.step}
-                value={formData[field.key]}
-                onChange={(e) => handleChange(field.key, e.target.value)}
-              />
-            </div>
+      {/* ── Behavior Scanner Interface ── */}
+      <div className="behavior-interface-wrap" style={{ display: "flex", flexWrap: "wrap", gap: "40px", alignItems: "flex-start", justifyContent: "center" }}>
+        
+        {/* ── Technical Inputs ── */}
+        <div className="behavior-inputs-panel" style={{ flex: "1", minWidth: "300px", maxWidth: "600px" }}>
+          <div className="behavior-grid">
+            {fields.map((field) => (
+              <div key={field.key} className="forensic-input-group">
+                <span className="forensic-label mono">{field.label}</span>
+                <div className="input-bracket-wrap">
+                  <input
+                    type="number"
+                    className="forensic-input"
+                    value={formData[field.key]}
+                    onChange={(e) => handleChange(field.key, e.target.value)}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+
+          <button
+            className="btn-forensic-scan"
+            onClick={handleAnalyze}
+            disabled={loading}
+            style={{ marginTop: "20px" }}
+          >
+            {loading ? "SCANNING_PACKETS..." : "[ START_BEHAVIOR_ANALYSIS ]"}
+          </button>
+        </div>
+
+        {/* ── Animation Section ── */}
+        <div className="behavior-viz-panel" style={{ flex: "1", minWidth: "320px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          {(loading || result) && (
+            <NeuralRadar
+              loading={loading}
+              flaggedFields={result?.flagged_words || []}
+              isAnomalous={result?.label === "HIGH RISK" || result?.label === "ANOMALY"}
+            />
+          )}
+          {!loading && !result && (
+            <div className="radar-placeholder" style={{ width: "320px", height: "320px", border: "1px dashed var(--border)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--muted)", fontStyle: "italic", fontSize: "12px", margin: "40px auto" }}>
+              WAITING_FOR_DATA_STREAM...
+            </div>
+          )}
+        </div>
       </div>
-
-      {/* ── Scan Button ── */}
-      <button
-        className="btn-forensic-scan"
-        onClick={handleAnalyze}
-        disabled={loading}
-      >
-        {loading ? "SCANNING_PACKETS..." : "[ START_BEHAVIOR_ANALYSIS ]"}
-      </button>
-
-      {/* ── Neural Radar Animation ── */}
-      {(loading || result) && (
-        <NeuralRadar
-          loading={loading}
-          flaggedFields={result?.flagged_words || []}
-          isAnomalous={result?.label === "HIGH RISK" || result?.label === "ANOMALY"}
-        />
-      )}
 
       {loading && <Loader text="CORRELATING_DATA_POINTS..." />}
 
