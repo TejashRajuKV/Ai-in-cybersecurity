@@ -9,43 +9,43 @@ from utils.response_formatter import format_response, format_error
 # ─────────────────────────────────────────
 SCORING_RULES = {
     "too_many_permissions": {
-        "score":  30,
+        "score": 30,
         "reason": "App requests excessive permissions (contacts, SMS, camera)"
     },
     "no_rbi_registration": {
-        "score":  40,
+        "score": 40,
         "reason": "No RBI registration found for this lender"
     },
     "instant_approval": {
-        "score":  20,
+        "score": 20,
         "reason": "Claims instant approval with no documents"
     },
     "high_interest_rate": {
-        "score":  25,
+        "score": 25,
         "reason": "Interest rate exceeds 36% APR"
     },
     "not_on_playstore": {
-        "score":  15,
+        "score": 15,
         "reason": "App not found on official Google Play Store"
     },
     "requests_contacts": {
-        "score":  20,
+        "score": 20,
         "reason": "App requests access to your contacts list"
     },
     "requests_sms": {
-        "score":  20,
+        "score": 20,
         "reason": "App requests access to your SMS messages"
     },
     "requests_location": {
-        "score":  10,
+        "score": 10,
         "reason": "App requests continuous location access"
     },
     "no_physical_address": {
-        "score":  15,
+        "score": 15,
         "reason": "No physical office address provided"
     },
     "pressure_tactics": {
-        "score":  25,
+        "score": 25,
         "reason": "Uses pressure tactics like limited time offer"
     },
 }
@@ -67,10 +67,9 @@ def score_loan(app_data: dict, models: dict = None) -> dict:
         app_data : dict with boolean flags matching SCORING_RULES keys
                    Example:
                    {
-                       "too_many_permissions": true,
-                       "no_rbi_registration":  true,
-                       "instant_approval":     false,
-                       ...
+                       "too_many_permissions": True,
+                       "no_rbi_registration": True,
+                       "instant_approval": False
                    }
         models   : not used, kept for consistency with other modules
 
@@ -85,25 +84,29 @@ def score_loan(app_data: dict, models: dict = None) -> dict:
         # ── Apply each rule ──
         for rule_key, rule_info in SCORING_RULES.items():
             if app_data.get(rule_key, False):
-                total_score   += rule_info["score"]
+                total_score += rule_info["score"]
                 reasons.append(rule_info["reason"])
                 flagged_rules.append(rule_key)
 
         # ── Normalize to 0-100 ──
-        confidence = int((total_score / MAX_SCORE) * 100)
+        if MAX_SCORE > 0:
+            confidence = int((total_score / MAX_SCORE) * 100)
+        else:
+            confidence = 0
+
         confidence = min(100, confidence)
 
         # ── Build reason string ──
         if reasons:
-            reason = " + ".join(reasons)
+            reason = " • ".join(reasons)
         else:
             reason = "No risk factors detected — app appears legitimate"
 
         return format_response(
-            module        = "loan_scorer",
-            confidence    = confidence,
-            reason        = reason,
-            flagged_words = flagged_rules
+            module="loan_scorer",
+            confidence=confidence,
+            reason=reason,
+            flagged_words=flagged_rules
         )
 
     except Exception as e:
@@ -121,7 +124,7 @@ def get_rules() -> dict:
     """
     return {
         key: {
-            "score":  rule["score"],
+            "score": rule["score"],
             "reason": rule["reason"]
         }
         for key, rule in SCORING_RULES.items()

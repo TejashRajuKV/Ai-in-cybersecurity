@@ -4,7 +4,7 @@ import "../styles/modules.css";
 
 export default function VerdictStamp({ label }) {
   const stampRef = useRef(null);
-  const isFake  = label.toLowerCase().includes("fake");
+  const isFake  = label.includes("HIGH") || label.includes("MEDIUM");
   const text    = isFake ? "DEBUNKED" : "VERIFIED";
 
   useEffect(() => {

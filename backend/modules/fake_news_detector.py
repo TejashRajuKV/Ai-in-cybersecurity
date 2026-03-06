@@ -16,7 +16,9 @@ FAKE_KEYWORDS = [
     "whatsapp shutdown", "microchip", "5g",
     "bill gates", "illuminati", "conspiracy",
     "miracle cure", "guaranteed", "100 percent",
-    "breaking exclusive", "leaked video"
+    "breaking exclusive", "leaked video",
+    "free rs", "register using this link",
+    "all citizens", "claim your", "apply now"
 ]
 
 
@@ -28,7 +30,7 @@ def extract_fake_flags(text: str) -> list:
     return [kw for kw in FAKE_KEYWORDS if kw in text_lower]
 
 
-def build_news_reason(features: dict, fake_flags: list) -> str:
+def build_news_reason(features: dict, fake_flags: list, prediction: int) -> str:
     """Build reason string for fake news result."""
     reasons = []
 
@@ -40,6 +42,10 @@ def build_news_reason(features: dict, fake_flags: list) -> str:
         reasons.append("Fake reward/prize claim detected")
     if features.get("has_link"):
         reasons.append("Suspicious link present")
+
+    # ── Fix: if model says FAKE but no keyword reason found ──
+    if not reasons and prediction == 1:
+        return "ML model detected fake news linguistic patterns"
 
     if not reasons:
         return "No fake news patterns detected"
@@ -80,14 +86,16 @@ def check_news(text: str, models: dict) -> dict:
         prediction = model.predict(X)[0]   # 0 = REAL, 1 = FAKE
 
         # ── Confidence from decision function ──
-        decision    = model.decision_function(X)[0]
-        raw_conf    = abs(decision)
-        confidence  = int(min(100, max(0, raw_conf * 20)))
+        decision   = model.decision_function(X)[0]
+        raw_conf   = abs(decision)
+        confidence = int(min(100, max(0, raw_conf * 20)))
 
         # ── Extract explanation ──
-        fake_flags    = extract_fake_flags(text)
-        features      = extract_features(text)
-        reason        = build_news_reason(features, fake_flags)
+        fake_flags = extract_fake_flags(text)
+        features   = extract_features(text)
+
+        # ── Build reason with fix ──
+        reason = build_news_reason(features, fake_flags, prediction)
 
         # ── Boost confidence if fake keywords found ──
         if prediction == 1 and len(fake_flags) > 0:
@@ -95,9 +103,7 @@ def check_news(text: str, models: dict) -> dict:
         elif prediction == 0 and len(fake_flags) == 0:
             confidence = min(confidence, 30)
 
-        # ── Module label based on prediction ──
-        # For fake news: FAKE = HIGH RISK, REAL = SAFE
-        # Override confidence to reflect this
+        # ── Override confidence based on prediction ──
         if prediction == 0:
             confidence = min(confidence, 35)   # REAL → SAFE range
         else:
