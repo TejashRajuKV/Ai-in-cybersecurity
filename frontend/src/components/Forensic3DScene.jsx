@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/Forensic3DScene.css";
 
 export default function Forensic3DScene({ isBackground = false }) {
@@ -6,60 +6,53 @@ export default function Forensic3DScene({ isBackground = false }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const maxScroll = window.innerHeight * 1.2;
-      setScrollProgress(Math.min(1, scrollTop / maxScroll));
+      setScrollProgress(Math.min(1, window.scrollY / (window.innerHeight * 1.5)));
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const rotation = scrollProgress * 360;
-  const scale = isBackground ? 1 : 1 + scrollProgress * 0.5;
-  const opacity = isBackground ? 0.3 : 1 - scrollProgress * 1.5;
+  const rotation = scrollProgress * 180;
+  const opacity = isBackground ? 0.15 : 0.8;
 
   return (
-    <div className={`three-d-container ${isBackground ? 'as-bg' : ''}`} style={{ opacity: Math.max(0, opacity) }}>
-      <div className="forensic-core-wrapper" style={{ transform: `scale(${scale})` }}>
-        {/* ── Cyberpunk Procedural Core ── */}
-        <div className="core-rings">
-          <div className="ring ring-1" style={{ borderColor: 'var(--cyan)', transform: `rotate(${rotation}deg)` }}></div>
-          <div className="ring ring-2" style={{ borderColor: 'var(--pink)', transform: `rotate(${-rotation * 1.5}deg)` }}></div>
-          <div className="ring ring-3" style={{ borderColor: 'var(--yellow)', transform: `rotate(${rotation * 0.5}deg)` }}></div>
-        </div>
+    <div className={`forensic-blueprint-container ${isBackground ? 'as-bg' : ''}`} style={{ opacity }}>
+      <div className="blueprint-wireframe" style={{ transform: `rotateX(60deg) rotateZ(${rotation}deg)` }}>
+        {/* ── Blueprint Grid ── */}
+        <div className="grid-plane"></div>
         
-        <svg className="core-svg" viewBox="0 0 200 200">
-          <defs>
-            <radialGradient id="coreGradient">
-              <stop offset="0%" stopColor="var(--pink)" stopOpacity="0.9" />
-              <stop offset="60%" stopColor="var(--cyan)" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="transparent" />
-            </radialGradient>
-          </defs>
-          <circle cx="100" cy="100" r="40" fill="url(#coreGradient)">
-            <animate attributeName="r" values="36;44;36" dur="2s" repeatCount="indefinite" />
-          </circle>
-          <path 
-            d="M100 0 L100 200 M0 100 L200 100" 
-            stroke="var(--pink)" 
-            strokeWidth="0.2" 
-            opacity="0.4" 
-          />
-          <circle cx="100" cy="100" r="70" stroke="var(--cyan)" strokeWidth="0.5" fill="none" strokeDasharray="10,5" />
-        </svg>
+        {/* ── Point Cloud / Wireframe Core ── */}
+        <div className="wireframe-core">
+          <div className="core-ring-wire cyan"></div>
+          <div className="core-ring-wire cyan"></div>
+          <div className="core-ring-wire cyan"></div>
+          
+          <div className="pillar p1"></div>
+          <div className="pillar p2"></div>
+          <div className="pillar p3"></div>
+          <div className="pillar p4"></div>
+          
+          <div className="data-points">
+            {[...Array(20)].map((_, i) => (
+              <div key={i} className="point" style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`
+              }}></div>
+            ))}
+          </div>
+        </div>
 
-        <div className="scan-line-horizontal" style={{ background: 'linear-gradient(90deg, transparent, var(--pink), transparent)' }}></div>
+        {/* ── Coordinate Labels ── */}
+        <div className="coord-labels mono">
+          <span className="x">X: {rotation.toFixed(1)}</span>
+          <span className="y">Y: 0.0</span>
+          <span className="z">Z: { (scrollProgress * 100).toFixed(1) }</span>
+        </div>
       </div>
       
-      <div className="hero-overlay">
-        <h1 className="hero-title flicker" data-text="CYBERRAKSHAK">CYBER<span>RAKSHAK</span></h1>
-        <p className="hero-tagline mono">SYSTEM_PROTOCOL_INITIATED // FORENSIC_OVERRIDE</p>
-        <div className="scroll-indicator">
-          <div className="mouse" style={{ borderColor: 'var(--pink)' }}></div>
-          <span style={{ color: 'var(--pink)' }}>INITIALIZE SCAN SEQUENCE</span>
-        </div>
-      </div>
+      {/* ── Scanning Beam ── */}
+      <div className="scanning-beam"></div>
     </div>
   );
 }

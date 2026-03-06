@@ -28,34 +28,27 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar technical-status-bar">
       <div className="container nav-container">
         <Link to="/" className="navbar-brand mono">
-          CYBER<span className="text-cyan">RAKSHAK</span>
+          [ PROJECT_RAKSHAK ]
         </Link>
 
         <div className="nav-links mono">
-          <button className="nav-btn" onClick={() => handleNavClick('modules')}>MODULES</button>
-          <button className="nav-btn" onClick={() => handleNavClick('engine')}>ENGINE</button>
-          <Link to="/dashboard">DASHBOARD</Link>
-          <a href="https://github.com/TejashRajuKV/Ai-in-cybersecurity" target="_blank" className="nav-btn">DOCS</a>
+          <button className="nav-btn" onClick={() => handleNavClick('modules')}>// FILES</button>
+          <button className="nav-btn" onClick={() => handleNavClick('engine')}>// INTEL</button>
+          <Link to="/dashboard" className="nav-btn active-link">DASHBOARD_LIVE</Link>
+          <a href="https://github.com/TejashRajuKV/Ai-in-cybersecurity" target="_blank" className="nav-btn">// DOCS</a>
         </div>
 
-        <div className="navbar-status mono">
-          <div
-            className="status-dot"
-            style={{ 
-              background: online ? "var(--green)" : "var(--red)",
-              boxShadow: online ? "0 0 10px var(--green)" : "0 0 10px var(--red)"
-            }}
-          />
-          <span style={{ color: online ? "var(--green)" : "var(--red)" }}>
-            {online ? "BACKEND ONLINE" : "BACKEND OFFLINE"}
+        <div className="navbar-status-indicator mono">
+          <span className="label">BACKEND:</span>
+          <span className={`status-text ${online ? 'text-green' : 'text-red'}`}>
+            {online ? "CONNECTED" : "OFFLINE"}
           </span>
+          <div className={`status-dot ${online ? 'online' : 'offline'}`}></div>
         </div>
       </div>
     </nav>
   );
 }
-
-

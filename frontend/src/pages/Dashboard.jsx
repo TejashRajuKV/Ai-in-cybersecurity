@@ -11,77 +11,93 @@ import Forensic3DScene  from "../components/Forensic3DScene";
 import "../styles/dashboard.css";
 
 const TABS = [
-  { id: "scam",     icon: "🎯", label: "Scam Radar",        component: <ScamRadar />       },
-  { id: "behavior", icon: "📊", label: "Behavior Monitor",  component: <BehaviorMonitor /> },
-  { id: "news",     icon: "📰", label: "Fake News",         component: <FakeNewsChecker /> },
-  { id: "loan",     icon: "⚠️", label: "Loan Risk",         component: <LoanRiskScanner /> },
-  { id: "phishing", icon: "🎣", label: "Phishing Link",     component: <PhishingDetector /> },
-  { id: "threat",   icon: "🔎", label: "Threat Analyzer",   component: <ThreatAnalyzer />  },
+  { id: "scam",     icon: "🎯", label: "SCAM RADAR",        component: <ScamRadar />       },
+  { id: "behavior", icon: "📊", label: "BEHAVIOR UNIT",     component: <BehaviorMonitor /> },
+  { id: "news",     icon: "📰", label: "FACT CHECKER",      component: <FakeNewsChecker /> },
+  { id: "loan",     icon: "⚖️", label: "LOAN AUDITOR",      component: <LoanRiskScanner /> },
+  { id: "phishing", icon: "🎣", label: "PHISH SCAN",        component: <PhishingDetector /> },
+  { id: "threat",   icon: "🔎", label: "CORE ANALYZER",     component: <ThreatAnalyzer />  },
 ];
 
 export default function Dashboard() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(location.state?.tab || "scam");
+  const [sessionLogs, setSessionLogs] = useState([]);
+  const [caseId, setCaseId] = useState("");
 
   useEffect(() => {
+    setCaseId(`CASE-${Math.floor(Math.random() * 100000).toString(16).toUpperCase()}`);
+    
+    const initialLogs = [
+      `[SYS] INITIALIZING FORENSIC ENVIRONMENT...`,
+      `[SYS] CASE_ID: ${caseId} LOADED`,
+      `[SEC] ENCRYPTION_LAYER: AES-256 ACTIVE`,
+      `[NET] PROXY_STATUS: SECURE`,
+      `[MSG] SELECT MODULE TO BEGIN ANALYSIS`
+    ];
+    setSessionLogs(initialLogs);
+
     if (location.state?.tab) {
       setActiveTab(location.state.tab);
+      setSessionLogs(prev => [...prev, `[USER] AUTO-NAVIGATED TO ${location.state.tab.toUpperCase()}`]);
     }
     animatePageLoad(".tab-btn");
-  }, [location.state]);
+  }, [location.state, caseId]);
 
   const activeComponent = TABS.find((t) => t.id === activeTab)?.component;
 
   return (
-    <div className="dashboard-root">
-      {/* ── Subtle Background ── */}
+    <div className="workstation-root blueprint-overlay">
       <Forensic3DScene isBackground={true} />
-
-      <div className="dashboard">
-        <div className="container">
-
-          {/* ── Minimal Header ── */}
-          <div className="dashboard-header-mini">
-            <h1 className="mini-title">
-              <span className="cyan-text">FORENSIC</span> WORKSTATION
-            </h1>
-            <div className="status-mono mono">// SYSTEM ACCESS GRANTED · MODULE SELECTION ACTIVE</div>
+      
+      <div className="workstation-layout">
+        <div className="workstation-sidebar">
+          <div className="sidebar-header mono">
+            <div className="case-title">FORENSIC_DASHBOARD</div>
+            <div className="case-id text-cyan">{caseId}</div>
           </div>
 
-
-          {/* ── Tabs ── */}
-          <div className="tabs">
+          <div className="tabs-column">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
-                className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
-                onClick={() => setActiveTab(tab.id)}
+                className={`tab-item mono ${activeTab === tab.id ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  setSessionLogs(prev => [...prev.slice(-10), `[EXEC] SWITCHING_TO_MODULE: ${tab.label}`]);
+                }}
               >
-                <span className="tab-icon">{tab.icon}</span>
-                <span>{tab.label}</span>
+                <span className="tab-indicator"></span>
+                <span className="tab-label">{tab.label}</span>
               </button>
             ))}
           </div>
 
-          {/* ── Active Module ── */}
-          <div className="module-container">
+          <div className="sidebar-footer">
+            <div className="system-logs mono">
+              {sessionLogs.map((log, i) => (
+                <div key={i} className="log-entry">{log}</div>
+              ))}
+              <div className="log-entry cursor">_</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="workstation-main">
+          <div className="main-header mono">
+            <div className="header-meta">
+              <span className="label">MODULE_STATUS:</span> 
+              <span className="value text-green">ACTIVE_STABLE</span>
+            </div>
+            <div className="header-meta">
+              <span className="label">UPTIME:</span> 
+              <span className="value">00:14:22:04</span>
+            </div>
+          </div>
+
+          <div className="forensic-container">
             {activeComponent}
           </div>
-
-          {/* ── Footer ── */}
-          <div
-            style={{
-              textAlign:  "center",
-              padding:    "32px 0",
-              fontFamily: "var(--font-mono)",
-              fontSize:   "10px",
-              color:      "var(--muted)",
-              letterSpacing: "2px",
-            }}
-          >
-            CYBERRAKSHAK · ARCTIC THUNDER · AIFI HACKATHON · REVA UNIVERSITY
-          </div>
-
         </div>
       </div>
     </div>

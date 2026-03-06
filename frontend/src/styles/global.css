@@ -2,30 +2,23 @@
    CSS Variables
 ───────────────────────────────────────── */
 :root {
-  --bg: #050505;
-  --surface: #0A0A0A;
-  --card: #0F0F0F;
-  --card2: #141414;
-  --border: rgba(0, 255, 204, 0.2);
-  --cyan: #00FFCC;
-  /* Neon Cyan */
-  --green: #BDFF00;
-  /* Acid Green */
-  --orange: #FF9500;
-  --yellow: #FBFF00;
-  /* Cyber Yellow */
-  --red: #FF003C;
-  /* Electric Red */
-  --pink: #FF00FF;
-  /* Neon Pink */
-  --purple: #BC00FF;
-  --white: #FFFFFF;
-  --text: #E0E0E0;
-  --muted: #444444;
+  --bg: #000814;
+  --surface: #020c1b;
+  --card: #051327;
+  --card2: #081a33;
+  --border: rgba(0, 242, 255, 0.15);
+  --cyan: #00f2ff;
+  --amber: #ff9500;
+  --red: #ff3d00;
+  --green: #00ff88;
+  --white: #f0faff;
+  --text: #c5d1d9;
+  --muted: #536a80;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-main: 'Syne', sans-serif;
-  --glow-cyan: 0 0 10px rgba(0, 255, 204, 0.5);
-  --glow-pink: 0 0 10px rgba(255, 0, 255, 0.5);
+  --font-main: 'Inter', sans-serif;
+  --blueprint-grid:
+    linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
 }
 
 /* ─────────────────────────────────────────
@@ -55,15 +48,12 @@ body {
   overflow-x: hidden;
 }
 
-/* Grid background */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(0, 255, 204, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 204, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
+  background-image: var(--blueprint-grid);
+  background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
 }

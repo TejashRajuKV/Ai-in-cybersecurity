@@ -1,330 +1,276 @@
 .home-root {
-    background: #000;
+    background: var(--bg);
     min-height: 100vh;
     padding-top: 70px;
     position: relative;
-    overflow-x: hidden;
-    color: var(--white);
+    color: var(--text);
 }
 
-/* ── Global Artifacts ── */
-.global-scanline {
+/* ── Technical Decoration ── */
+.corner-decor {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    background: linear-gradient(to bottom, transparent, rgba(0, 255, 204, 0.03), transparent);
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border);
     z-index: 1000;
     pointer-events: none;
-    animation: scanline-move 10s linear infinite;
 }
 
-@keyframes scanline-move {
-    0% {
-        transform: translateY(-100px);
-    }
-
-    100% {
-        transform: translateY(100vh);
-    }
+.top-left {
+    top: 20px;
+    left: 20px;
+    border-right: none;
+    border-bottom: none;
 }
 
-/* ── Section Commons ── */
-section {
-    padding: 120px 0;
-    position: relative;
+.top-right {
+    top: 20px;
+    right: 20px;
+    border-left: none;
+    border-bottom: none;
 }
 
-.section-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.bottom-left {
+    bottom: 20px;
+    left: 20px;
+    border-right: none;
+    border-top: none;
+}
+
+.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    border-left: none;
+    border-top: none;
+}
+
+/* ── Hero Dossier ── */
+.technical-index {
+    color: var(--cyan);
     font-size: 11px;
     letter-spacing: 4px;
-    color: var(--cyan);
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+    opacity: 0.6;
 }
 
-.section-label .dash {
-    width: 40px;
-    height: 1px;
-    background: rgba(0, 255, 204, 0.3);
+.hero-main-title.technical-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 40px;
 }
 
-.section-title {
-    font-size: clamp(40px, 8vw, 80px);
-    font-weight: 900;
-    line-height: 1;
-    margin-bottom: 32px;
+.case-title {
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 300;
+    letter-spacing: 12px;
+    color: var(--muted);
     text-transform: uppercase;
 }
 
-.section-desc {
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.6);
-    max-width: 650px;
-    line-height: 1.6;
-    margin-bottom: 60px;
-}
-
-/* ── 00: Hero ── */
-.home-hero {
-    min-height: calc(100vh - 70px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 60px 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.scanning-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-    box-shadow: 0 0 15px var(--cyan);
-    z-index: 5;
-    opacity: 0.3;
-    animation: scan-anim 4s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes scan-anim {
-    0% {
-        top: 0;
-    }
-
-    100% {
-        top: 100%;
-    }
-}
-
-.hero-main-title {
-    font-size: clamp(80px, 15vw, 200px);
-    font-weight: 950;
-    line-height: 0.8;
-    margin-bottom: 40px;
-    letter-spacing: -8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.hero-main-title .cyber {
+.case-name {
+    font-size: clamp(80px, 12vw, 160px);
+    font-weight: 900;
+    letter-spacing: -4px;
     color: var(--white);
-    z-index: 2;
+    line-height: 0.9;
 }
 
-.rakshak-hollow {
-    color: transparent;
-    -webkit-text-stroke: 2px var(--cyan);
-    filter: drop-shadow(0 0 20px rgba(0, 255, 204, 0.4));
-    margin-top: -10px;
+.dossier-meta {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 12px 0;
 }
 
-.hero-actions {
-    display: flex;
-    gap: 24px;
-    margin-bottom: 80px;
+.red-text {
+    color: var(--red);
 }
 
-.btn-parallelogram {
+.cyan-text {
+    color: var(--cyan);
+}
+
+.amber-text {
+    color: var(--amber);
+}
+
+.hero-desc.dossier-desc {
+    max-width: 600px;
+    margin: 0 auto 60px;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text);
+}
+
+/* ── Buttons ── */
+.btn-technical {
     background: var(--cyan);
     color: #000;
     font-weight: 900;
-    padding: 18px 44px;
+    padding: 16px 40px;
     border: none;
-    transform: skewX(-15deg);
     cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 14px;
     transition: all 0.2s;
 }
 
-.btn-parallelogram .btn-content {
-    display: block;
-    transform: skewX(15deg);
-    font-size: 13px;
-    letter-spacing: 2px;
+.btn-technical .bracket {
+    opacity: 0.3;
+    padding: 0 8px;
 }
 
-.btn-parallelogram:hover {
+.btn-technical:hover {
     background: var(--white);
-    box-shadow: -8px 8px 0 rgba(0, 255, 204, 0.2);
+    letter-spacing: 2px;
 }
 
-.btn-outline-cyber {
+.btn-outline-technical {
     background: transparent;
+    border: 1px solid var(--border);
     color: var(--white);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 18px 44px;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 2px;
+    padding: 16px 40px;
+    font-family: var(--font-mono);
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.btn-outline-cyber:hover {
-    border-color: var(--cyan);
-    background: rgba(0, 255, 204, 0.05);
+.btn-outline-technical:hover {
+    background: rgba(0, 242, 255, 0.05);
 }
 
-.stats-row {
+/* ── Technical Grid ── */
+.technical-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     width: 100%;
     max-width: 1000px;
-    margin-top: 40px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding-top: 40px;
+    margin-top: 80px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.stat-card .stat-num {
-    font-size: 56px;
-    font-weight: 950;
-    line-height: 1;
-    margin-bottom: 8px;
+.technical-card {
+    padding: 32px;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.stat-card .stat-label {
+.technical-card:last-child {
+    border-right: none;
+}
+
+.stat-num.mono {
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.stat-label {
     font-size: 9px;
-    letter-spacing: 3px;
-    color: rgba(255, 255, 255, 0.3);
-}
-
-/* ── 01: Problem Statement ── */
-.grid-2-col {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 32px;
-}
-
-.grid-3-col {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 32px;
-}
-
-
-.threat-card {
-    background: rgba(13, 20, 32, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 48px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.threat-card.pink {
-    border-top: 4px solid var(--pink);
-}
-
-.threat-card.yellow {
-    border-top: 4px solid var(--yellow);
-}
-
-.threat-card:hover {
-    transform: translateY(-8px);
-    background: rgba(20, 30, 45, 0.8);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-.t-icon {
-    font-size: 48px;
-    margin-bottom: 32px;
-    display: block;
-}
-
-.t-title {
-    font-size: 28px;
-    font-weight: 900;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-}
-
-.t-desc {
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.5);
-    line-height: 1.7;
-    margin-bottom: 32px;
-}
-
-.t-tag {
-    display: inline-block;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 11px;
     letter-spacing: 2px;
-    font-family: var(--font-mono);
+    color: var(--muted);
 }
 
-/* ── 02: AI Modules ── */
-.module-card {
-    background: rgba(13, 20, 32, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 48px;
-    position: relative;
-    border-right: 1px solid rgba(0, 255, 204, 0.1);
+/* ── Technical Sections ── */
+.technical-section {
+    padding: 120px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-.module-card .m-label {
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: rgba(255, 255, 255, 0.2);
-    margin-bottom: 32px;
+.section-label-technical {
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 40px;
 }
 
-.module-card .m-title {
-    font-size: 32px;
-    font-weight: 900;
-    margin-bottom: 24px;
-}
-
-.module-card .m-title span {
-    font-weight: 400;
-    opacity: 0.5;
-}
-
-.m-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 32px;
-}
-
-.m-tag {
-    padding: 6px 14px;
-    font-size: 10px;
-    letter-spacing: 1px;
-    border: 1px solid rgba(0, 255, 204, 0.2);
+.section-label-technical .idx {
     color: var(--cyan);
 }
 
-.m-tag.muted {
-    border-color: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.4);
+.technical-h2 {
+    font-size: clamp(40px, 8vw, 80px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 60px;
+    text-transform: uppercase;
 }
 
-/* ── Scroll Elements ── */
-.scroll-hint {
-    margin-top: 40px;
+/* ── Report Cards ── */
+.report-card {
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    position: relative;
+}
+
+.report-header {
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 12px;
-    font-size: 9px;
-    letter-spacing: 4px;
-    color: rgba(255, 255, 255, 0.2);
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 32px;
 }
 
-.scroll-hint .line {
-    width: 1px;
-    height: 60px;
-    background: linear-gradient(to bottom, var(--cyan), transparent);
+.status-bit {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-bit.red {
+    background: var(--red);
+    box-shadow: 0 0 10px var(--red);
+}
+
+.status-bit.amber {
+    background: var(--amber);
+    box-shadow: 0 0 10px var(--amber);
+}
+
+.t-meta {
+    margin-top: 32px;
+    font-size: 10px;
+    color: var(--muted);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 16px;
+}
+
+/* ── Dossier Cards ── */
+.dossier-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 32px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dossier-card:hover {
+    background: var(--card2);
+    transform: translateY(-4px);
+    border-color: var(--cyan);
+}
+
+.card-top {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+.m-tags {
+    margin-top: 24px;
+    display: flex;
+    gap: 8px;
+}
+
+.m-tag {
+    font-size: 9px;
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--muted);
 }
