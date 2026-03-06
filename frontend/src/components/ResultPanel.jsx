@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { animateResultCard } from "../animations/riskAnimation";
-import RiskBadge      from "./RiskBadge";
-import ConfidenceBar  from "./ConfidenceBar";
+import RiskBadge     from "./RiskBadge";
+import ConfidenceBar from "./ConfidenceBar";
+import { getRiskColor } from "../utils/riskHelpers";
 import "../styles/modules.css";
 
 export default function ResultPanel({ result }) {
@@ -42,13 +43,28 @@ export default function ResultPanel({ result }) {
         color={risk_color}
       />
 
-      {/* ── Reason ── */}
+      {/* ── Explainable AI — WHY IS THIS RISKY ── */}
       <div className="result-section" style={{ marginTop: "20px" }}>
-        <span className="result-label">// DETECTION REASON</span>
-        <p className="result-reason">{reason}</p>
+        <span className="result-label">// WHY IS THIS RISKY?</span>
+        <div style={{ marginTop: "8px" }}>
+          {reason.split(" + ").map((r, i) => (
+            <div key={i} style={{
+              display:      "flex",
+              alignItems:   "center",
+              gap:          "8px",
+              padding:      "6px 0",
+              borderBottom: "1px solid rgba(255,255,255,0.04)",
+              fontSize:     "13px",
+              color:        "var(--text)"
+            }}>
+              <span style={{ color: getRiskColor(risk_color) }}>▶</span>
+              <span>{r}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* ── Flagged Words ── */}
+      {/* ── Flagged Keywords ── */}
       {flagged_words.length > 0 && (
         <div className="result-section">
           <span className="result-label">// FLAGGED KEYWORDS</span>
@@ -62,7 +78,7 @@ export default function ResultPanel({ result }) {
         </div>
       )}
 
-      {/* ── AI Explanation ── */}
+      {/* ── AI Analysis ── */}
       {explanation.template && (
         <div className="result-section">
           <span className="result-label">// AI ANALYSIS</span>

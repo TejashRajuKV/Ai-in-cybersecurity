@@ -1,0 +1,106 @@
+.three-d-container {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background: #000;
+    overflow: hidden;
+    z-index: 100;
+}
+
+.forensic-canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.hero-title {
+    font-size: 80px;
+    font-weight: 900;
+    letter-spacing: 15px;
+    color: var(--white);
+    margin: 0;
+    text-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
+}
+
+.hero-title span {
+    color: var(--cyan);
+}
+
+.hero-tagline {
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: var(--muted);
+    margin-top: 10px;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+}
+
+.mouse {
+    width: 25px;
+    height: 40px;
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    position: relative;
+}
+
+.mouse::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--cyan);
+    border-radius: 50%;
+    animation: scroll-ping 2s infinite;
+}
+
+@keyframes scroll-ping {
+    0% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, 15px);
+        opacity: 0;
+    }
+}
+
+.loading-assets {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 10px;
+    color: var(--yellow);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border: 1px dashed var(--yellow);
+    z-index: 1000;
+}

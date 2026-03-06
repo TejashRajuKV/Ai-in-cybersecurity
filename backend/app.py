@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+from routes.threat_routes import threat_bp
 import os
 
 # ─────────────────────────────────────────
@@ -36,6 +37,7 @@ app.register_blueprint(behavior_bp)
 app.register_blueprint(news_bp)
 app.register_blueprint(loan_bp)
 app.register_blueprint(phishing_bp)
+app.register_blueprint(threat_bp, url_prefix="/api")
 
 
 # ─────────────────────────────────────────
