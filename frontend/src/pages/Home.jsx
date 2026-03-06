@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Forensic3DScene from "../components/Forensic3DScene";
 import "../styles/Home.css";
 
 export default function Home() {
@@ -14,10 +15,15 @@ export default function Home() {
 
   return (
     <div className="home-root">
+      {/* ── Page Scanline Overlay ── */}
+      <div className="global-scanline"></div>
+
       <div className="container">
 
         {/* ── High Intensity Hero ── */}
         <section className="home-hero">
+          <Forensic3DScene isBackground={true} />
+          
           <div className="eyebrow fade-in">
             [ SYSTEM_STATUS: READY // ENCRYPTION_STRENGTH: MAXIMUM ]
           </div>
@@ -59,6 +65,8 @@ export default function Home() {
         <section className="home-modules">
           {forensicModules.map((m, i) => (
             <div key={i} className="forensic-card fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
+              <div className="card-bracket-tr"></div>
+              <div className="card-bracket-bl"></div>
               <span className="f-icon">{m.icon}</span>
               <h3 className="f-title" style={{ color: m.color }}>{m.title}</h3>
               <p className="f-desc mono">{m.desc}</p>

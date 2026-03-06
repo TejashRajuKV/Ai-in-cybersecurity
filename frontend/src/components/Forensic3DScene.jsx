@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../styles/Forensic3DScene.css";
 
-export default function Forensic3DScene() {
+export default function Forensic3DScene({ isBackground = false }) {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
@@ -16,11 +16,11 @@ export default function Forensic3DScene() {
   }, []);
 
   const rotation = scrollProgress * 360;
-  const scale = 1 + scrollProgress * 0.5;
-  const opacity = 1 - scrollProgress * 1.5;
+  const scale = isBackground ? 1 : 1 + scrollProgress * 0.5;
+  const opacity = isBackground ? 0.3 : 1 - scrollProgress * 1.5;
 
   return (
-    <div className="three-d-container" style={{ opacity: Math.max(0, opacity) }}>
+    <div className={`three-d-container ${isBackground ? 'as-bg' : ''}`} style={{ opacity: Math.max(0, opacity) }}>
       <div className="forensic-core-wrapper" style={{ transform: `scale(${scale})` }}>
         {/* ── Cyberpunk Procedural Core ── */}
         <div className="core-rings">
