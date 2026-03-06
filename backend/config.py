@@ -1,19 +1,50 @@
 import os
+from dotenv import load_dotenv
 
-# Base paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, 'data')
-MODEL_DIR = os.path.join(BASE_DIR, 'models')
+# Load .env file
+load_dotenv()
 
-# Model Paths
-SCAM_MODEL_PATH = os.path.join(MODEL_DIR, 'scam_model.pkl')
-SCAM_VECTORIZER_PATH = os.path.join(MODEL_DIR, 'scam_vectorizer.pkl')
+# ─────────────────────────────────────────
+# Server Config
+# ─────────────────────────────────────────
+PORT   = int(os.getenv("PORT", 5000))
+DEBUG  = os.getenv("DEBUG", "True") == "True"
 
-FAKE_NEWS_MODEL_PATH = os.path.join(MODEL_DIR, 'fake_news_model.pkl')
-FAKE_NEWS_VECTORIZER_PATH = os.path.join(MODEL_DIR, 'fake_news_vectorizer.pkl')
+# ─────────────────────────────────────────
+# Base Paths
+# ─────────────────────────────────────────
+BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, os.getenv("MODEL_PATH", "models/"))
+DATA_DIR  = os.path.join(BASE_DIR, os.getenv("DATA_PATH",  "data/"))
 
-BEHAVIOR_MODEL_PATH = os.path.join(MODEL_DIR, 'behavior_model.pkl')
+# ─────────────────────────────────────────
+# Individual Model Paths
+# ─────────────────────────────────────────
+SCAM_MODEL_PATH          = os.path.join(MODEL_DIR, "scam_model.pkl")
+SCAM_VECTORIZER_PATH     = os.path.join(MODEL_DIR, "scam_vectorizer.pkl")
 
-# Thresholds
-RISK_THRESHOLD_HIGH = 70
-RISK_THRESHOLD_MEDIUM = 40
+FAKE_NEWS_MODEL_PATH     = os.path.join(MODEL_DIR, "fake_news_model.pkl")
+FAKE_NEWS_VECTORIZER_PATH= os.path.join(MODEL_DIR, "fake_news_vectorizer.pkl")
+
+BEHAVIOR_MODEL_PATH      = os.path.join(MODEL_DIR, "behavior_model.pkl")
+
+# ─────────────────────────────────────────
+# Risk Thresholds
+# ─────────────────────────────────────────
+HIGH_RISK_THRESHOLD   = 70   # confidence >= 70 → HIGH
+MEDIUM_RISK_THRESHOLD = 40   # confidence >= 40 → MEDIUM
+                              # confidence <  40 → SAFE
+
+# ─────────────────────────────────────────
+# Risk Labels
+# ─────────────────────────────────────────
+RISK_HIGH   = "HIGH RISK"
+RISK_MEDIUM = "MEDIUM RISK"
+RISK_SAFE   = "SAFE"
+
+# ─────────────────────────────────────────
+# Risk Colors (sent to React frontend)
+# ─────────────────────────────────────────
+COLOR_HIGH   = "red"
+COLOR_MEDIUM = "yellow"
+COLOR_SAFE   = "green"
