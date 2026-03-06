@@ -175,6 +175,15 @@ export default function BehaviorMonitor() {
         />
       )}
 
+      {/* ── Neural Radar Animation ── */}
+      {(loading || result) && (
+        <NeuralRadar
+          loading={loading}
+          flaggedFields={result?.flagged_words || []}
+          isAnomalous={result?.label === "HIGH RISK" || result?.label === "ANOMALY"}
+        />
+      )}
+
       {loading && <Loader text="CORRELATING_DATA_POINTS..." />}
 
       {error && (

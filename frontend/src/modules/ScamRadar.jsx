@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { analyzeScam } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
 import GuardianAlert from "../components/GuardianAlert";
+import ConfidenceBar from "../components/ConfidenceBar";
 import Loader from "../components/Loader";
 import { loadGuardian, sendGuardianAlert } from "../hooks/useGuardian";
 import "../styles/modules.css";
@@ -121,6 +122,14 @@ export default function ScamRadar() {
       </div>
 
       {/* ── Loading ── */}
+      {/* ── Confidence Bar Animation ── */}
+      {(loading || result) && (
+        <ConfidenceBar
+          confidence={result?.confidence || 0}
+          color={result?.risk_color || "green"}
+        />
+      )}
+
       {loading && <Loader text="ISOLATING_THREAT_SIGNATURES..." />}
 
       {/* ── Error ── */}
