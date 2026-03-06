@@ -287,10 +287,10 @@
 
 /* ── Behavior Grid ── */
 .behavior-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 32px;
-    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
 }
 
 /* ── Error Box ── */

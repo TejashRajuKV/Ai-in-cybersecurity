@@ -43,7 +43,7 @@ export default function ResultPanel({ result }) {
 
       <div className="dossier-line">
         <div className="dossier-label">CONFIDENCE_LVR</div>
-        <div className="dossier-value mono">{(confidence * 100).toFixed(2)}%</div>
+        <div className="dossier-value mono">{confidence}%</div>
       </div>
 
       <div className="dossier-line">

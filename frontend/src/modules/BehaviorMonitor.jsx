@@ -98,11 +98,11 @@ export default function BehaviorMonitor() {
   };
 
   const fields = [
-    { key: "hour",          label: "LOGIN_HOUR",    min: 0,  max: 23,     step: 1   },
-    { key: "amount",        label: "TRANS_AMOUNT",  min: 0,  max: 999999, step: 100 },
-    { key: "transactions",  label: "DAILY_COUNT",   min: 0,  max: 100,    step: 1   },
-    { key: "new_device",    label: "HW_SIGNATURE",  min: 0,  max: 1,      step: 1   },
-    { key: "failed_logins", label: "AUTH_FAILURES", min: 0,  max: 20,     step: 1   },
+    { key: "hour",          label: "LOGIN_HOUR [0-23]",           min: 0,  max: 23,     step: 1   },
+    { key: "amount",        label: "TRANSACTION_AMOUNT [₹]",      min: 0,  max: 999999, step: 100 },
+    { key: "transactions",  label: "DAILY_TRANSACTION_COUNT",     min: 0,  max: 100,    step: 1   },
+    { key: "new_device",    label: "NEW_DEVICE [0=NO / 1=YES]",   min: 0,  max: 1,      step: 1   },
+    { key: "failed_logins", label: "FAILED_LOGIN_ATTEMPTS",       min: 0,  max: 20,     step: 1   },
   ];
 
   return (
