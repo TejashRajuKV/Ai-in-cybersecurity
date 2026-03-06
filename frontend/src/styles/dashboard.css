@@ -6,45 +6,62 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  height: 60px;
-  background: rgba(3, 8, 15, 0.9);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(12px);
+  z-index: 1000;
+  height: 70px;
+  background: rgba(3, 8, 15, 0.85);
+  border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+  backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
-  padding: 0 24px;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .navbar-brand {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 16px;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 800;
   color: var(--white);
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  text-decoration: none;
 }
 
-.navbar-brand span {
+.nav-links {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-links a {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
   color: var(--cyan);
 }
 
 .navbar-status {
-  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
+  gap: 10px;
   font-size: 11px;
-  color: var(--muted);
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: var(--green);
-  animation: pulse 1.5s ease infinite;
+  box-shadow: 0 0 10px var(--green);
 }
+
 
 .dashboard-root {
   background: var(--bg);

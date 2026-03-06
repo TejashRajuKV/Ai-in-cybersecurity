@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { animatePageLoad }  from "../animations/loadingAnimation";
 import ScamRadar        from "../modules/ScamRadar";
 import BehaviorMonitor  from "../modules/BehaviorMonitor";
@@ -19,31 +20,34 @@ const TABS = [
 ];
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("scam");
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(location.state?.tab || "scam");
 
   useEffect(() => {
+    if (location.state?.tab) {
+      setActiveTab(location.state.tab);
+    }
     animatePageLoad(".tab-btn");
-  }, []);
+  }, [location.state]);
 
   const activeComponent = TABS.find((t) => t.id === activeTab)?.component;
 
   return (
     <div className="dashboard-root">
-      {/* ── Immersive 3D Hero ── */}
-      <Forensic3DScene />
+      {/* ── Subtle Background ── */}
+      <Forensic3DScene isBackground={true} />
 
       <div className="dashboard">
         <div className="container">
 
-          {/* ── Header ── */}
-          <div className="dashboard-header">
-            <h1 className="dashboard-title">
-              🛡️ <span style={{ color: "var(--cyan)" }}>CyberRakshak</span> Dashboard
+          {/* ── Minimal Header ── */}
+          <div className="dashboard-header-mini">
+            <h1 className="mini-title">
+              <span className="cyan-text">FORENSIC</span> WORKSTATION
             </h1>
-            <div className="dashboard-subtitle">
-              // SELECT A MODULE TO BEGIN SCANNING
-            </div>
+            <div className="status-mono mono">// SYSTEM ACCESS GRANTED · MODULE SELECTION ACTIVE</div>
           </div>
+
 
           {/* ── Tabs ── */}
           <div className="tabs">
