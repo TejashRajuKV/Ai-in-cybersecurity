@@ -26,11 +26,11 @@ export default function Home() {
         
         <div className="container">
           <div className="technical-index mono fade-in">
-            INDEX-REF: CS-RAKSHAK-V1.0 // S-734
+            INDEX-REF: CYBER-RAKSHAK-V1.1 // S-734
           </div>
           
           <h1 className="hero-main-title technical-style fade-up">
-            <span className="case-title">PROJECT</span>
+            <span className="case-title">CYBER</span>
             <span className="case-name">RAKSHAK</span>
           </h1>
 
@@ -48,8 +48,8 @@ export default function Home() {
             <button className="btn-technical" onClick={() => navigate("/dashboard")}>
               <span className="bracket">[</span> OPEN CASE FILE <span className="bracket">]</span>
             </button>
-            <button className="btn-outline-technical" onClick={() => window.open('https://github.com/TejashRajuKV/Ai-in-cybersecurity', '_blank')}>
-              ENGINE DOCUMENTATION
+            <button className="btn-outline-technical" onClick={() => document.getElementById('modules').scrollIntoView({ behavior: 'smooth' })}>
+              VIEW_FORENSIC_SHIELDS
             </button>
           </div>
 

@@ -1,58 +1,105 @@
+/* ─────────────────────────────────────────
+   Home Page - Hackathon Premium Polish
+ ───────────────────────────────────────── */
+
+/* ── Root ── */
 .home-root {
     background: var(--bg);
     min-height: 100vh;
-    padding-top: 70px;
+    padding-top: 60px;
     position: relative;
     color: var(--text);
+    transition: background var(--transition);
 }
 
-/* ── Technical Decoration ── */
+/* ── Corner Decorations ── */
 .corner-decor {
     position: fixed;
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--border);
-    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    z-index: 999;
     pointer-events: none;
+    transition: border var(--transition);
 }
 
-.top-left {
-    top: 20px;
-    left: 20px;
-    border-right: none;
-    border-bottom: none;
+.corner-decor.top-left {
+    top: 52px;
+    left: 16px;
+    border-top: 2px solid var(--cyan);
+    border-left: 2px solid var(--cyan);
 }
 
-.top-right {
-    top: 20px;
-    right: 20px;
-    border-left: none;
-    border-bottom: none;
+.corner-decor.top-right {
+    top: 52px;
+    right: 16px;
+    border-top: 2px solid var(--cyan);
+    border-right: 2px solid var(--cyan);
 }
 
-.bottom-left {
-    bottom: 20px;
-    left: 20px;
-    border-right: none;
-    border-top: none;
+.corner-decor.bottom-left {
+    bottom: 16px;
+    left: 16px;
+    border-bottom: 2px solid var(--cyan);
+    border-left: 2px solid var(--cyan);
 }
 
-.bottom-right {
-    bottom: 20px;
-    right: 20px;
-    border-left: none;
-    border-top: none;
+.corner-decor.bottom-right {
+    bottom: 16px;
+    right: 16px;
+    border-bottom: 2px solid var(--cyan);
+    border-right: 2px solid var(--cyan);
 }
 
-/* ── Hero Dossier ── */
+/* ── Hero Section ── */
+.home-hero {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 0;
+}
+
+/* Radial glow in background */
+.home-hero::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(0, 242, 255, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.home-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* ── Technical Index ── */
 .technical-index {
     color: var(--cyan);
     font-size: 11px;
-    letter-spacing: 4px;
-    margin-bottom: 24px;
-    opacity: 0.6;
+    letter-spacing: 5px;
+    margin-bottom: 32px;
+    opacity: 0.7;
+    position: relative;
+    display: inline-block;
 }
 
+.technical-index::before,
+.technical-index::after {
+    content: '//';
+    margin: 0 12px;
+    opacity: 0.4;
+}
+
+/* ── Hero Title ── */
 .hero-main-title.technical-style {
     display: flex;
     flex-direction: column;
@@ -62,29 +109,35 @@
 }
 
 .case-title {
-    font-size: clamp(40px, 6vw, 80px);
+    font-size: clamp(28px, 5vw, 60px);
     font-weight: 300;
-    letter-spacing: 12px;
+    letter-spacing: 18px;
     color: var(--muted);
     text-transform: uppercase;
 }
 
 .case-name {
-    font-size: clamp(80px, 12vw, 160px);
-    font-weight: 900;
-    letter-spacing: -4px;
+    font-size: clamp(72px, 14vw, 180px);
+    font-weight: 950;
+    letter-spacing: -6px;
     color: var(--white);
-    line-height: 0.9;
+    line-height: 0.85;
+    /* Subtle text glow */
+    text-shadow: 0 0 80px rgba(0, 242, 255, 0.15);
+    transition: color var(--transition), text-shadow var(--transition);
 }
 
+/* ── Dossier Meta ── */
 .dossier-meta {
     font-size: 10px;
     color: var(--muted);
-    letter-spacing: 2px;
-    margin-bottom: 32px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 12px 0;
+    letter-spacing: 3px;
+    margin-bottom: 40px;
+    padding: 14px 32px;
+    display: inline-block;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transition: border var(--transition);
 }
 
 .red-text {
@@ -99,93 +152,146 @@
     color: var(--amber);
 }
 
+/* ── Hero Description ── */
 .hero-desc.dossier-desc {
-    max-width: 600px;
-    margin: 0 auto 60px;
+    max-width: 580px;
+    margin: 0 auto 56px;
     font-size: 16px;
-    line-height: 1.8;
+    line-height: 1.9;
     color: var(--text);
 }
 
-/* ── Buttons ── */
+/* ── Hero Actions ── */
+.hero-actions.dossier-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+}
+
 .btn-technical {
     background: var(--cyan);
     color: #000;
     font-weight: 900;
-    padding: 16px 40px;
-    border: none;
+    padding: 18px 48px;
+    border: 2px solid var(--cyan);
     cursor: pointer;
     font-family: var(--font-mono);
-    font-size: 14px;
-    transition: all 0.2s;
+    font-size: 13px;
+    letter-spacing: 3px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-technical::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+}
+
+.btn-technical:hover::after {
+    transform: translateX(100%);
 }
 
 .btn-technical .bracket {
-    opacity: 0.3;
-    padding: 0 8px;
+    opacity: 0.4;
+    padding: 0 6px;
 }
 
 .btn-technical:hover {
-    background: var(--white);
-    letter-spacing: 2px;
+    background: #fff;
+    border-color: #fff;
+    letter-spacing: 5px;
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.4);
 }
 
 .btn-outline-technical {
     background: transparent;
-    border: 1px solid var(--border);
-    color: var(--white);
-    padding: 16px 40px;
+    border: 2px solid var(--border);
+    color: var(--text);
+    padding: 18px 48px;
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: 3px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s;
 }
 
 .btn-outline-technical:hover {
-    background: rgba(0, 242, 255, 0.05);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(0, 242, 255, 0.04);
+    letter-spacing: 5px;
 }
 
-/* ── Technical Grid ── */
+/* ── Stats Grid ── */
 .technical-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     width: 100%;
-    max-width: 1000px;
-    margin-top: 80px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    max-width: 900px;
+    margin: 80px auto 0;
+    border: 1px solid var(--border);
+    transition: border var(--transition);
 }
 
 .technical-card {
     padding: 32px;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: background 0.2s;
 }
 
 .technical-card:last-child {
     border-right: none;
 }
 
+.technical-card:hover {
+    background: rgba(0, 242, 255, 0.03);
+}
+
 .stat-num.mono {
-    font-size: 40px;
-    font-weight: 800;
-    margin-bottom: 12px;
+    font-size: 38px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    font-family: var(--font-mono);
 }
 
 .stat-label {
     font-size: 9px;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     color: var(--muted);
+    font-family: var(--font-mono);
 }
 
 /* ── Technical Sections ── */
 .technical-section {
     padding: 120px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    border-top: 1px solid var(--border);
+    transition: border var(--transition);
 }
 
 .section-label-technical {
     color: var(--muted);
     font-size: 11px;
-    margin-bottom: 40px;
+    letter-spacing: 3px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.section-label-technical::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: var(--border);
 }
 
 .section-label-technical .idx {
@@ -193,19 +299,47 @@
 }
 
 .technical-h2 {
-    font-size: clamp(40px, 8vw, 80px);
-    font-weight: 900;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 950;
     letter-spacing: -2px;
-    margin-bottom: 60px;
+    margin-bottom: 72px;
     text-transform: uppercase;
+    line-height: 1;
 }
 
-/* ── Report Cards ── */
+/* ── Threat Report Cards ── */
+.grid-2-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
 .report-card {
     background: var(--card);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 40px;
+    border: 1px solid var(--border);
+    padding: 48px;
     position: relative;
+    transition: all 0.3s;
+    overflow: hidden;
+}
+
+.report-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--red);
+    transition: height 0.4s ease;
+}
+
+.report-card:hover::before {
+    height: 100%;
+}
+
+.report-card:hover {
+    border-color: rgba(255, 61, 0, 0.3);
 }
 
 .report-header {
@@ -214,63 +348,139 @@
     gap: 12px;
     font-size: 10px;
     color: var(--muted);
-    margin-bottom: 32px;
+    margin-bottom: 28px;
+    font-family: var(--font-mono);
+    letter-spacing: 2px;
 }
 
 .status-bit {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
+    animation: pulse 2s infinite;
 }
 
 .status-bit.red {
     background: var(--red);
-    box-shadow: 0 0 10px var(--red);
+    box-shadow: 0 0 12px var(--red);
 }
 
 .status-bit.amber {
     background: var(--amber);
-    box-shadow: 0 0 10px var(--amber);
+    box-shadow: 0 0 12px var(--amber);
+}
+
+.t-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--white);
+}
+
+.t-desc {
+    line-height: 1.8;
+    color: var(--text);
+    font-size: 14px;
 }
 
 .t-meta {
     margin-top: 32px;
     font-size: 10px;
     color: var(--muted);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border);
     padding-top: 16px;
+    font-family: var(--font-mono);
+    letter-spacing: 2px;
 }
 
-/* ── Dossier Cards ── */
+/* ── Module Shield Cards ── */
+.grid-3-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
 .dossier-card {
     background: var(--card);
     border: 1px solid var(--border);
-    padding: 32px;
+    padding: 36px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* scanner line effect on card hover */
+.dossier-card::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    transition: top 0s;
+    opacity: 0;
+}
+
+.dossier-card:hover::after {
+    animation: card-scan 0.6s ease forwards;
+    opacity: 1;
+}
+
+@keyframes card-scan {
+    0% {
+        top: -2px;
+    }
+
+    100% {
+        top: 100%;
+    }
 }
 
 .dossier-card:hover {
     background: var(--card2);
-    transform: translateY(-4px);
-    border-color: var(--cyan);
+    transform: translateY(-6px);
+    border-color: rgba(0, 242, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 242, 255, 0.05);
 }
 
 .card-top {
     font-size: 10px;
-    color: var(--muted);
-    margin-bottom: 24px;
+    color: var(--cyan);
+    margin-bottom: 20px;
+    font-family: var(--font-mono);
+    letter-spacing: 2px;
+    opacity: 0.7;
+}
+
+.m-title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: var(--white);
 }
 
 .m-tags {
     margin-top: 24px;
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .m-tag {
     font-size: 9px;
-    padding: 4px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 12px;
+    border: 1px solid var(--border);
     color: var(--muted);
+    font-family: var(--font-mono);
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.dossier-card:hover .m-tag {
+    border-color: rgba(0, 242, 255, 0.3);
+    color: var(--cyan);
 }

@@ -26,11 +26,13 @@ export default function Dashboard() {
   const [caseId, setCaseId] = useState("");
 
   useEffect(() => {
-    setCaseId(`CASE-${Math.floor(Math.random() * 100000).toString(16).toUpperCase()}`);
+    // Generate ID once on mount if not exists
+    const newId = `CASE-${Math.floor(Math.random() * 100000).toString(16).toUpperCase()}`;
+    setCaseId(newId);
     
     const initialLogs = [
       `[SYS] INITIALIZING FORENSIC ENVIRONMENT...`,
-      `[SYS] CASE_ID: ${caseId} LOADED`,
+      `[SYS] CASE_ID: ${newId} LOADED`,
       `[SEC] ENCRYPTION_LAYER: AES-256 ACTIVE`,
       `[NET] PROXY_STATUS: SECURE`,
       `[MSG] SELECT MODULE TO BEGIN ANALYSIS`
@@ -42,7 +44,7 @@ export default function Dashboard() {
       setSessionLogs(prev => [...prev, `[USER] AUTO-NAVIGATED TO ${location.state.tab.toUpperCase()}`]);
     }
     animatePageLoad(".tab-btn");
-  }, [location.state, caseId]);
+  }, [location.state]); // Removed caseId to prevent loop
 
   const activeComponent = TABS.find((t) => t.id === activeTab)?.component;
 
