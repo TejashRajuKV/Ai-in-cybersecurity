@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { scoreLoan } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
 import Loader from "../components/Loader";
@@ -6,16 +6,15 @@ import SecurityShield from "../components/SecurityShield";
 import "../styles/modules.css";
 
 const RULES = [
-  { key: "too_many_permissions", label: "App requests too many permissions (contacts, SMS, camera)", score: 30 },
-  { key: "no_rbi_registration",  label: "No RBI registration found for this lender",               score: 40 },
-  { key: "instant_approval",     label: "Claims instant approval with no documents required",       score: 20 },
-  { key: "high_interest_rate",   label: "Interest rate exceeds 36% APR",                           score: 25 },
-  { key: "not_on_playstore",     label: "App not found on official Google Play Store",              score: 15 },
-  { key: "requests_contacts",    label: "App requests access to your contacts list",                score: 20 },
-  { key: "requests_sms",         label: "App requests access to your SMS messages",                 score: 20 },
-  { key: "requests_location",    label: "App requests continuous location access",                  score: 10 },
-  { key: "no_physical_address",  label: "No physical office address provided",                      score: 15 },
-  { key: "pressure_tactics",     label: "Uses pressure tactics like limited time offers",           score: 25 },
+  { key: "too_many_permissions", label: "APP_REQUESTS_EXCESSIVE_PERMISSIONS", score: 30 },
+  { key: "no_rbi_registration",  label: "NO_RBI_REGISTRATION_DETECTED",      score: 40 },
+  { key: "instant_approval",     label: "CLAIMS_INSTANT_APPROVAL_SCAM",      score: 20 },
+  { key: "high_interest_rate",   label: "INTEREST_EXCEEDS_LEGAL_CAP",        score: 25 },
+  { key: "not_on_playstore",     label: "UNOFFICIAL_DISTRIBUTION_SOURCE",    score: 15 },
+  { key: "requests_contacts",    label: "DATA_HARVESTING: CONTACT_LIST",     score: 20 },
+  { key: "requests_sms",         label: "DATA_HARVESTING: SMS_MESSAGES",     score: 20 },
+  { key: "no_physical_address",  label: "ANONYMOUS_LENDER_ENTITY",           score: 15 },
+  { key: "pressure_tactics",     label: "PSYCHOLOGICAL_PRESSURE_TACTICS",   score: 25 },
 ];
 
 export default function LoanRiskScanner() {
@@ -23,6 +22,11 @@ export default function LoanRiskScanner() {
   const [result,   setResult]   = useState(null);
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState(null);
+  const [moduleId, setModuleId] = useState("");
+
+  useEffect(() => {
+    setModuleId(`UNIT-${Math.floor(Math.random() * 900 + 100)}-LR`);
+  }, []);
 
   const toggleRule = (key) => {
     setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -40,72 +44,63 @@ export default function LoanRiskScanner() {
       const data = await scoreLoan(appData);
       setResult(data);
     } catch (err) {
-      setError("Failed to connect to backend.");
+      setError("Audit failed. Regulatory dataset inaccessible.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleClear = () => {
-    setChecked({});
-    setResult(null);
-    setError(null);
-  };
-
-  // Count checked items
   const checkedCount = Object.values(checked).filter(Boolean).length;
 
   return (
-    <div>
-      <div className="module-title">⚠️ Loan Risk Scanner</div>
-      <div className="module-desc">
-        // Check all features that apply to the loan app you are evaluating
+    <div className="forensic-module">
+      {/* ── Technical Header ── */}
+      <div className="module-header-technical">
+        <div className="module-id-label mono">// {moduleId} // REGULATORY.AUDIT</div>
+        <h2 className="module-technical-title">LOAN RISK <span className="text-cyan">AUDITOR</span></h2>
+        <div className="module-desc mono">PREDATORY_LENDING_DETECTION_CORE_ACTIVE</div>
       </div>
 
       {/* ── Checklist ── */}
-      <div className="checklist">
+      <div className="checklist-technical">
         {RULES.map((rule) => (
           <div
             key={rule.key}
-            className={`checklist-item ${checked[rule.key] ? "checked" : ""}`}
+            className={`checklist-item-forensic ${checked[rule.key] ? "checked" : ""}`}
             onClick={() => toggleRule(rule.key)}
           >
-            <div className="checklist-checkbox">
-              {checked[rule.key] && "✓"}
-            </div>
-            <div className="checklist-text">{rule.label}</div>
-            <div className="checklist-score">+{rule.score}</div>
+            <div className="check-box mono">{checked[rule.key] ? "[X]" : "[ ]"}</div>
+            <div className="check-text mono">{rule.label}</div>
+            <div className="check-score mono">+{rule.score}</div>
           </div>
         ))}
       </div>
 
       {/* ── Selected Count ── */}
-      <div
-        className="mono muted"
-        style={{ marginBottom: "16px", fontSize: "11px" }}
-      >
-        {checkedCount} risk factor{checkedCount !== 1 ? "s" : ""} selected
+      <div className="module-id-label mono" style={{ margin: "24px 0" }}>
+        // {checkedCount} RISK_FACTORS_FLAGGED
       </div>
 
       {/* ── Buttons ── */}
       <div style={{ display: "flex", gap: "12px" }}>
         <button
-          className="btn btn-primary"
+          className="btn-forensic-scan"
           onClick={handleScore}
           disabled={loading}
           style={{ flex: 1 }}
         >
-          {loading ? "Scoring..." : "⚠️ Calculate Risk Score"}
+          {loading ? "AUDITING_COMPLIANCE..." : "[ INITIATE_SECURITY_AUDIT ]"}
         </button>
         <button
-          className="btn btn-outline"
-          onClick={handleClear}
+          className="btn-demo"
+          style={{ padding: "0 24px" }}
+          onClick={() => { setChecked({}); setResult(null); }}
         >
-          Clear
+          RESET
         </button>
       </div>
 
-      {/* ── Security Sentinel Visualization ── */}
+      {/* ── Visualizations ── */}
       {(loading || result) && (
         <SecurityShield 
             loading={loading} 
@@ -114,25 +109,10 @@ export default function LoanRiskScanner() {
         />
       )}
 
-      {/* ── Loading ── */}
-      {loading && <Loader text="PERFORMING SECURITY AUDIT..." />}
+      {loading && <Loader text="VALIDATING_RBI_COMPLIANCE_PARAMETERS..." />}
 
-      {/* ── Error ── */}
-      {error && (
-        <div style={{
-          marginTop:    "16px",
-          padding:      "16px",
-          background:   "rgba(255,45,85,0.1)",
-          border:       "1px solid rgba(255,45,85,0.3)",
-          borderRadius: "6px",
-          color:        "var(--red)",
-          fontSize:     "13px"
-        }}>
-          ⚠️ {error}
-        </div>
-      )}
+      {error && <div className="error-box mono">!! CRITICAL_ERROR: {error}</div>}
 
-      {/* ── Result ── */}
       {result && !loading && <ResultPanel result={result} />}
     </div>
   );

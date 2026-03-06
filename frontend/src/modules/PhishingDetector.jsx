@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { analyzePhishing } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
 import Loader from "../components/Loader";
@@ -10,6 +10,11 @@ export default function PhishingDetector() {
   const [result,  setResult]  = useState(null);
   const [loading, setLoading] = useState(false);
   const [error,   setError]   = useState(null);
+  const [moduleId, setModuleId] = useState("");
+
+  useEffect(() => {
+    setModuleId(`UNIT-${Math.floor(Math.random() * 900 + 100)}-PD`);
+  }, []);
 
   const handleAnalyze = async () => {
     if (!url.trim()) return;
@@ -21,7 +26,7 @@ export default function PhishingDetector() {
       const data = await analyzePhishing(url);
       setResult(data);
     } catch (err) {
-      setError("Failed to connect to backend.");
+      setError("Trace failed. Domain resolution timeout.");
     } finally {
       setLoading(false);
     }
@@ -29,66 +34,60 @@ export default function PhishingDetector() {
 
   const samples = [
     "http://secure-login-bank-india.com/update",
-    "https://www.google.com",
     "http://192.168.1.1/login.php",
+    "https://www.google.com",
   ];
 
   return (
-    <div>
-      <div className="module-title">🎣 Phishing Detector</div>
-      <div className="module-desc">
-        // Analyze suspicious links for typosquatting, hidden IPs, and malicious patterns
+    <div className="forensic-module">
+      {/* ── Technical Header ── */}
+      <div className="module-header-technical">
+        <div className="module-id-label mono">// {moduleId} // NETWORK.TRACE</div>
+        <h2 className="module-technical-title">PHISHING <span className="text-cyan">SCANNER</span></h2>
+        <div className="module-desc mono">URL_HEURISTIC_ENGINE_V2_ACTIVE</div>
       </div>
 
-      {/* ── Samples ── */}
-      <div style={{ marginBottom: "12px" }}>
-        <span className="mono muted" style={{ display: "block", marginBottom: "8px" }}>
-          // Test with sample URLs:
-        </span>
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-          {samples.map((s, i) => (
-            <button
-              key={i}
-              className="btn btn-outline"
-              style={{ fontSize: "11px", padding: "6px 12px" }}
-              onClick={() => setURL(s)}
-            >
-              Sample {i + 1}
-            </button>
-          ))}
+      {/* ── Demo Controls ── */}
+      <div className="demo-controls">
+        {samples.map((s, i) => (
+          <button key={i} className="btn-demo" onClick={() => setURL(s)}>LOAD_TARGET_0{i+1}</button>
+        ))}
+      </div>
+
+      {/* ── Technical Input ── */}
+      <div className="forensic-input-group">
+        <span className="forensic-label mono">// TARGET_URI_STRING</span>
+        <div className="input-bracket-wrap">
+          <input
+            type="text"
+            className="forensic-input"
+            placeholder="ENTER SUSPICIOUS URL FOR DECONSTRUCTION..."
+            value={url}
+            onChange={(e) => setURL(e.target.value)}
+          />
         </div>
-      </div>
-
-      {/* ── Input ── */}
-      <div className="input-wrap">
-        <input
-          type="text"
-          className="input"
-          placeholder="Paste URL here (e.g., http://login-verify.me)"
-          value={url}
-          onChange={(e) => setURL(e.target.value)}
-        />
       </div>
 
       {/* ── Buttons ── */}
       <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
         <button
-          className="btn btn-primary"
+          className="btn-forensic-scan"
           onClick={handleAnalyze}
           disabled={loading || !url.trim()}
           style={{ flex: 1 }}
         >
-          {loading ? "Tracing..." : "🎣 Analyze Link"}
+          {loading ? "TRACING_HOPS..." : "[ INITIATE_URL_DECONSTRUCTION ]"}
         </button>
         <button
-          className="btn btn-outline"
+          className="btn-demo"
+          style={{ padding: "0 24px" }}
           onClick={() => { setURL(""); setResult(null); }}
         >
-          Clear
+          RESET
         </button>
       </div>
 
-      {/* ── URL Trace Visualization ── */}
+      {/* ── Visualizations ── */}
       {(loading || result) && (
         <URLTrace 
           loading={loading} 
@@ -97,17 +96,10 @@ export default function PhishingDetector() {
         />
       )}
 
-      {/* ── Loading ── */}
-      {loading && <Loader text="DECONSTRUCTING URL..." />}
+      {loading && <Loader text="MAPPING_DOMAIN_SIGNATURES..." />}
 
-      {/* ── Error ── */}
-      {error && (
-        <div className="error-box">
-          ⚠️ {error}
-        </div>
-      )}
+      {error && <div className="error-box mono">!! CRITICAL_ERROR: {error}</div>}
 
-      {/* ── Result ── */}
       {result && !loading && <ResultPanel result={result} />}
     </div>
   );

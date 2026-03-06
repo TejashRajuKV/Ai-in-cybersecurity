@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
+import ResultPanel from "../components/ResultPanel";
 import "../styles/modules.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -12,10 +13,14 @@ export default function ThreatAnalyzer() {
   const [result,   setResult]   = useState(null);
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState(null);
+  const [moduleId, setModuleId] = useState("");
+
+  useEffect(() => {
+    setModuleId(`CORE-${Math.floor(Math.random() * 999 + 1)}-ANALYZER`);
+  }, []);
 
   const handleAnalyze = async () => {
     if (!message.trim() && !url.trim() && !app.trim()) return;
-
     setLoading(true);
     setResult(null);
     setError(null);
@@ -26,7 +31,7 @@ export default function ThreatAnalyzer() {
       });
       setResult(response.data);
     } catch (err) {
-      setError("Failed to connect to backend.");
+      setError("Multi-vector correlation failed. Core engine offline.");
     } finally {
       setLoading(false);
     }
@@ -37,268 +42,138 @@ export default function ThreatAnalyzer() {
     setResult(null); setError(null);
   };
 
-  // ── Color helpers ──
-  const getColor = (c) => ({
-    red: "var(--red)", yellow: "var(--yellow)", green: "var(--green)"
-  }[c] || "var(--muted)");
-
-  const getBg = (c) => ({
-    red:    "rgba(255,45,85,0.1)",
-    yellow: "rgba(255,208,0,0.1)",
-    green:  "rgba(0,255,157,0.1)"
-  }[c] || "transparent");
-
-  const getBorder = (c) => ({
-    red:    "rgba(255,45,85,0.3)",
-    yellow: "rgba(255,208,0,0.3)",
-    green:  "rgba(0,255,157,0.3)"
-  }[c] || "var(--border)");
-
   return (
-    <div>
-      <div className="module-title">🔎 Threat Analyzer</div>
-      <div className="module-desc">
-        // Paste message, URL, or app name — we scan everything at once
+    <div className="forensic-module">
+      {/* ── Technical Header ── */}
+      <div className="module-header-technical">
+        <div className="module-id-label mono">// {moduleId} // CENTRAL.HUB</div>
+        <h2 className="module-technical-title">THREAT <span className="text-cyan">ANALYZER</span></h2>
+        <div className="module-desc mono">UNIFIED_FORENSIC_FUSION_ENGINE_ACTIVE</div>
       </div>
 
-      {/* ── Inputs ── */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-
-        {/* Message */}
-        <div>
-          <label className="mono muted" style={{ display: "block", marginBottom: "6px" }}>
-            // SUSPICIOUS MESSAGE
-          </label>
-          <textarea
-            className="input"
-            rows={4}
-            placeholder="Paste suspicious message here...
-Example: Your KYC will be suspended. Send OTP immediately."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
+      {/* ── Technical Inputs ── */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        
+        <div className="forensic-input-group">
+          <span className="forensic-label mono">// VECTOR_01: COMMUNICATION_STREAM</span>
+          <div className="input-bracket-wrap">
+            <textarea
+              className="forensic-input"
+              rows={3}
+              placeholder="PASTE SUSPICIOUS MESSAGE CONTENT..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          </div>
         </div>
 
-        {/* URL */}
-        <div>
-          <label className="mono muted" style={{ display: "block", marginBottom: "6px" }}>
-            // SUSPICIOUS URL (optional)
-          </label>
-          <input
-            className="input"
-            type="text"
-            placeholder="https://suspicious-link.xyz/verify"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
+        <div className="forensic-input-group">
+          <span className="forensic-label mono">// VECTOR_02: NETWORK_ENDPOINTS</span>
+          <div className="input-bracket-wrap">
+            <input
+              className="forensic-input"
+              type="text"
+              placeholder="https://suspicious-uri.com/target"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+          </div>
         </div>
 
-        {/* App Name */}
-        <div>
-          <label className="mono muted" style={{ display: "block", marginBottom: "6px" }}>
-            // LOAN APP NAME (optional)
-          </label>
-          <input
-            className="input"
-            type="text"
-            placeholder="e.g. InstantCash, QuickLoan"
-            value={app}
-            onChange={(e) => setApp(e.target.value)}
-          />
+        <div className="forensic-input-group">
+          <span className="forensic-label mono">// VECTOR_03: APPLICATION_ENTITY</span>
+          <div className="input-bracket-wrap">
+            <input
+              className="forensic-input"
+              type="text"
+              placeholder="APP NAME (e.g. QuickCash, EasyLoan)"
+              value={app}
+              onChange={(e) => setApp(e.target.value)}
+            />
+          </div>
         </div>
 
       </div>
 
       {/* ── Buttons ── */}
-      <div style={{ display: "flex", gap: "12px", marginTop: "20px" }}>
+      <div style={{ display: "flex", gap: "12px", marginTop: "24px" }}>
         <button
-          className="btn btn-primary"
+          className="btn-forensic-scan"
           onClick={handleAnalyze}
           disabled={loading || (!message.trim() && !url.trim() && !app.trim())}
           style={{ flex: 1 }}
         >
-          {loading ? "Scanning..." : "🔎 Analyze Threats"}
+          {loading ? "CORRELATING_VECTORS..." : "[ START_MULTI_VECTOR_SCAN ]"}
         </button>
-        <button className="btn btn-outline" onClick={handleClear}>
-          Clear
+        <button className="btn-demo" style={{ padding: "0 24px" }} onClick={handleClear}>
+          RESET
         </button>
       </div>
 
-      {/* ── Loading ── */}
-      {loading && <Loader text="SCANNING ALL THREATS..." />}
+      {loading && <Loader text="EXECUTING_CROSS_MODULE_THREAT_FUSION..." />}
 
-      {/* ── Error ── */}
-      {error && (
-        <div style={{
-          marginTop: "16px", padding: "16px",
-          background: "rgba(255,45,85,0.1)",
-          border: "1px solid rgba(255,45,85,0.3)",
-          borderRadius: "6px", color: "var(--red)", fontSize: "13px"
-        }}>
-          ⚠️ {error}
-        </div>
-      )}
+      {error && <div className="error-box mono">!! CRITICAL_ERROR: {error}</div>}
 
       {/* ── Results ── */}
       {result && !loading && (
-        <div style={{ marginTop: "24px" }} className="fade-up">
+        <div style={{ marginTop: "40px" }} className="fade-up">
+          <div className="module-id-label mono" style={{ marginBottom: "16px" }}>// FUSION_REPORT_SUMMARY</div>
+          
+          <div className="result-dossier">
+             <div className="verdict-stamp-wrap">
+                <div className={`verdict-stamp ${result.overall_color === 'red' ? 'stamp-anomaly' : 'stamp-clear'}`}>
+                  {result.overall_color === 'red' ? "THREAT" : "SECURE"}
+                </div>
+              </div>
 
-          {/* ── Overall Risk ── */}
-          <div style={{
-            padding:      "20px 24px",
-            background:   getBg(result.overall_color),
-            border:       `1px solid ${getBorder(result.overall_color)}`,
-            borderRadius: "8px",
-            marginBottom: "16px",
-            display:      "flex",
-            alignItems:   "center",
-            justifyContent: "space-between",
-            flexWrap:     "wrap",
-            gap:          "12px"
-          }}>
-            <div>
-              <div style={{
-                fontFamily:    "var(--font-mono)",
-                fontSize:      "10px",
-                letterSpacing: "3px",
-                color:         "var(--muted)",
-                marginBottom:  "6px"
-              }}>
-                // OVERALL THREAT LEVEL
+              <div className="dossier-line">
+                <div className="dossier-label">OVERALL_RISK</div>
+                <div className="dossier-value" style={{ 
+                  color: result.overall_color === 'red' ? 'var(--red)' : result.overall_color === 'yellow' ? 'var(--amber)' : 'var(--green)',
+                  fontWeight: 900,
+                  fontSize: '24px'
+                }}>
+                  {result.overall_label.toUpperCase()}
+                </div>
               </div>
-              <div style={{
-                fontSize:   "24px",
-                fontWeight: "800",
-                color:      getColor(result.overall_color)
-              }}>
-                {result.overall_emoji} {result.overall_label}
+
+              <div className="dossier-line">
+                <div className="dossier-label">FUSION_CONFIDENCE</div>
+                <div className="dossier-value mono">{result.overall_confidence}%</div>
               </div>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <div style={{
-                fontSize:   "40px",
-                fontWeight: "800",
-                color:      getColor(result.overall_color)
-              }}>
-                {result.overall_confidence}%
+
+              <div className="dossier-line">
+                <div className="dossier-label">ACTIVE_THREATS</div>
+                <div className="dossier-value">{result.threat_count} POSITIVE_DETECTIONS</div>
               </div>
-              <div className="mono muted" style={{ fontSize: "10px" }}>
-                {result.threat_count} THREAT{result.threat_count !== 1 ? "S" : ""} DETECTED
-              </div>
-            </div>
           </div>
 
-          {/* ── Safe Message ── */}
-          {result.safe && (
-            <div style={{
-              padding:      "20px",
-              background:   "rgba(0,255,157,0.05)",
-              border:       "1px solid rgba(0,255,157,0.2)",
-              borderRadius: "8px",
-              textAlign:    "center",
-              color:        "var(--green)"
-            }}>
-              <div style={{ fontSize: "32px", marginBottom: "8px" }}>✅</div>
-              <div style={{ fontWeight: "700", fontSize: "16px" }}>
-                No threats detected
-              </div>
-              <div className="mono muted" style={{ fontSize: "11px", marginTop: "4px" }}>
-                Input appears safe
-              </div>
-            </div>
-          )}
-
-          {/* ── Individual Threats ── */}
-          {result.threats.length > 0 && (
-            <div>
-              <div className="mono muted" style={{
-                fontSize: "9px", letterSpacing: "4px", marginBottom: "12px"
-              }}>
-                // DETECTED THREATS
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {result.threats.map((threat, i) => (
-                  <div key={i} style={{
-                    padding:      "16px 20px",
-                    background:   getBg(threat.color),
-                    border:       `1px solid ${getBorder(threat.color)}`,
-                    borderRadius: "6px",
-                  }}>
-
-                    {/* Threat Header */}
-                    <div style={{
-                      display:        "flex",
-                      justifyContent: "space-between",
-                      alignItems:     "center",
-                      marginBottom:   "10px"
-                    }}>
-                      <div style={{
-                        display:    "flex",
-                        alignItems: "center",
-                        gap:        "8px",
-                        fontWeight: "700",
-                        color:      getColor(threat.color),
-                        fontSize:   "14px"
-                      }}>
-                        <span>{threat.icon}</span>
-                        <span>{threat.type}</span>
-                      </div>
-                      <div style={{
-                        fontFamily: "var(--font-mono)",
-                        fontWeight: "700",
-                        fontSize:   "14px",
-                        color:      getColor(threat.color)
-                      }}>
-                        {threat.confidence}%
-                      </div>
-                    </div>
-
-                    {/* Reason — Explainable AI */}
-                    <div style={{ marginBottom: "10px" }}>
-                      <div className="mono muted" style={{
-                        fontSize: "9px", letterSpacing: "3px", marginBottom: "6px"
-                      }}>
-                        // WHY IS THIS RISKY?
-                      </div>
-                      {threat.reason.split(" + ").map((r, j) => (
-                        <div key={j} style={{
-                          display:      "flex",
-                          alignItems:   "center",
-                          gap:          "8px",
-                          padding:      "5px 0",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                          fontSize:     "13px",
-                          color:        "var(--text)"
-                        }}>
-                          <span style={{ color: getColor(threat.color) }}>▶</span>
-                          <span>{r}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Flagged Keywords */}
-                    {threat.keywords && threat.keywords.length > 0 && (
-                      <div>
-                        <div className="mono muted" style={{
-                          fontSize: "9px", letterSpacing: "3px", marginBottom: "6px"
-                        }}>
-                          // FLAGGED KEYWORDS
-                        </div>
-                        <div className="flagged-words">
-                          {threat.keywords.map((kw, k) => (
-                            <span key={k} className="flagged-word">{kw}</span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
+          {/* Individual Threat Details */}
+          {result.threats.map((threat, i) => (
+            <div key={i} className="result-dossier" style={{ marginTop: '20px', borderLeft: `4px solid ${threat.color === 'red' ? 'var(--red)' : 'var(--amber)'}` }}>
+               <div className="dossier-line">
+                  <div className="dossier-label">THREAT_TYPE</div>
+                  <div className="dossier-value mono" style={{ color: threat.color === 'red' ? 'var(--red)' : 'var(--amber)' }}>
+                    {threat.icon} {threat.type.toUpperCase()}
                   </div>
-                ))}
-              </div>
+                </div>
+                <div className="dossier-line">
+                  <div className="dossier-label">REASONING</div>
+                  <div className="dossier-value">
+                    {threat.reason.split(" + ").map((r, j) => (
+                      <div key={j} className="mono" style={{ fontSize: '12px' }}>» {r}</div>
+                    ))}
+                  </div>
+                </div>
             </div>
-          )}
+          ))}
 
+          {result.safe && (
+             <div className="result-dossier" style={{ marginTop: '20px', textAlign: 'center' }}>
+                <div className="text-green mono" style={{ fontSize: '20px', fontWeight: 900 }}>[ NO_THREATS_DETECTED ]</div>
+                <div className="mono muted" style={{ marginTop: '8px' }}>SYSTEM_INTEL_CLEARED</div>
+             </div>
+          )}
         </div>
       )}
     </div>

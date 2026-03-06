@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { analyzeScam } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
 import Loader from "../components/Loader";
@@ -9,10 +9,14 @@ export default function ScamRadar() {
   const [result,   setResult]   = useState(null);
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState(null);
+  const [moduleId, setModuleId] = useState("");
+
+  useEffect(() => {
+    setModuleId(`UNIT-${Math.floor(Math.random() * 900 + 100)}-SR`);
+  }, []);
 
   const handleAnalyze = async () => {
     if (!message.trim()) return;
-
     setLoading(true);
     setResult(null);
     setError(null);
@@ -21,19 +25,12 @@ export default function ScamRadar() {
       const data = await analyzeScam(message);
       setResult(data);
     } catch (err) {
-      setError("Failed to connect to backend. Make sure server is running.");
+      setError("Pattern analysis failed. Metadata signature missing.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleClear = () => {
-    setMessage("");
-    setResult(null);
-    setError(null);
-  };
-
-  // Sample scam messages for demo
   const samples = [
     "Your KYC will be suspended. Update immediately to avoid account freeze.",
     "UPI collect request pending. Approve now or your account will be blocked.",
@@ -41,84 +38,58 @@ export default function ScamRadar() {
   ];
 
   return (
-    <div>
-      <div className="module-title">🎯 Scam Radar</div>
-      <div className="module-desc">
-        // Paste a suspicious message to detect scam patterns
+    <div className="forensic-module">
+      {/* ── Technical Header ── */}
+      <div className="module-header-technical">
+        <div className="module-id-label mono">// {moduleId} // PATTERN.PROBE</div>
+        <h2 className="module-technical-title">SCAM <span className="text-cyan">RADAR</span></h2>
+        <div className="module-desc mono">SOCIAL_ENGINEERING_SCANNER_V4_ACTIVE</div>
       </div>
 
-      {/* ── Sample Buttons ── */}
-      <div style={{ marginBottom: "12px" }}>
-        <span
-          className="mono muted"
-          style={{ display: "block", marginBottom: "8px" }}
-        >
-          // Quick demo samples:
-        </span>
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-          {samples.map((s, i) => (
-            <button
-              key={i}
-              className="btn btn-outline"
-              style={{ fontSize: "11px", padding: "6px 12px" }}
-              onClick={() => setMessage(s)}
-            >
-              Sample {i + 1}
-            </button>
-          ))}
+      {/* ── Demo Controls ── */}
+      <div className="demo-controls">
+        {samples.map((s, i) => (
+          <button key={i} className="btn-demo" onClick={() => setMessage(s)}>LOAD_SIGNATURE_0{i+1}</button>
+        ))}
+      </div>
+
+      {/* ── Technical Input ── */}
+      <div className="forensic-input-group">
+        <span className="forensic-label mono">// SUSPICIOUS_MESSAGE_BODY</span>
+        <div className="input-bracket-wrap">
+          <textarea
+            className="forensic-input"
+            rows={5}
+            placeholder="PASTE SMS, WHATSAPP, OR EMAIL CONTENT FOR PATTERN SCANNING..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
         </div>
-      </div>
-
-      {/* ── Input ── */}
-      <div className="input-wrap">
-        {loading && <div className="scanline" />}
-        <textarea
-          className="input"
-          placeholder="Paste suspicious message here...
-Example: Your KYC will be suspended. Send OTP immediately."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          rows={5}
-        />
       </div>
 
       {/* ── Buttons ── */}
       <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
         <button
-          className="btn btn-primary"
+          className="btn-forensic-scan"
           onClick={handleAnalyze}
           disabled={loading || !message.trim()}
           style={{ flex: 1 }}
         >
-          {loading ? "Analyzing..." : "🔍 Analyze Message"}
+          {loading ? "ANALYZING_PATTERNS..." : "[ LAUNCH_SCAM_PROBE ]"}
         </button>
         <button
-          className="btn btn-outline"
-          onClick={handleClear}
+          className="btn-demo"
+          style={{ padding: "0 24px" }}
+          onClick={() => { setMessage(""); setResult(null); }}
         >
-          Clear
+          CLEAR
         </button>
       </div>
 
-      {/* ── Loading ── */}
-      {loading && <Loader text="SCANNING MESSAGE..." />}
+      {loading && <Loader text="ISOLATING_THREAT_SIGNATURES..." />}
 
-      {/* ── Error ── */}
-      {error && (
-        <div style={{
-          marginTop:   "16px",
-          padding:     "16px",
-          background:  "rgba(255,45,85,0.1)",
-          border:      "1px solid rgba(255,45,85,0.3)",
-          borderRadius: "6px",
-          color:       "var(--red)",
-          fontSize:    "13px"
-        }}>
-          ⚠️ {error}
-        </div>
-      )}
+      {error && <div className="error-box mono">!! CRITICAL_ERROR: {error}</div>}
 
-      {/* ── Result ── */}
       {result && !loading && (
         <ResultPanel result={result} />
       )}
