@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.response_formatter import format_response, format_error
 
+
 # ─────────────────────────────────────────
 # Risk Reasons based on behavior
 # ─────────────────────────────────────────
@@ -13,14 +14,27 @@ def build_behavior_reason(data: dict) -> tuple:
     Analyze transaction data and build reason string.
     Returns (reason, flagged_fields)
     """
-    reasons       = []
+    reasons = []
     flagged_fields = []
 
-    hour         = data.get("hour", 12)
-    amount       = data.get("amount", 0)
+    hour = data.get("hour", 12)
+    amount = data.get("amount", 0)
     transactions = data.get("transactions", 1)
-    new_device   = data.get("new_device", 0)
+    new_device = data.get("new_device", 0)
     failed_logins = data.get("failed_logins", 0)
+
+    # Input safety
+    if hour < 0 or hour > 23:
+        hour = 12
+
+    if amount < 0:
+        amount = 0
+
+    if transactions < 0:
+        transactions = 0
+
+    if failed_logins < 0:
+        failed_logins = 0
 
     if hour >= 0 and hour <= 5:
         reasons.append("Unusual midnight activity detected")
@@ -61,33 +75,42 @@ def check_behavior(data: dict, models: dict) -> dict:
     """
     Main behavior anomaly detection function.
     Called by behavior_routes.py
-
-    Args:
-        data   : dict with keys:
-                 hour, amount, transactions,
-                 new_device, failed_logins
-        models : loaded models dict from model_loader
-
-    Returns:
-        Standard JSON response dict
     """
+
     try:
+
         # ── Get model ──
         behavior_bundle = models.get("behavior_model")
 
         if behavior_bundle is None:
             return format_error("behavior_monitor", "Behavior model not loaded")
 
-        model    = behavior_bundle["model"]
-        scaler   = behavior_bundle["scaler"]
+        model = behavior_bundle["model"]
+        scaler = behavior_bundle["scaler"]
         features = behavior_bundle["features"]
 
         # ── Build feature array ──
-        hour          = data.get("hour", 12)
-        amount        = data.get("amount", 0)
-        transactions  = data.get("transactions", 1)
-        new_device    = data.get("new_device", 0)
+        hour = data.get("hour", 12)
+        amount = data.get("amount", 0)
+        transactions = data.get("transactions", 1)
+        new_device = data.get("new_device", 0)
         failed_logins = data.get("failed_logins", 0)
+
+        # Safety checks
+        if hour < 0 or hour > 23:
+            hour = 12
+
+        if amount < 0:
+            amount = 0
+
+        if transactions < 0:
+            transactions = 0
+
+        if failed_logins < 0:
+            failed_logins = 0
+
+        # Clamp extreme values
+        amount = min(amount, 10000000)
 
         X = np.array([[hour, amount, transactions, new_device, failed_logins]])
 
@@ -96,15 +119,12 @@ def check_behavior(data: dict, models: dict) -> dict:
 
         # ── Predict ──
         prediction = model.predict(X_scaled)[0]   # -1 = anomaly, 1 = normal
-        score      = model.decision_function(X_scaled)[0]
+        score = model.decision_function(X_scaled)[0]
 
         # ── Convert score to confidence ──
-        # More negative score = more anomalous
-        # Normalize to 0-100
         confidence = int(min(100, max(0, (abs(score) * 50))))
 
         if prediction == 1:
-            # Normal — confidence is how safe it is
             confidence = int(min(100, max(0, (score * 30) + 30)))
             confidence = max(10, 100 - confidence)
 
@@ -130,10 +150,10 @@ def check_behavior(data: dict, models: dict) -> dict:
             confidence = min(confidence, 25)
 
         return format_response(
-            module        = "behavior_monitor",
-            confidence    = confidence,
-            reason        = reason,
-            flagged_words = flagged_fields
+            module="behavior_monitor",
+            confidence=confidence,
+            reason=reason,
+            flagged_words=flagged_fields
         )
 
     except Exception as e:
