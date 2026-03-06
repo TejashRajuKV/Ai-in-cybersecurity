@@ -42,13 +42,17 @@ export default function Navbar({ theme, toggleTheme }) {
         </div>
 
         <div className="navbar-status-indicator mono">
-          {/* ── Theme Toggle ── */}
-          <div className="theme-toggle-wrap" onClick={toggleTheme} style={{ cursor: 'pointer', marginRight: '20px' }}>
-            <span className="label">THEME_MODE:</span>
-            <span className="status-text text-cyan" style={{ marginLeft: '4px' }}>
-              [{theme.toUpperCase()}]
-            </span>
+          {/* ── Visual Theme Toggle ── */}
+          <div className="theme-toggle-container" onClick={toggleTheme}>
+            <div className={`theme-switch-forensic ${theme}`}>
+                <div className="switch-dial">
+                    {theme === 'dark' ? '☾' : '☼'}
+                </div>
+            </div>
+            <span className="label" style={{ marginLeft: '8px' }}>// MODE: {theme.toUpperCase()}</span>
           </div>
+
+          <div style={{ width: '20px' }} /> {/* Spacer */}
 
           <span className="label">BACKEND:</span>
           <span className={`status-text ${online ? 'text-green' : 'text-red'}`}>
