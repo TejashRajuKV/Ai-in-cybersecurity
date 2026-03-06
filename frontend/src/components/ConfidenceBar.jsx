@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { animateCounter, animateProgressBar } from "../animations/counterAnimation";
+import { animateDecrypt, animateProgressBar } from "../animations/counterAnimation";
 import { getRiskColor } from "../utils/riskHelpers";
 import "../styles/modules.css";
 
@@ -13,8 +13,8 @@ export default function ConfidenceBar({ confidence, color }) {
       animateProgressBar(fillRef.current, confidence);
     }
     if (counterRef.current) {
-      // Animate counter
-      animateCounter(`#confidence-counter`, confidence);
+      // Animate decrypting counter
+      animateDecrypt(`#confidence-counter`, confidence);
     }
   }, [confidence]);
 

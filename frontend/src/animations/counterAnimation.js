@@ -52,3 +52,28 @@ export const animateScore = (selector, from, to) => {
         },
     });
 };
+// ─────────────────────────────────────────
+// Decrypting / Shuffling Animation
+// ─────────────────────────────────────────
+export const animateDecrypt = (selector, targetValue) => {
+    const el = document.querySelector(selector);
+    if (!el) return;
+
+    const symbols = "01$#!?%&@#*";
+    let iterations = 0;
+    const maxIterations = 15;
+
+    const interval = setInterval(() => {
+        el.textContent = Array(3)
+            .fill(0)
+            .map(() => symbols[Math.floor(Math.random() * symbols.length)])
+            .join("") + "%";
+
+        iterations++;
+        if (iterations >= maxIterations) {
+            clearInterval(interval);
+            // After shuffling, trigger the standard count up
+            animateCounter(selector, targetValue);
+        }
+    }, 40);
+};

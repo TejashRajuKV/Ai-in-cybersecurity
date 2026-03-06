@@ -70,14 +70,17 @@ export default function ScamRadar() {
       </div>
 
       {/* ── Input ── */}
-      <textarea
-        className="input"
-        placeholder="Paste suspicious message here...
+      <div className="input-wrap">
+        {loading && <div className="scanline" />}
+        <textarea
+          className="input"
+          placeholder="Paste suspicious message here...
 Example: Your KYC will be suspended. Send OTP immediately."
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        rows={5}
-      />
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          rows={5}
+        />
+      </div>
 
       {/* ── Buttons ── */}
       <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
