@@ -7,9 +7,9 @@ export default function TruthGauge({ confidence, loading }) {
 
   useEffect(() => {
     if (!loading && needleRef.current) {
-        // Map 0-100 confidence to -90 to 90 degrees
-        // Low confidence = Left (Red), High confidence = Right (Green)
-        const rotation = (confidence * 1.8) - 90;
+        // Invert: High confidence (Risk) = Left (Fake/Red)
+        // 0 Risk -> 90deg (Right), 100 Risk -> -90deg (Left)
+        const rotation = 90 - (confidence * 1.8);
         animateGaugeNeedle(needleRef.current, rotation);
     }
   }, [confidence, loading]);
@@ -49,7 +49,7 @@ export default function TruthGauge({ confidence, loading }) {
           <text x="165" y="115" className="gauge-marker">TRUE</text>
 
           {/* Needle */}
-          <g ref={needleRef} className="needle-group">
+          <g ref={needleRef} className="needle-group" style={{ transform: "rotate(90deg)" }}>
             <line 
                 x1="100" y1="100" x2="100" y2="40" 
                 stroke="var(--white)" 
@@ -61,7 +61,7 @@ export default function TruthGauge({ confidence, loading }) {
         </svg>
       </div>
       <div className="gauge-label">
-        TRUTH PROBABILITY: <span className="mono">{loading ? "CALCULATING..." : `${confidence}%`}</span>
+        TRUTH PROBABILITY: <span className="mono">{loading ? "CALCULATING..." : `${100 - confidence}%`}</span>
       </div>
     </div>
   );
