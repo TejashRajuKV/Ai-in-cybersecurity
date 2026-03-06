@@ -2,6 +2,8 @@ import { useState } from "react";
 import { analyzeNews } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
 import Loader from "../components/Loader";
+import TruthGauge from "../components/TruthGauge";
+import VerdictStamp from "../components/VerdictStamp";
 import "../styles/modules.css";
 
 export default function FakeNewsChecker() {
@@ -86,8 +88,16 @@ Example: Government gives free Rs 10000 to all citizens."
         </button>
       </div>
 
+      {/* ── Truth Gauge Visualization ── */}
+      {(loading || result) && (
+        <TruthGauge 
+          confidence={result?.confidence || 50} 
+          loading={loading} 
+        />
+      )}
+
       {/* ── Loading ── */}
-      {loading && <Loader text="VERIFYING NEWS..." />}
+      {loading && <Loader text="AUTHENTICATING SOURCES..." />}
 
       {/* ── Error ── */}
       {error && (
@@ -104,8 +114,13 @@ Example: Government gives free Rs 10000 to all citizens."
         </div>
       )}
 
-      {/* ── Result ── */}
-      {result && !loading && <ResultPanel result={result} />}
+      {/* ── Result with Verdict Stamp ── */}
+      {result && !loading && (
+        <div style={{ position: "relative" }}>
+          <VerdictStamp label={result.label} />
+          <ResultPanel result={result} />
+        </div>
+      )}
     </div>
   );
 }

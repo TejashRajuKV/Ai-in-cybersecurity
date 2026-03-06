@@ -381,3 +381,87 @@
     color: var(--red);
     font-weight: 700;
 }
+
+/* ─────────────────────────────────────────
+   Forensic Verification: Truth Gauge
+───────────────────────────────────────── */
+.gauge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.gauge-svg-container {
+    width: 100%;
+    max-width: 300px;
+}
+
+.gauge-marker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    fill: var(--muted);
+    letter-spacing: 1px;
+}
+
+.needle-group {
+    transform-origin: 100px 100px;
+    transition: transform 0s;
+}
+
+.gauge-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: -10px;
+    letter-spacing: 2px;
+}
+
+/* ─────────────────────────────────────────
+   Forensic Verification: Verdict Stamp
+───────────────────────────────────────── */
+.stamp-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.verdict-stamp {
+    padding: 10px 20px;
+    border: 4px solid;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    transform: rotate(-10deg);
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.stamp-verified {
+    color: var(--green);
+    border-color: var(--green);
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+}
+
+.stamp-debunked {
+    color: var(--red);
+    border-color: var(--red);
+    box-shadow: 0 0 20px rgba(255, 45, 85, 0.4);
+}
+
+.stamp-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.stamp-glitch-layer {
+    position: absolute;
+    inset: -5px;
+    background: inherit;
+    opacity: 0.3;
+    z-index: 1;
+}
