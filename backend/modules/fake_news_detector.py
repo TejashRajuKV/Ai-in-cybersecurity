@@ -21,7 +21,34 @@ FAKE_KEYWORDS = [
     "all citizens", "claim your", "apply now"
 ]
 
+# ─────────────────────────────────────────
+# WhatsApp Forward Patterns
+# ─────────────────────────────────────────
+FORWARD_PATTERNS = [
+    "forwarded many times",
+    "forward this to",
+    "share this with",
+    "send this to",
+    "forward to 10",
+    "forward to all",
+    "must share",
+    "please forward",
+    "share immediately",
+    "forward karo",
+    "sabko bhejo",
+    "viral hai",
+    "sabse share karo",
+    "abhi forward karo",
+    "dont ignore",
+    "very important forward",
+    "please dont ignore",
+    "share before deleted",
+]
 
+
+# ─────────────────────────────────────────
+# Extract Fake Flags
+# ─────────────────────────────────────────
 def extract_fake_flags(text: str) -> list:
     """Find fake news pattern keywords in text."""
     if not text:
@@ -30,12 +57,42 @@ def extract_fake_flags(text: str) -> list:
     return [kw for kw in FAKE_KEYWORDS if kw in text_lower]
 
 
+# ─────────────────────────────────────────
+# Detect WhatsApp Forward Pattern
+# ─────────────────────────────────────────
+def detect_forward_pattern(text: str) -> dict:
+    """
+    Detect if message has WhatsApp forward patterns.
+    Returns forward info dict.
+    """
+    if not text:
+        return {
+            "is_forwarded":       False,
+            "forward_indicators": [],
+            "viral_risk":         "LOW"
+        }
+
+    text_lower = text.lower()
+    found      = [p for p in FORWARD_PATTERNS if p in text_lower]
+
+    return {
+        "is_forwarded":       len(found) > 0,
+        "forward_indicators": found,
+        "viral_risk":         "HIGH"   if len(found) >= 2
+                         else "MEDIUM" if len(found) == 1
+                         else "LOW"
+    }
+
+
+# ─────────────────────────────────────────
+# Build News Reason
+# ─────────────────────────────────────────
 def build_news_reason(features: dict, fake_flags: list, prediction: int) -> str:
     """Build reason string for fake news result."""
     reasons = []
 
     if fake_flags:
-        reasons.append(f"Fake news patterns detected: {', '.join(fake_flags[:3])}")
+        reasons.append(f"Fake news patterns: {', '.join(fake_flags[:3])}")
     if features.get("has_urgent"):
         reasons.append("Urgency language detected")
     if features.get("has_reward"):
@@ -43,7 +100,7 @@ def build_news_reason(features: dict, fake_flags: list, prediction: int) -> str:
     if features.get("has_link"):
         reasons.append("Suspicious link present")
 
-    # ── Fix: if model says FAKE but no keyword reason found ──
+    # If model says FAKE but no keyword reason found
     if not reasons and prediction == 1:
         return "ML model detected fake news linguistic patterns"
 
@@ -91,11 +148,16 @@ def check_news(text: str, models: dict) -> dict:
         confidence = int(min(100, max(0, raw_conf * 20)))
 
         # ── Extract explanation ──
-        fake_flags = extract_fake_flags(text)
-        features   = extract_features(text)
+        fake_flags   = extract_fake_flags(text)
+        features     = extract_features(text)
+        forward_info = detect_forward_pattern(text)
 
-        # ── Build reason with fix ──
+        # ── Build reason ──
         reason = build_news_reason(features, fake_flags, prediction)
+
+        # ── Add forward pattern to reason ──
+        if forward_info["is_forwarded"]:
+            reason += " + Viral WhatsApp forward pattern detected"
 
         # ── Boost confidence if fake keywords found ──
         if prediction == 1 and len(fake_flags) > 0:
@@ -103,18 +165,28 @@ def check_news(text: str, models: dict) -> dict:
         elif prediction == 0 and len(fake_flags) == 0:
             confidence = min(confidence, 30)
 
+        # ── Boost if viral forward detected ──
+        if forward_info["is_forwarded"] and prediction == 1:
+            confidence = min(100, confidence + 10)
+
         # ── Override confidence based on prediction ──
         if prediction == 0:
             confidence = min(confidence, 35)   # REAL → SAFE range
         else:
             confidence = max(confidence, 70)   # FAKE → HIGH RISK range
 
-        return format_response(
+        # ── Build result ──
+        result = format_response(
             module        = "fake_news",
             confidence    = confidence,
             reason        = reason,
             flagged_words = fake_flags
         )
+
+        # ── Add forward detection info ──
+        result["forward_detection"] = forward_info
+
+        return result
 
     except Exception as e:
         return format_error("fake_news", str(e))

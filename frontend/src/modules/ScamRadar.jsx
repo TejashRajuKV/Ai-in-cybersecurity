@@ -7,11 +7,11 @@ import { loadGuardian, sendGuardianAlert } from "../hooks/useGuardian";
 import "../styles/modules.css";
 
 export default function ScamRadar() {
-  const [message,  setMessage]  = useState("");
-  const [result,   setResult]   = useState(null);
-  const [loading,  setLoading]  = useState(false);
-  const [error,    setError]    = useState(null);
-  const [moduleId, setModuleId] = useState("");
+  const [message,      setMessage]      = useState("");
+  const [result,       setResult]       = useState(null);
+  const [loading,      setLoading]      = useState(false);
+  const [error,        setError]        = useState(null);
+  const [moduleId,     setModuleId]     = useState("");
   const [guardianAlert, setGuardianAlert] = useState(null);
 
   useEffect(() => {
@@ -28,21 +28,20 @@ export default function ScamRadar() {
       const data = await analyzeScam(message);
       setResult(data);
 
-      // ── Guardian Alert on critical risk ──────────────────
+      // ── Guardian Alert on critical risk ──
       const risk = data?.confidence ?? data?.risk_score ?? 0;
       if (risk >= 90) {
         const guardian = loadGuardian();
         if (guardian) {
           const alertResult = await sendGuardianAlert({
             guardian,
-            module:        "SCAM_RADAR",
-            riskScore:     risk,
+            module:         "SCAM_RADAR",
+            riskScore:      risk,
             suspectMessage: message,
           });
           if (alertResult.success) setGuardianAlert(alertResult.payload);
         }
       }
-      // ─────────────────────────────────────────────────────
 
     } catch (err) {
       setError("Pattern analysis failed. Metadata signature missing.");
@@ -59,20 +58,32 @@ export default function ScamRadar() {
 
   return (
     <div className="forensic-module">
+
       {/* ── Guardian Alert Modal ── */}
-      <GuardianAlert alert={guardianAlert} onDismiss={() => setGuardianAlert(null)} />
+      <GuardianAlert
+        alert={guardianAlert}
+        onDismiss={() => setGuardianAlert(null)}
+      />
 
       {/* ── Technical Header ── */}
       <div className="module-header-technical">
         <div className="module-id-label mono">// {moduleId} // PATTERN.PROBE</div>
-        <h2 className="module-technical-title">SCAM <span className="text-cyan">RADAR</span></h2>
+        <h2 className="module-technical-title">
+          SCAM <span className="text-cyan">RADAR</span>
+        </h2>
         <div className="module-desc mono">SOCIAL_ENGINEERING_SCANNER_V4_ACTIVE</div>
       </div>
 
       {/* ── Demo Controls ── */}
       <div className="demo-controls">
         {samples.map((s, i) => (
-          <button key={i} className="btn-demo" onClick={() => setMessage(s)}>LOAD_SIGNATURE_0{i+1}</button>
+          <button
+            key={i}
+            className="btn-demo"
+            onClick={() => setMessage(s)}
+          >
+            LOAD_SIGNATURE_0{i + 1}
+          </button>
         ))}
       </div>
 
@@ -103,19 +114,62 @@ export default function ScamRadar() {
         <button
           className="btn-demo"
           style={{ padding: "0 24px" }}
-          onClick={() => { setMessage(""); setResult(null); }}
+          onClick={() => { setMessage(""); setResult(null); setError(null); }}
         >
           CLEAR
         </button>
       </div>
 
+      {/* ── Loading ── */}
       {loading && <Loader text="ISOLATING_THREAT_SIGNATURES..." />}
 
-      {error && <div className="error-box mono">!! CRITICAL_ERROR: {error}</div>}
-
-      {result && !loading && (
-        <ResultPanel result={result} />
+      {/* ── Error ── */}
+      {error && (
+        <div className="error-box mono">
+          !! CRITICAL_ERROR: {error}
+        </div>
       )}
+
+      {/* ── Result ── */}
+      {result && !loading && (
+        <>
+          {/* Main result panel */}
+          <ResultPanel result={result} />
+
+          {/* ── Scam Category Badge ── */}
+          {result.scam_category && (
+            <div style={{
+              marginTop:    "12px",
+              padding:      "12px 16px",
+              background:   "var(--surface)",
+              border:       `1px solid ${result.scam_category_color || "#FF2D55"}40`,
+              borderRadius: "6px",
+              display:      "flex",
+              alignItems:   "center",
+              gap:          "10px"
+            }}>
+              <span style={{
+                fontFamily:    "var(--font-mono)",
+                fontSize:      "9px",
+                letterSpacing: "3px",
+                color:         "var(--muted)"
+              }}>
+                // SCAM TYPE DETECTED
+              </span>
+              <span style={{
+                fontFamily:    "var(--font-mono)",
+                fontSize:      "13px",
+                fontWeight:    "700",
+                color:         result.scam_category_color || "#FF2D55",
+                marginLeft:    "auto"
+              }}>
+                ⚠ {result.scam_category}
+              </span>
+            </div>
+          )}
+        </>
+      )}
+
     </div>
   );
 }
