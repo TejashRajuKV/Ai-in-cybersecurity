@@ -15,15 +15,15 @@ export default function TruthGauge({ confidence, loading }) {
   }, [confidence, loading]);
 
   return (
-    <div className="gauge-wrap">
-      <div className="gauge-svg-container" style={{ overflow: "visible", padding: "0 16px" }}>
-        <svg viewBox="-10 0 220 130" className="gauge-svg" style={{ overflow: "visible" }}>
+    <div className="gauge-wrap" style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "20px 0" }}>
+      <div className="gauge-svg-container" style={{ width: "100%", maxWidth: "300px" }}>
+        <svg viewBox="0 0 200 120" className="gauge-svg" style={{ overflow: "visible" }}>
           {/* Background Arc */}
           <path 
             d="M 20 100 A 80 80 0 0 1 180 100" 
             fill="none" 
             stroke="var(--surface)" 
-            strokeWidth="10" 
+            strokeWidth="12" 
             strokeLinecap="round" 
           />
           {/* Spectrum Arc */}
@@ -31,7 +31,7 @@ export default function TruthGauge({ confidence, loading }) {
             d="M 20 100 A 80 80 0 0 1 180 100" 
             fill="none" 
             stroke="url(#gauge-gradient)" 
-            strokeWidth="10" 
+            strokeWidth="12" 
             strokeLinecap="round" 
             strokeDasharray="251"
             strokeDashoffset="0"
@@ -45,18 +45,30 @@ export default function TruthGauge({ confidence, loading }) {
           </defs>
 
           {/* Scale Markers */}
-          <text x="10"  y="118" className="gauge-marker" textAnchor="start">FAKE</text>
-          <text x="190" y="118" className="gauge-marker" textAnchor="end">TRUE</text>
+          <text 
+            x="20" y="115" 
+            style={{ fill: "var(--white)", fontSize: "10px", fontWeight: "bold", fontFamily: "var(--font-mono)" }} 
+            textAnchor="middle"
+          >
+            FAKE
+          </text>
+          <text 
+            x="180" y="115" 
+            style={{ fill: "var(--white)", fontSize: "10px", fontWeight: "bold", fontFamily: "var(--font-mono)" }} 
+            textAnchor="middle"
+          >
+            TRUE
+          </text>
 
           {/* Needle */}
           <g ref={needleRef} className="needle-group" style={{ transform: "rotate(90deg)" }}>
             <line 
-                x1="100" y1="100" x2="100" y2="40" 
+                x1="100" y1="100" x2="100" y2="50" 
                 stroke="var(--white)" 
-                strokeWidth="3" 
+                strokeWidth="4" 
                 strokeLinecap="round" 
             />
-            <circle cx="100" cy="100" r="5" fill="var(--white)" />
+            <circle cx="100" cy="100" r="6" fill="var(--white)" />
           </g>
         </svg>
       </div>
