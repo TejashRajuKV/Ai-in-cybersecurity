@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api/api";
+import ENDPOINTS from "../api/endpoints";
 import Loader from "../components/Loader";
 import ResultPanel from "../components/ResultPanel";
 import GuardianAlert from "../components/GuardianAlert";
 import DarkWebPulse from "../components/DarkWebPulse";
 import { loadGuardian, sendGuardianAlert } from "../hooks/useGuardian";
 import "../styles/modules.css";
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function ThreatAnalyzer() {
   const [message,  setMessage]  = useState("");
@@ -30,7 +29,7 @@ export default function ThreatAnalyzer() {
     setError(null);
 
     try {
-      const response = await axios.post(`${BASE_URL}/api/threat`, {
+      const response = await api.post(ENDPOINTS.THREAT, {
         message, url, app
       });
       const data = response.data;
