@@ -16,8 +16,8 @@ export default function TruthGauge({ confidence, loading }) {
 
   return (
     <div className="gauge-wrap">
-      <div className="gauge-svg-container">
-        <svg viewBox="0 0 200 120" className="gauge-svg">
+      <div className="gauge-svg-container" style={{ overflow: "visible", padding: "0 16px" }}>
+        <svg viewBox="-10 0 220 130" className="gauge-svg" style={{ overflow: "visible" }}>
           {/* Background Arc */}
           <path 
             d="M 20 100 A 80 80 0 0 1 180 100" 
@@ -45,8 +45,8 @@ export default function TruthGauge({ confidence, loading }) {
           </defs>
 
           {/* Scale Markers */}
-          <text x="15"  y="115" className="gauge-marker">FAKE</text>
-          <text x="165" y="115" className="gauge-marker">TRUE</text>
+          <text x="10"  y="118" className="gauge-marker" textAnchor="start">FAKE</text>
+          <text x="190" y="118" className="gauge-marker" textAnchor="end">TRUE</text>
 
           {/* Needle */}
           <g ref={needleRef} className="needle-group" style={{ transform: "rotate(90deg)" }}>
