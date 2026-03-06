@@ -1,100 +1,126 @@
 /* ─────────────────────────────────────────
    Navbar
 ───────────────────────────────────────── */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  height: 70px;
-  background: rgba(3, 8, 15, 0.85);
-  border-bottom: 1px solid rgba(0, 255, 204, 0.1);
-  backdrop-filter: blur(20px);
-  display: flex;
-  align-items: center;
+.dashboard-root {
+  background: #000;
+  min-height: 100vh;
+  padding-top: 70px;
+  position: relative;
+  overflow-x: hidden;
 }
 
-.nav-container {
+/* ── Detective Theme Overrides ── */
+.forensic-header {
+  background: rgba(10, 15, 25, 0.8);
+  border: 1px solid rgba(0, 255, 204, 0.1);
+  padding: 32px;
+  margin-bottom: 40px;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.header-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  width: 100%;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.navbar-brand {
-  font-family: var(--font-mono);
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--white);
-  letter-spacing: 2px;
-  text-decoration: none;
-}
-
-.nav-links {
-  display: flex;
-  gap: 32px;
-}
-
-.nav-links a {
+.case-badge {
+  background: rgba(0, 255, 204, 0.1);
+  border: 1px solid rgba(0, 255, 204, 0.2);
+  padding: 6px 12px;
   font-size: 11px;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.5);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.nav-links a:hover {
   color: var(--cyan);
 }
 
-.navbar-status {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
+.case-badge .label {
+  opacity: 0.5;
+  margin-right: 8px;
 }
 
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--green);
+.timestamp {
+  font-size: 10px;
+  color: var(--muted);
 }
 
-
-.dashboard-root {
-  background: var(--bg);
-  min-height: 200vh;
-  /* Extra height for scroll experience */
+.workstation-title {
+  font-size: 32px;
+  font-weight: 950;
+  letter-spacing: -1px;
+  margin-bottom: 4px;
 }
 
-/* ─────────────────────────────────────────
-   Dashboard Layout
-───────────────────────────────────────── */
-.dashboard {
-  position: relative;
-  z-index: 200;
-  margin-top: 50vh;
-  padding-bottom: 100px;
+.cyan-text {
+  color: var(--cyan);
 }
 
-.dashboard-header {
-  padding: 40px 0 32px;
-  text-align: center;
-}
-
-.dashboard-title {
-  font-size: 36px;
-  font-weight: 800;
-  margin-bottom: 8px;
-}
-
-.dashboard-subtitle {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+.system-status {
+  font-size: 10px;
   color: var(--muted);
   letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+
+.system-status .pulse {
+  color: var(--cyan);
+  animation: fade-pulse 2s infinite;
+}
+
+@keyframes fade-pulse {
+  0% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.4;
+  }
+}
+
+/* ── Terminal Shell ── */
+.terminal-shell {
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 2px solid var(--cyan);
+  padding: 16px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(0, 255, 204, 0.7);
+  max-height: 100px;
+  overflow-y: hidden;
+}
+
+.log-line {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.blinking-cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ── Corner Brackets ── */
+.module-container {
+  background: rgba(13, 20, 32, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 40px;
+  position: relative;
+  backdrop-filter: blur(15px);
+}
+
+.dashboard {
+  padding: 40px 0 100px;
 }
 
 /* ─────────────────────────────────────────
