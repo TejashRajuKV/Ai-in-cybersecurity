@@ -2,6 +2,7 @@ import { useState } from "react";
 import { scoreLoan } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
 import Loader from "../components/Loader";
+import SecurityShield from "../components/SecurityShield";
 import "../styles/modules.css";
 
 const RULES = [
@@ -104,8 +105,17 @@ export default function LoanRiskScanner() {
         </button>
       </div>
 
+      {/* ── Security Sentinel Visualization ── */}
+      {(loading || result) && (
+        <SecurityShield 
+            loading={loading} 
+            riskScore={result?.confidence || 0}
+            checkedFactors={Object.keys(checked).filter(k => checked[k])}
+        />
+      )}
+
       {/* ── Loading ── */}
-      {loading && <Loader text="CALCULATING RISK..." />}
+      {loading && <Loader text="PERFORMING SECURITY AUDIT..." />}
 
       {/* ── Error ── */}
       {error && (

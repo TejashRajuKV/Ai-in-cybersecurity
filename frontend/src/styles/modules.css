@@ -465,3 +465,124 @@
     opacity: 0.3;
     z-index: 1;
 }
+
+/* ─────────────────────────────────────────
+   Security Sentinel: Loan Scanner
+───────────────────────────────────────── */
+.sentinel-wrap {
+    position: relative;
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 24px 0;
+    overflow: hidden;
+    padding: 32px;
+}
+
+.heatmap-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    z-index: 1;
+    opacity: 0.1;
+}
+
+.grid-cell {
+    border: 1px solid var(--border);
+    transition: background 0.5s;
+}
+
+.grid-cell.hot {
+    background: rgba(255, 45, 85, 0.2);
+    border-color: rgba(255, 45, 85, 0.4);
+}
+
+.sentinel-main {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.shield-viz {
+    position: relative;
+    width: 180px;
+    height: 180px;
+}
+
+.shield-ring {
+    fill: none;
+    stroke-width: 2;
+    stroke: var(--cyan);
+    stroke-dasharray: 10 5;
+    opacity: 0.4;
+}
+
+.shield-ring.outer {
+    stroke-dasharray: 20 10;
+    opacity: 0.2;
+}
+
+.shield-ring.middle {
+    stroke: var(--green);
+}
+
+.shield-core {
+    fill: var(--cyan);
+    filter: drop-shadow(0 0 10px var(--cyan));
+    transition: all 0.5s;
+}
+
+.shield-core.broken {
+    fill: var(--red);
+    filter: drop-shadow(0 0 15px var(--red));
+}
+
+.integrity-val {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--white);
+}
+
+.integrity-val .sub {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--muted);
+}
+
+.metadata-ticker {
+    width: 100%;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 10px;
+    overflow-y: hidden;
+    color: var(--green);
+    line-height: 1.5;
+}
+
+.ticker-line {
+    margin-bottom: 2px;
+}
+
+.ticker-line.err {
+    color: var(--red);
+    font-weight: 700;
+}
+
+.ticker-line.ok {
+    color: var(--cyan);
+}
