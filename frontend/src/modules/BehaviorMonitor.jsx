@@ -166,15 +166,6 @@ export default function BehaviorMonitor() {
         {loading ? "SCANNING_PACKETS..." : "[ START_BEHAVIOR_ANALYSIS ]"}
       </button>
 
-      {/* ── Neural Radar Visual ── */}
-      {(loading || result) && (
-        <NeuralRadar
-          loading={loading}
-          flaggedFields={result?.flagged_words || []}
-          isAnomalous={result?.label === "ANOMALY"}
-        />
-      )}
-
       {/* ── Neural Radar Animation ── */}
       {(loading || result) && (
         <NeuralRadar

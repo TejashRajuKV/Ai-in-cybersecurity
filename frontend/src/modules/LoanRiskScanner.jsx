@@ -168,15 +168,6 @@ export default function LoanRiskScanner() {
         />
       )}
 
-      {/* ── Security Shield Animation ── */}
-      {(loading || result) && (
-        <SecurityShield
-          loading={loading}
-          riskScore={result?.confidence || 0}
-          checkedFactors={Object.keys(checked).filter((k) => checked[k])}
-        />
-      )}
-
       {loading && <Loader text="VALIDATING_RBI_COMPLIANCE_PARAMETERS..." />}
 
       {error && (

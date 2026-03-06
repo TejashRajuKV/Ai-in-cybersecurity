@@ -104,15 +104,6 @@ export default function FakeNewsChecker() {
         />
       )}
 
-      {/* ── Loading ── */}
-      {/* ── Truth Gauge Animation ── */}
-      {(loading || result) && (
-        <TruthGauge
-          confidence={result?.confidence || 50}
-          loading={loading}
-        />
-      )}
-
       {loading && <Loader text="CROSS_REFERENCING_GLOBAL_INTEL..." />}
 
       {/* ── Error ── */}
