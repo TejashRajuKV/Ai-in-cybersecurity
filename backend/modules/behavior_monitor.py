@@ -79,81 +79,94 @@ def check_behavior(data: dict, models: dict) -> dict:
 
     try:
 
-        # ── Get model ──
-        behavior_bundle = models.get("behavior_model")
+        hour          = data.get("hour",          12)
+        amount        = data.get("amount",         0)
+        transactions  = data.get("transactions",   1)
+        new_device    = data.get("new_device",     0)
+        failed_logins = data.get("failed_logins",  0)
 
-        if behavior_bundle is None:
-            return format_error("behavior_monitor", "Behavior model not loaded")
+        # ── Safety clamps ──
+        hour         = max(0, min(23, int(hour)))
+        amount       = max(0, min(10_000_000, float(amount)))
+        transactions = max(0, int(transactions))
+        failed_logins = max(0, int(failed_logins))
 
-        model = behavior_bundle["model"]
-        scaler = behavior_bundle["scaler"]
-        features = behavior_bundle["features"]
+        # ── Rule-based risk scoring ──────────────────────────
+        risk_score = 0
 
-        # ── Build feature array ──
-        hour = data.get("hour", 12)
-        amount = data.get("amount", 0)
-        transactions = data.get("transactions", 1)
-        new_device = data.get("new_device", 0)
-        failed_logins = data.get("failed_logins", 0)
+        if hour <= 5:
+            risk_score += 25       # midnight/early hours
 
-        # Safety checks
-        if hour < 0 or hour > 23:
-            hour = 12
+        if amount >= 100_000:
+            risk_score += 35
+        elif amount >= 50_000:
+            risk_score += 28
+        elif amount >= 20_000:
+            risk_score += 18
 
-        if amount < 0:
-            amount = 0
+        if transactions >= 30:
+            risk_score += 25
+        elif transactions >= 20:
+            risk_score += 18
+        elif transactions >= 10:
+            risk_score += 10
 
-        if transactions < 0:
-            transactions = 0
+        if new_device == 1:
+            risk_score += 20
 
-        if failed_logins < 0:
-            failed_logins = 0
+        if failed_logins >= 5:
+            risk_score += 25
+        elif failed_logins >= 3:
+            risk_score += 18
+        elif failed_logins >= 1:
+            risk_score += 8
 
-        # Clamp extreme values
-        amount = min(amount, 10000000)
-
-        X = np.array([[hour, amount, transactions, new_device, failed_logins]])
-
-        # ── Scale ──
-        X_scaled = scaler.transform(X)
-
-        # ── Predict ──
-        prediction = model.predict(X_scaled)[0]   # -1 = anomaly, 1 = normal
-        score = model.decision_function(X_scaled)[0]
-
-        # ── Convert score to confidence ──
-        confidence = int(min(100, max(0, (abs(score) * 50))))
-
-        if prediction == 1:
-            confidence = int(min(100, max(0, (score * 30) + 30)))
-            confidence = max(10, 100 - confidence)
-
-        # ── Build reason ──
-        reason, flagged_fields = build_behavior_reason(data)
-
-        # ── Override confidence based on rules ──
+        # ── Count active risk factors ──
         risk_factors = sum([
             hour <= 5,
-            amount >= 50000,
-            transactions >= 20,
+            amount >= 20_000,
+            transactions >= 10,
             new_device == 1,
             failed_logins >= 3
         ])
 
-        if risk_factors >= 3:
-            confidence = max(confidence, 80)
-        elif risk_factors == 2:
-            confidence = max(confidence, 55)
-        elif risk_factors == 1:
-            confidence = max(confidence, 35)
-        else:
-            confidence = min(confidence, 25)
+        # Combination multiplier — multiple risk factors together = more suspicious
+        if risk_factors >= 4:
+            risk_score = min(100, int(risk_score * 1.25))
+        elif risk_factors >= 3:
+            risk_score = min(100, int(risk_score * 1.15))
+
+        # Clamp to 0-95 (never 100% or 0% from rules alone)
+        confidence = max(5, min(95, risk_score))
+
+        # ── ML model as supplementary signal ─────────────────
+        behavior_bundle = models.get("behavior_model")
+        if behavior_bundle is not None:
+            try:
+                model   = behavior_bundle["model"]
+                scaler  = behavior_bundle["scaler"]
+
+                X        = np.array([[hour, amount, transactions, new_device, failed_logins]])
+                X_scaled = scaler.transform(X)
+                ml_pred  = model.predict(X_scaled)[0]   # -1 = anomaly, 1 = normal
+
+                # ML says anomaly but rules say LOW — nudge up slightly
+                if ml_pred == -1 and confidence < 40:
+                    confidence = min(confidence + 15, 60)
+                # ML says normal but rules say HIGH — reduce only slightly
+                elif ml_pred == 1 and confidence > 70:
+                    confidence = max(confidence - 5, 65)
+            except Exception:
+                pass  # ML supplementary only — ignore if fails
+
+        # ── Build reason ──
+        reason, flagged_fields = build_behavior_reason(data)
 
         return format_response(
-            module="behavior_monitor",
-            confidence=confidence,
-            reason=reason,
-            flagged_words=flagged_fields
+            module        = "behavior_monitor",
+            confidence    = confidence,
+            reason        = reason,
+            flagged_words = flagged_fields
         )
 
     except Exception as e:
