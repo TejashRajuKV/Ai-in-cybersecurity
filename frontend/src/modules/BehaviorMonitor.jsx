@@ -2,6 +2,7 @@ import { useState } from "react";
 import { analyzeBehavior } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
 import Loader from "../components/Loader";
+import NeuralRadar from "../components/NeuralRadar";
 import "../styles/modules.css";
 
 const defaultData = {
@@ -106,8 +107,17 @@ export default function BehaviorMonitor() {
         {loading ? "Analyzing..." : "📊 Analyze Behavior"}
       </button>
 
+      {/* ── Neural Radar Visualization ── */}
+      {(loading || result) && (
+        <NeuralRadar 
+          loading={loading} 
+          flaggedFields={result?.flagged_words || []} 
+          isAnomalous={result?.label === "ANOMALY"}
+        />
+      )}
+
       {/* ── Loading ── */}
-      {loading && <Loader text="DETECTING ANOMALIES..." />}
+      {loading && <Loader text="PROBING DATA POINTS..." />}
 
       {/* ── Error ── */}
       {error && (
