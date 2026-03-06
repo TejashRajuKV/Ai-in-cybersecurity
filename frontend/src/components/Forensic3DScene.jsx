@@ -22,41 +22,42 @@ export default function Forensic3DScene() {
   return (
     <div className="three-d-container" style={{ opacity: Math.max(0, opacity) }}>
       <div className="forensic-core-wrapper" style={{ transform: `scale(${scale})` }}>
-        {/* ── Procedural Forensic Core ── */}
+        {/* ── Cyberpunk Procedural Core ── */}
         <div className="core-rings">
-          <div className="ring ring-1" style={{ transform: `rotate(${rotation}deg)` }}></div>
-          <div className="ring ring-2" style={{ transform: `rotate(${-rotation * 1.5}deg)` }}></div>
-          <div className="ring ring-3" style={{ transform: `rotate(${rotation * 0.5}deg)` }}></div>
+          <div className="ring ring-1" style={{ borderColor: 'var(--cyan)', transform: `rotate(${rotation}deg)` }}></div>
+          <div className="ring ring-2" style={{ borderColor: 'var(--pink)', transform: `rotate(${-rotation * 1.5}deg)` }}></div>
+          <div className="ring ring-3" style={{ borderColor: 'var(--yellow)', transform: `rotate(${rotation * 0.5}deg)` }}></div>
         </div>
         
         <svg className="core-svg" viewBox="0 0 200 200">
           <defs>
             <radialGradient id="coreGradient">
-              <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.8" />
+              <stop offset="0%" stopColor="var(--pink)" stopOpacity="0.9" />
+              <stop offset="60%" stopColor="var(--cyan)" stopOpacity="0.3" />
               <stop offset="100%" stopColor="transparent" />
             </radialGradient>
           </defs>
           <circle cx="100" cy="100" r="40" fill="url(#coreGradient)">
-            <animate attributeName="r" values="38;42;38" dur="3s" repeatCount="indefinite" />
+            <animate attributeName="r" values="36;44;36" dur="2s" repeatCount="indefinite" />
           </circle>
           <path 
-            d="M100 20 L100 180 M20 100 L180 100" 
-            stroke="var(--cyan)" 
-            strokeWidth="0.5" 
-            opacity="0.3" 
+            d="M100 0 L100 200 M0 100 L200 100" 
+            stroke="var(--pink)" 
+            strokeWidth="0.2" 
+            opacity="0.4" 
           />
-          <circle cx="100" cy="100" r="80" stroke="var(--cyan)" strokeWidth="0.2" fill="none" strokeDasharray="5,5" />
+          <circle cx="100" cy="100" r="70" stroke="var(--cyan)" strokeWidth="0.5" fill="none" strokeDasharray="10,5" />
         </svg>
 
-        <div className="scan-line-horizontal"></div>
+        <div className="scan-line-horizontal" style={{ background: 'linear-gradient(90deg, transparent, var(--pink), transparent)' }}></div>
       </div>
       
       <div className="hero-overlay">
-        <h1 className="hero-title">CYBER<span>RAKSHAK</span></h1>
-        <p className="hero-tagline mono">AI-POWERED FORENSIC INTELLIGENCE ENGINE</p>
+        <h1 className="hero-title flicker" data-text="CYBERRAKSHAK">CYBER<span>RAKSHAK</span></h1>
+        <p className="hero-tagline mono">SYSTEM_PROTOCOL_INITIATED // FORENSIC_OVERRIDE</p>
         <div className="scroll-indicator">
-          <div className="mouse"></div>
-          <span>SCROLL TO INITIALIZE SCAN</span>
+          <div className="mouse" style={{ borderColor: 'var(--pink)' }}></div>
+          <span style={{ color: 'var(--pink)' }}>INITIALIZE SCAN SEQUENCE</span>
         </div>
       </div>
     </div>

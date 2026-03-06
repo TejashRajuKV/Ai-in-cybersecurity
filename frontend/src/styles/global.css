@@ -2,30 +2,40 @@
    CSS Variables
 ───────────────────────────────────────── */
 :root {
-  --bg:         #03080F;
-  --surface:    #080F1A;
-  --card:       #0C1624;
-  --card2:      #0E1C30;
-  --border:     rgba(0, 210, 255, 0.12);
-  --cyan:       #00D2FF;
-  --green:      #00FF9D;
-  --orange:     #FF7A00;
-  --yellow:     #FFD000;
-  --red:        #FF2D55;
-  --purple:     #BF5FFF;
-  --white:      #EAF4FF;
-  --text:       #A8C8E0;
-  --muted:      #3A5570;
-  --font-mono:  'JetBrains Mono', monospace;
-  --font-main:  'Syne', sans-serif;
+  --bg: #050505;
+  --surface: #0A0A0A;
+  --card: #0F0F0F;
+  --card2: #141414;
+  --border: rgba(0, 255, 204, 0.2);
+  --cyan: #00FFCC;
+  /* Neon Cyan */
+  --green: #BDFF00;
+  /* Acid Green */
+  --orange: #FF9500;
+  --yellow: #FBFF00;
+  /* Cyber Yellow */
+  --red: #FF003C;
+  /* Electric Red */
+  --pink: #FF00FF;
+  /* Neon Pink */
+  --purple: #BC00FF;
+  --white: #FFFFFF;
+  --text: #E0E0E0;
+  --muted: #444444;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-main: 'Syne', sans-serif;
+  --glow-cyan: 0 0 10px rgba(0, 255, 204, 0.5);
+  --glow-pink: 0 0 10px rgba(255, 0, 255, 0.5);
 }
 
 /* ─────────────────────────────────────────
    Reset
 ───────────────────────────────────────── */
-*, *::before, *::after {
-  margin:     0;
-  padding:    0;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -33,163 +43,195 @@
    Base
 ───────────────────────────────────────── */
 html {
-  font-size:   16px;
+  font-size: 16px;
   scroll-behavior: smooth;
 }
 
 body {
-  background:  var(--bg);
-  color:       var(--text);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-main);
-  min-height:  100vh;
-  overflow-x:  hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Grid background */
 body::before {
-  content:    '';
-  position:   fixed;
-  inset:      0;
+  content: '';
+  position: fixed;
+  inset: 0;
   background-image:
-    linear-gradient(rgba(0, 210, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 210, 255, 0.025) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events:  none;
-  z-index:    0;
+    linear-gradient(rgba(0, 255, 204, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 204, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ─────────────────────────────────────────
    Typography
 ───────────────────────────────────────── */
-h1, h2, h3, h4 {
-  color:       var(--white);
+h1,
+h2,
+h3,
+h4 {
+  color: var(--white);
   font-weight: 700;
   line-height: 1.1;
 }
 
 p {
   line-height: 1.6;
-  color:       var(--text);
+  color: var(--text);
 }
 
 a {
-  color:           var(--cyan);
+  color: var(--cyan);
   text-decoration: none;
-  transition:      opacity 0.2s;
+  transition: opacity 0.2s;
 }
 
-a:hover { opacity: 0.8; }
+a:hover {
+  opacity: 0.8;
+}
 
-code, pre {
+code,
+pre {
   font-family: var(--font-mono);
-  font-size:   13px;
+  font-size: 13px;
 }
 
 /* ─────────────────────────────────────────
    Scrollbar
 ───────────────────────────────────────── */
-::-webkit-scrollbar       { width: 6px; }
-::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyan);
+}
 
 /* ─────────────────────────────────────────
    Utility Classes
 ───────────────────────────────────────── */
 .container {
   max-width: 1100px;
-  margin:    0 auto;
-  padding:   0 24px;
-  position:  relative;
-  z-index:   1;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .mono {
   font-family: var(--font-mono);
-  font-size:   12px;
-}
-
-.muted {
-  color:     var(--muted);
   font-size: 12px;
 }
 
-.text-cyan   { color: var(--cyan);   }
-.text-green  { color: var(--green);  }
-.text-red    { color: var(--red);    }
-.text-yellow { color: var(--yellow); }
-.text-white  { color: var(--white);  }
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.text-cyan {
+  color: var(--cyan);
+}
+
+.text-green {
+  color: var(--green);
+}
+
+.text-red {
+  color: var(--red);
+}
+
+.text-yellow {
+  color: var(--yellow);
+}
+
+.text-white {
+  color: var(--white);
+}
 
 /* ─────────────────────────────────────────
    Glassmorphism Card
 ───────────────────────────────────────── */
 .glass-card {
-  background:    rgba(12, 22, 36, 0.8);
-  border:        1px solid var(--border);
+  background: rgba(12, 22, 36, 0.8);
+  border: 1px solid var(--border);
   border-radius: 8px;
   backdrop-filter: blur(12px);
-  padding:       24px;
+  padding: 24px;
 }
 
 /* ─────────────────────────────────────────
    Button Base
 ───────────────────────────────────────── */
 .btn {
-  display:         inline-flex;
-  align-items:     center;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap:             8px;
-  padding:         12px 24px;
-  border-radius:   6px;
-  font-family:     var(--font-main);
-  font-size:       14px;
-  font-weight:     600;
-  cursor:          pointer;
-  border:          none;
-  transition:      all 0.2s;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
 }
 
 .btn-primary {
   background: var(--cyan);
-  color:      var(--bg);
+  color: var(--bg);
 }
 
 .btn-primary:hover {
   background: #00B8D9;
-  transform:  translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .btn-primary:disabled {
-  opacity:  0.5;
-  cursor:   not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
   transform: none;
 }
 
 .btn-outline {
-  background:    transparent;
-  border:        1px solid var(--border);
-  color:         var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .btn-outline:hover {
   border-color: var(--cyan);
-  color:        var(--cyan);
+  color: var(--cyan);
 }
 
 /* ─────────────────────────────────────────
    Input Base
 ───────────────────────────────────────── */
 .input {
-  width:         100%;
-  background:    var(--surface);
-  border:        1px solid var(--border);
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  padding:       12px 16px;
-  color:         var(--white);
-  font-family:   var(--font-main);
-  font-size:     14px;
-  outline:       none;
-  transition:    border-color 0.2s;
+  padding: 12px 16px;
+  color: var(--white);
+  font-family: var(--font-main);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
 .input:focus {
@@ -201,7 +243,7 @@ code, pre {
 }
 
 textarea.input {
-  resize:     vertical;
+  resize: vertical;
   min-height: 120px;
 }
 
@@ -209,20 +251,47 @@ textarea.input {
    Fade animations
 ───────────────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0);    }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1;   }
-  50%       { opacity: 0.5; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
-.fade-up  { animation: fadeUp  0.5s ease both; }
-.fade-in  { animation: fadeIn  0.4s ease both; }
-.pulse    { animation: pulse   1.5s ease infinite; }
+.fade-up {
+  animation: fadeUp 0.5s ease both;
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease both;
+}
+
+.pulse {
+  animation: pulse 1.5s ease infinite;
+}
