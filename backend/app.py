@@ -17,9 +17,14 @@ from config import PORT, DEBUG
 app = Flask(__name__)
 
 # ─────────────────────────────────────────
-# Enable CORS
+# Enable CORS (allow frontend origins)
 # ─────────────────────────────────────────
-CORS(app)
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    os.getenv("FRONTEND_URL", "*"),   # set FRONTEND_URL in Render env vars
+]
+CORS(app, origins=ALLOWED_ORIGINS)
 
 # ─────────────────────────────────────────
 # Register Blueprints
@@ -87,17 +92,17 @@ def server_error(e):
 
 
 # ─────────────────────────────────────────
-# Load Models + Start Server
+# Load models at startup (for gunicorn/Render)
+# ─────────────────────────────────────────
+from utils.model_loader import load_models
+load_models()
+
+# ─────────────────────────────────────────
+# Dev server entry point
 # ─────────────────────────────────────────
 if __name__ == "__main__":
-    from utils.model_loader import load_models
-
     print("\n" + "=" * 45)
     print("   CYBERRAKSHAK — BACKEND STARTING")
-    print("=" * 45)
-
-    load_models()
-
     print("=" * 45)
     print(f"   Running on  http://localhost:{PORT}")
     print(f"   Health:     http://localhost:{PORT}/api/health")
