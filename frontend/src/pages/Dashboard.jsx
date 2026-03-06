@@ -24,7 +24,8 @@ export default function Dashboard() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(location.state?.tab || "scam");
   const [sessionLogs, setSessionLogs] = useState([]);
-  const [caseId, setCaseId] = useState("");
+  const [caseId, setCaseId]       = useState("");
+  const [uptime, setUptime]       = useState(0);
 
   useEffect(() => {
     // Generate ID once on mount if not exists
@@ -46,6 +47,19 @@ export default function Dashboard() {
     }
     animatePageLoad(".tab-btn");
   }, [location.state]); // Removed caseId to prevent loop
+
+  // Live uptime counter
+  useEffect(() => {
+    const tick = setInterval(() => setUptime(s => s + 1), 1000);
+    return () => clearInterval(tick);
+  }, []);
+
+  const formatUptime = (secs) => {
+    const h = String(Math.floor(secs / 3600)).padStart(2, "0");
+    const m = String(Math.floor((secs % 3600) / 60)).padStart(2, "0");
+    const s = String(secs % 60).padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  };
 
   const activeComponent = TABS.find((t) => t.id === activeTab)?.component;
 
@@ -95,7 +109,7 @@ export default function Dashboard() {
             </div>
             <div className="header-meta">
               <span className="label">UPTIME:</span> 
-              <span className="value">00:14:22:04</span>
+              <span className="value">{formatUptime(uptime)}</span>
             </div>
           </div>
 
