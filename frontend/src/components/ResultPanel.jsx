@@ -1,7 +1,5 @@
 import { useEffect, useRef } from "react";
 import { animateResultCard } from "../animations/riskAnimation";
-import RiskBadge     from "./RiskBadge";
-import ConfidenceBar from "./ConfidenceBar";
 import { getRiskColor } from "../utils/riskHelpers";
 import "../styles/modules.css";
 
@@ -25,75 +23,68 @@ export default function ResultPanel({ result }) {
     explanation   = {}
   } = result;
 
-  return (
-    <div ref={panelRef} className="result-panel fade-up">
+  const isAnomalous = label === "ANOMALY" || label === "HIGH RISK";
 
-      {/* ── Risk Badge ── */}
-      <div style={{ marginBottom: "16px" }}>
-        <RiskBadge
-          label={label}
-          color={risk_color}
-          confidence={confidence}
-        />
+  return (
+    <div ref={panelRef} className="result-dossier fade-up">
+      {/* ── Verdict Stamp ── */}
+      <div className="verdict-stamp-wrap">
+        <div className={`verdict-stamp ${isAnomalous ? 'stamp-anomaly' : 'stamp-clear'}`}>
+          {isAnomalous ? "DETECTED" : "CLEARED"}
+        </div>
       </div>
 
-      {/* ── Confidence Bar ── */}
-      <ConfidenceBar
-        confidence={confidence}
-        color={risk_color}
-      />
+      <div className="dossier-line">
+        <div className="dossier-label">CASE_VERDICT</div>
+        <div className="dossier-value" style={{ color: getRiskColor(risk_color), fontWeight: 900 }}>
+          {label.toUpperCase()}
+        </div>
+      </div>
 
-      {/* ── Explainable AI — WHY IS THIS RISKY ── */}
-      <div className="result-section" style={{ marginTop: "20px" }}>
-        <span className="result-label">// WHY IS THIS RISKY?</span>
-        <div style={{ marginTop: "8px" }}>
+      <div className="dossier-line">
+        <div className="dossier-label">CONFIDENCE_LVR</div>
+        <div className="dossier-value mono">{(confidence * 100).toFixed(2)}%</div>
+      </div>
+
+      <div className="dossier-line">
+        <div className="dossier-label">PRIMARY_INDICATORS</div>
+        <div className="dossier-value">
           {reason.split(" + ").map((r, i) => (
-            <div key={i} style={{
-              display:      "flex",
-              alignItems:   "center",
-              gap:          "8px",
-              padding:      "6px 0",
-              borderBottom: "1px solid rgba(255,255,255,0.04)",
-              fontSize:     "13px",
-              color:        "var(--text)"
-            }}>
-              <span style={{ color: getRiskColor(risk_color) }}>▶</span>
-              <span>{r}</span>
+            <div key={i} className="mono" style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <span className="text-cyan">»</span> {r}
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── Flagged Keywords ── */}
       {flagged_words.length > 0 && (
-        <div className="result-section">
-          <span className="result-label">// FLAGGED KEYWORDS</span>
-          <div className="flagged-words">
-            {flagged_words.map((word, i) => (
-              <span key={i} className="flagged-word">
-                {word}
-              </span>
-            ))}
+        <div className="dossier-line">
+          <div className="dossier-label">FLAGGED_SIGNATURES</div>
+          <div className="dossier-value">
+            <div className="flagged-words">
+              {flagged_words.map((word, i) => (
+                <span key={i} className="flagged-word">{word}</span>
+              ))}
+            </div>
           </div>
         </div>
       )}
 
-      {/* ── AI Analysis ── */}
       {explanation.template && (
-        <div className="result-section">
-          <span className="result-label">// AI ANALYSIS</span>
-          <p className="result-reason">{explanation.template}</p>
+        <div className="dossier-line">
+          <div className="dossier-label">NEURAL_DEBRIEF</div>
+          <div className="dossier-value italic" style={{ fontSize: '13px', opacity: 0.8 }}>
+            {explanation.template}
+          </div>
         </div>
       )}
 
-      {/* ── Safety Tip ── */}
       {explanation.tip && (
         <div className="safety-tip">
-          <span className="safety-tip-label">// SAFETY TIP</span>
+          <span className="safety-tip-label">// RESOLUTION_PROTOCOL</span>
           {explanation.tip}
         </div>
       )}
-
     </div>
   );
 }

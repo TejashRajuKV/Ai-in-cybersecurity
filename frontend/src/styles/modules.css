@@ -1,655 +1,208 @@
 /* ─────────────────────────────────────────
-   Risk Badge
-───────────────────────────────────────── */
-.risk-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    border: 1px solid;
+   Forensic Design System
+ ───────────────────────────────────────── */
+
+/* ── Module Header ── */
+.module-header-technical {
+    margin-bottom: 40px;
+    border-left: 3px solid var(--cyan);
+    padding-left: 20px;
 }
 
-/* ─────────────────────────────────────────
-   Confidence Bar
-───────────────────────────────────────── */
-.confidence-wrap {
-    margin: 16px 0;
-}
-
-.confidence-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-}
-
-.confidence-value {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--white);
-}
-
-.confidence-track {
-    height: 8px;
-    background: var(--surface);
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-}
-
-.confidence-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0s;
-}
-
-/* ─────────────────────────────────────────
-   Result Panel
-───────────────────────────────────────── */
-.result-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 20px;
-    margin-top: 16px;
-}
-
-.result-section {
-    margin-bottom: 16px;
-}
-
-.result-section:last-child {
-    margin-bottom: 0;
-}
-
-.result-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    display: block;
-}
-
-.result-reason {
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.6;
-}
-
-/* ─────────────────────────────────────────
-   Flagged Words
-───────────────────────────────────────── */
-.flagged-words {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-}
-
-.flagged-word {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 3px;
-    background: rgba(255, 45, 85, 0.15);
-    color: var(--red);
-    border: 1px solid rgba(255, 45, 85, 0.3);
-}
-
-/* ─────────────────────────────────────────
-   Safety Tip
-───────────────────────────────────────── */
-.safety-tip {
-    padding: 16px 20px;
-    border-left: 3px solid var(--green);
-    background: rgba(0, 255, 157, 0.05);
-    border-radius: 0 6px 6px 0;
-    font-size: 13px;
-    color: #7AE8B8;
-    line-height: 1.6;
-    margin-top: 16px;
-}
-
-.safety-tip-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--green);
-    display: block;
-    margin-bottom: 6px;
-}
-
-/* ─────────────────────────────────────────
-   Loader
-───────────────────────────────────────── */
-.loader-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 48px;
-    gap: 16px;
-}
-
-.loader-ring {
-    width: 48px;
-    height: 48px;
-    border: 3px solid var(--border);
-    border-top: 3px solid var(--cyan);
-    border-radius: 50%;
-}
-
-.loader-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+.module-id-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
     color: var(--muted);
     letter-spacing: 2px;
 }
 
-/* ─────────────────────────────────────────
-   Loan Checklist
-───────────────────────────────────────── */
-.checklist {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 20px 0;
+.module-technical-title {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin: 4px 0;
 }
 
-.checklist-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: border-color 0.2s;
-}
-
-.checklist-item:hover {
-    border-color: var(--cyan);
-}
-
-.checklist-item.checked {
-    border-color: rgba(255, 45, 85, 0.4);
-    background: rgba(255, 45, 85, 0.05);
-}
-
-.checklist-checkbox {
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--muted);
-    border-radius: 3px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-}
-
-.checklist-item.checked .checklist-checkbox {
-    background: var(--red);
-    border-color: var(--red);
-    color: white;
-}
-
-.checklist-text {
-    font-size: 13px;
-    color: var(--text);
-    flex: 1;
-}
-
-.checklist-score {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--red);
-    font-weight: 700;
-}
-
-/* ─────────────────────────────────────────
-   Behavior Form
-───────────────────────────────────────── */
-/* ─────────────────────────────────────────
-   Detective Aesthetic: Scanline
-───────────────────────────────────────── */
-.input-wrap {
+/* ── Technical Inputs ── */
+.forensic-input-group {
     position: relative;
-    overflow: hidden;
-    border-radius: 6px;
-}
-
-.scanline {
-    position: absolute;
-    top: -10%;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background: linear-gradient(to bottom,
-            transparent,
-            rgba(0, 255, 157, 0.4),
-            rgba(0, 255, 157, 0.8),
-            rgba(0, 255, 157, 0.4),
-            transparent);
-    box-shadow: 0 0 15px rgba(0, 255, 157, 0.6);
-    z-index: 10;
-    pointer-events: none;
-    animation: scan 2s linear infinite;
-}
-
-@keyframes scan {
-    0% {
-        top: -10%;
-    }
-
-    100% {
-        top: 110%;
-    }
-}
-
-.behavior-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
     margin-bottom: 24px;
 }
 
-.behavior-field label {
+.forensic-label {
     display: block;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 10px;
-    letter-spacing: 2px;
     color: var(--muted);
     margin-bottom: 8px;
+    letter-spacing: 1px;
 }
 
-/* ─────────────────────────────────────────
-   Detective Aesthetic: Neural Radar
-───────────────────────────────────────── */
-.radar-container {
+.input-bracket-wrap {
     position: relative;
-    width: 100%;
-    height: 300px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
 }
 
-.radar-ringring {
+.input-bracket-wrap::before,
+.input-bracket-wrap::after {
+    content: '[';
     position: absolute;
-    border: 1px solid rgba(0, 255, 157, 0.05);
-    border-radius: 50%;
-    aspect-ratio: 1;
-}
-
-.ring-1 {
-    width: 40%;
-}
-
-.ring-2 {
-    width: 70%;
-}
-
-.ring-3 {
-    width: 100%;
-    border-style: dashed;
-}
-
-.radar-sweep {
-    position: absolute;
-    width: 50%;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--green));
+    left: -12px;
     top: 50%;
-    left: 50%;
-    transform-origin: left center;
-    z-index: 2;
-    box-shadow: 0 0 10px var(--green);
-}
-
-.radar-hub {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 50%;
-    z-index: 5;
-}
-
-.radar-hub.active {
-    border-color: var(--cyan);
-    box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
-}
-
-.hub-inner {
-    position: absolute;
-    inset: 8px;
-    border-radius: 50%;
-    background: var(--cyan);
+    transform: translateY(-50%);
+    color: var(--border);
+    font-family: var(--font-mono);
+    font-size: 20px;
     opacity: 0.5;
 }
 
-.radar-node {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    transform: translate(-50%, -50%);
-    z-index: 10;
+.input-bracket-wrap::after {
+    content: ']';
+    left: auto;
+    right: -12px;
 }
 
-.node-dot {
-    width: 12px;
-    height: 12px;
-    background: var(--surface);
-    border: 2px solid var(--muted);
-    border-radius: 50%;
+.forensic-input {
+    width: 100%;
+    background: rgba(0, 8, 20, 0.4);
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.forensic-input:focus {
+    border-color: var(--cyan);
+    background: rgba(0, 242, 255, 0.03);
+    box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.05);
+}
+
+/* ── Forensic Scan Button ── */
+.btn-forensic-scan {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    padding: 18px;
+    font-family: var(--font-mono);
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
     transition: all 0.3s;
 }
 
-.radar-node.flagged .node-dot {
-    background: var(--red);
-    border-color: var(--white);
-    box-shadow: 0 0 15px var(--red);
-}
-
-.node-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 1px;
-    color: var(--muted);
-}
-
-.radar-node.flagged .node-label {
-    color: var(--red);
-    font-weight: 700;
-}
-
-/* ─────────────────────────────────────────
-   Forensic Verification: Truth Gauge
-───────────────────────────────────────── */
-.gauge-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
-}
-
-.gauge-svg-container {
+.btn-forensic-scan::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
     width: 100%;
-    max-width: 300px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(0, 242, 255, 0.2), transparent);
+    animation: scan-loop 3s linear infinite;
 }
 
-.gauge-marker {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    fill: var(--muted);
-    letter-spacing: 1px;
+@keyframes scan-loop {
+    0% {
+        top: -100%;
+    }
+
+    100% {
+        top: 100%;
+    }
 }
 
-.needle-group {
-    transform-origin: 100px 100px;
-    transition: transform 0s;
+.btn-forensic-scan:hover {
+    background: var(--cyan);
+    color: #000;
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
 }
 
-.gauge-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+.btn-forensic-scan:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: var(--muted);
     color: var(--muted);
-    margin-top: -10px;
-    letter-spacing: 2px;
 }
 
-/* ─────────────────────────────────────────
-   Forensic Verification: Verdict Stamp
-───────────────────────────────────────── */
-.stamp-wrapper {
+/* ── Result Dossier ── */
+.result-dossier {
+    margin-top: 40px;
+    background: rgba(5, 19, 39, 0.9);
+    border: 1px solid var(--border);
+    padding: 40px;
+    position: relative;
+}
+
+.verdict-stamp-wrap {
     position: absolute;
     top: 20px;
     right: 20px;
-    pointer-events: none;
-    z-index: 100;
 }
 
 .verdict-stamp {
-    padding: 10px 20px;
-    border: 4px solid;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 900;
-    font-size: 24px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    transform: rotate(-10deg);
-    opacity: 0;
-    background: rgba(0, 0, 0, 0.1);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 950;
+    border: 3px solid;
+    padding: 8px 16px;
+    transform: rotate(-12deg);
+    opacity: 0.8;
 }
 
-.stamp-verified {
-    color: var(--green);
-    border-color: var(--green);
-    box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
-}
-
-.stamp-debunked {
+.stamp-anomaly {
     color: var(--red);
     border-color: var(--red);
-    box-shadow: 0 0 20px rgba(255, 45, 85, 0.4);
 }
 
-.stamp-inner {
-    position: relative;
-    z-index: 2;
+.stamp-clear {
+    color: var(--green);
+    border-color: var(--green);
 }
 
-.stamp-glitch-layer {
-    position: absolute;
-    inset: -5px;
-    background: inherit;
-    opacity: 0.3;
-    z-index: 1;
-}
-
-/* ─────────────────────────────────────────
-   Security Sentinel: Loan Scanner
-───────────────────────────────────────── */
-.sentinel-wrap {
-    position: relative;
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin: 24px 0;
-    overflow: hidden;
-    padding: 32px;
-}
-
-.heatmap-grid {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    z-index: 1;
-    opacity: 0.1;
-}
-
-.grid-cell {
-    border: 1px solid var(--border);
-    transition: background 0.5s;
-}
-
-.grid-cell.hot {
-    background: rgba(255, 45, 85, 0.2);
-    border-color: rgba(255, 45, 85, 0.4);
-}
-
-.sentinel-main {
-    position: relative;
-    z-index: 5;
+.dossier-line {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 12px 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
+    gap: 20px;
 }
 
-.shield-viz {
-    position: relative;
-    width: 180px;
-    height: 180px;
-}
-
-.shield-ring {
-    fill: none;
-    stroke-width: 2;
-    stroke: var(--cyan);
-    stroke-dasharray: 10 5;
-    opacity: 0.4;
-}
-
-.shield-ring.outer {
-    stroke-dasharray: 20 10;
-    opacity: 0.2;
-}
-
-.shield-ring.middle {
-    stroke: var(--green);
-}
-
-.shield-core {
-    fill: var(--cyan);
-    filter: drop-shadow(0 0 10px var(--cyan));
-    transition: all 0.5s;
-}
-
-.shield-core.broken {
-    fill: var(--red);
-    filter: drop-shadow(0 0 15px var(--red));
-}
-
-.integrity-val {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--white);
-}
-
-.integrity-val .sub {
-    font-size: 8px;
-    letter-spacing: 2px;
+.dossier-label {
+    width: 150px;
+    font-family: var(--font-mono);
+    font-size: 10px;
     color: var(--muted);
 }
 
-.metadata-ticker {
-    width: 100%;
-    height: 80px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 10px;
-    font-size: 10px;
-    overflow-y: hidden;
-    color: var(--green);
-    line-height: 1.5;
-}
-
-.ticker-line {
-    margin-bottom: 2px;
-}
-
-.ticker-line.err {
-    color: var(--red);
-    font-weight: 700;
-}
-
-.ticker-line.ok {
-    color: var(--cyan);
-}
-
-/* ─────────────────────────────────────────
-   Phishing Detector: URL Trace
-───────────────────────────────────────── */
-.trace-container {
-    margin: 24px 0;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-}
-
-.trace-svg {
-    width: 100%;
-}
-
-.trace-line {
-    stroke: var(--border);
-}
-
-.checkpoint circle {
-    fill: var(--surface);
-    stroke: var(--muted);
-    stroke-width: 2;
-}
-
-.cp-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    fill: var(--muted);
-    text-anchor: middle;
-    letter-spacing: 1px;
-}
-
-.trace-indicator {
-    fill: var(--cyan);
-    filter: drop-shadow(0 0 5px var(--cyan));
-}
-
-.url-deconstruction {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    gap: 2px;
+.dossier-value {
+    flex: 1;
     font-size: 14px;
 }
 
-.url-part {
+/* ── Demo Controls ── */
+.demo-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.btn-demo {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--muted);
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.url-part.domain {
+.btn-demo:hover {
+    background: rgba(255, 255, 255, 0.1);
     color: var(--white);
-    font-weight: 700;
-    text-decoration: underline;
-    text-decoration-color: var(--cyan);
-}
-
-.error-box {
-    margin-top: 16px;
-    padding: 16px;
-    background: rgba(255, 45, 85, 0.1);
-    border: 1px solid rgba(255, 45, 85, 0.3);
-    border-radius: 6px;
-    color: var(--red);
-    font-size: 13px;
 }

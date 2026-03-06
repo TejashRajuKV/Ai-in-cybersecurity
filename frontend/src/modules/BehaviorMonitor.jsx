@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { analyzeBehavior } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
 import Loader from "../components/Loader";
@@ -26,6 +26,11 @@ export default function BehaviorMonitor() {
   const [result,   setResult]   = useState(null);
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState(null);
+  const [moduleId, setModuleId] = useState("");
+
+  useEffect(() => {
+    setModuleId(`UNIT-${Math.floor(Math.random() * 900 + 100)}-BM`);
+  }, []);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: Number(value) }));
@@ -40,74 +45,65 @@ export default function BehaviorMonitor() {
       const data = await analyzeBehavior(formData);
       setResult(data);
     } catch (err) {
-      setError("Failed to connect to backend.");
+      setError("Forensic probe failed. Connection interrupted.");
     } finally {
       setLoading(false);
     }
   };
 
   const fields = [
-    { key: "hour",          label: "LOGIN HOUR (0-23)",       min: 0,  max: 23,     step: 1    },
-    { key: "amount",        label: "TRANSACTION AMOUNT (₹)",  min: 0,  max: 999999, step: 100  },
-    { key: "transactions",  label: "TRANSACTIONS TODAY",      min: 0,  max: 100,    step: 1    },
-    { key: "new_device",    label: "NEW DEVICE (0=No, 1=Yes)",min: 0,  max: 1,      step: 1    },
-    { key: "failed_logins", label: "FAILED LOGINS",           min: 0,  max: 20,     step: 1    },
+    { key: "hour",          label: "LOGIN_HOUR",    min: 0,  max: 23,     step: 1    },
+    { key: "amount",        label: "TRANS_AMOUNT",  min: 0,  max: 999999, step: 100  },
+    { key: "transactions",  label: "DAILY_COUNT",   min: 0,  max: 100,    step: 1    },
+    { key: "new_device",    label: "HW_SIGNATURE",  min: 0,  max: 1,      step: 1    },
+    { key: "failed_logins", label: "AUTH_FAILURES", min: 0,  max: 20,     step: 1    },
   ];
 
   return (
-    <div>
-      <div className="module-title">📊 Behavior Monitor</div>
-      <div className="module-desc">
-        // Enter transaction details to detect anomalous behavior
+    <div className="forensic-module">
+      {/* ── Technical Header ── */}
+      <div className="module-header-technical">
+        <div className="module-id-label mono">// {moduleId} // SYSTEM.PROBE</div>
+        <h2 className="module-technical-title">BEHAVIOR <span className="text-cyan">MONITOR</span></h2>
+        <div className="module-desc mono">ANOMALY_DETECTION_ENGINE_V2_ACTIVE</div>
       </div>
 
-      {/* ── Quick Demo Buttons ── */}
-      <div style={{ display: "flex", gap: "8px", marginBottom: "20px" }}>
-        <button
-          className="btn btn-outline"
-          style={{ fontSize: "11px" }}
-          onClick={() => setFormData(defaultData)}
-        >
-          🟢 Load Normal
-        </button>
-        <button
-          className="btn btn-outline"
-          style={{ fontSize: "11px" }}
-          onClick={() => setFormData(anomalyData)}
-        >
-          🔴 Load Anomaly
-        </button>
+      {/* ── Demo Controls ── */}
+      <div className="demo-controls">
+        <button className="btn-demo" onClick={() => setFormData(defaultData)}>LOAD_BASELINE</button>
+        <button className="btn-demo" onClick={() => setFormData(anomalyData)}>LOAD_ANOMALY_VECTOR</button>
       </div>
 
-      {/* ── Form Fields ── */}
+      {/* ── Technical Inputs ── */}
       <div className="behavior-grid">
         {fields.map((field) => (
-          <div key={field.key} className="behavior-field">
-            <label>{field.label}</label>
-            <input
-              type="number"
-              className="input"
-              min={field.min}
-              max={field.max}
-              step={field.step}
-              value={formData[field.key]}
-              onChange={(e) => handleChange(field.key, e.target.value)}
-            />
+          <div key={field.key} className="forensic-input-group">
+            <span className="forensic-label mono">{field.label}</span>
+            <div className="input-bracket-wrap">
+              <input
+                type="number"
+                className="forensic-input"
+                min={field.min}
+                max={field.max}
+                step={field.step}
+                value={formData[field.key]}
+                onChange={(e) => handleChange(field.key, e.target.value)}
+              />
+            </div>
           </div>
         ))}
       </div>
 
-      {/* ── Analyze Button ── */}
+      {/* ── Forensic Scan Button ── */}
       <button
-        className="btn btn-primary"
+        className="btn-forensic-scan"
         onClick={handleAnalyze}
         disabled={loading}
-        style={{ width: "100%" }}
       >
-        {loading ? "Analyzing..." : "📊 Analyze Behavior"}
+        {loading ? "SCANNING_PACKETS..." : "[ START_BEHAVIOR_ANALYSIS ]"}
       </button>
 
-      {/* ── Neural Radar Visualization ── */}
+      {/* ── Visualizations ── */}
       {(loading || result) && (
         <NeuralRadar 
           loading={loading} 
@@ -116,25 +112,10 @@ export default function BehaviorMonitor() {
         />
       )}
 
-      {/* ── Loading ── */}
-      {loading && <Loader text="PROBING DATA POINTS..." />}
+      {loading && <Loader text="CORRELATING_DATA_POINTS..." />}
 
-      {/* ── Error ── */}
-      {error && (
-        <div style={{
-          marginTop:   "16px",
-          padding:     "16px",
-          background:  "rgba(255,45,85,0.1)",
-          border:      "1px solid rgba(255,45,85,0.3)",
-          borderRadius: "6px",
-          color:       "var(--red)",
-          fontSize:    "13px"
-        }}>
-          ⚠️ {error}
-        </div>
-      )}
+      {error && <div className="error-box mono">!! CRITICAL_ERROR: {error}</div>}
 
-      {/* ── Result ── */}
       {result && !loading && <ResultPanel result={result} />}
     </div>
   );
