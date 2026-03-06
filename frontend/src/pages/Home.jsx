@@ -1,184 +1,111 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { animatePageLoad } from "../animations/loadingAnimation";
-import "../styles/global.css";
+import "../styles/Home.css";
 
 export default function Home() {
-  const navigate    = useNavigate();
-  const contentRef  = useRef(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    animatePageLoad(".hero-item");
-  }, []);
-
-  const features = [
-    {
-      icon:  "🎯",
-      title: "Scam Radar",
-      desc:  "Detect fraudulent UPI, KYC and digital arrest scam messages using NLP",
-      color: "var(--cyan)",
-    },
-    {
-      icon:  "📊",
-      title: "Behavior Monitor",
-      desc:  "Detect unusual account activity using Isolation Forest anomaly detection",
-      color: "var(--green)",
-    },
-    {
-      icon:  "📰",
-      title: "Fake News Checker",
-      desc:  "Classify news headlines as real or fake using machine learning",
-      color: "var(--orange)",
-    },
-    {
-      icon:  "⚠️",
-      title: "Loan Risk Scanner",
-      desc:  "Score loan apps for predatory lending patterns and RBI compliance",
-      color: "var(--yellow)",
-    },
+  const forensicModules = [
+    { icon: "🎯", title: "SCAM_RADAR", desc: "NEURAL_NET ANALYSIS OF FRAUDULENT UPI & KYC REQUESTS.", color: "var(--cyan)" },
+    { icon: "🧠", title: "BEHAVIOR_UNIT", desc: "ANOMALY DETECTION ON HIGH-RISK FINANCIAL PATTERNS.", color: "var(--pink)" },
+    { icon: "📰", title: "TRUTH_ENGINE", desc: "REAL-TIME DEBUNKING OF MALICIOUS MISINFORMATION.", color: "var(--green)" },
+    { icon: "⚖️", title: "RISK_AUDITOR", desc: "PREDATORY LOAN APP SCORING & RBI COMPLIANCE.", color: "var(--yellow)" }
   ];
 
   return (
-    <div style={{ paddingTop: "80px", minHeight: "100vh" }}>
+    <div className="home-root">
       <div className="container">
 
-        {/* ── Hero ── */}
-        <div
-          style={{
-            textAlign:  "center",
-            padding:    "80px 0 60px",
-          }}
-        >
-          {/* Eyebrow */}
-          <div
-            className="hero-item mono muted"
-            style={{ marginBottom: "16px", letterSpacing: "4px" }}
-          >
-            // AI IN CYBERSECURITY · ARCTIC THUNDER · REVA UNIVERSITY
+        {/* ── High Intensity Hero ── */}
+        <section className="home-hero">
+          <div className="eyebrow fade-in">
+            [ SYSTEM_STATUS: READY // ENCRYPTION_STRENGTH: MAXIMUM ]
           </div>
-
-          {/* Title */}
-          <h1
-            className="hero-item"
-            style={{
-              fontSize:      "clamp(40px, 7vw, 80px)",
-              fontWeight:    "800",
-              letterSpacing: "-2px",
-              marginBottom:  "16px",
-              lineHeight:    "1.0",
-            }}
-          >
-            CYBER
-            <span style={{ color: "var(--cyan)" }}>RAKSHAK</span>
+          
+          <h1 className="hero-main-title fade-up">
+            <span className="cyber glitch-text" data-text="CYBER">CYBER</span>
+            <span className="rakshak">RAKSHAK</span>
           </h1>
 
-          {/* Subtitle */}
-          <p
-            className="hero-item"
-            style={{
-              fontSize:      "16px",
-              color:         "var(--text)",
-              maxWidth:      "520px",
-              margin:        "0 auto 40px",
-              lineHeight:    "1.7",
-            }}
-          >
-            Unified AI platform protecting Indian internet users from
-            scams, fake news, suspicious behavior and predatory loan apps.
+          <p className="hero-desc fade-up">
+            THE WORLD'S MOST ADVANCED AI FORENSIC ENGINE. <br/>
+            PROTECTING THE DIGITAL FRONTIER AGAINST SCAMS, <br/>
+            FAKE NEWS, AND PREDATORY SYSTEM THREATS.
           </p>
 
-          {/* CTA Button */}
-          <button
-            className="hero-item btn btn-primary"
-            style={{ fontSize: "15px", padding: "14px 36px" }}
-            onClick={() => navigate("/dashboard")}
-          >
-            🛡️ Start Scanning
-          </button>
-
-          {/* Stats */}
-          <div
-            className="hero-item"
-            style={{
-              display:       "flex",
-              gap:           "48px",
-              justifyContent: "center",
-              marginTop:     "60px",
-              flexWrap:      "wrap",
-            }}
-          >
-            {[
-              { num: "4",      label: "AI Modules"       },
-              { num: "97%+",   label: "Scam Accuracy"    },
-              { num: "India",  label: "Focused Dataset"  },
-              { num: "Real",   label: "Time Detection"   },
-            ].map((stat, i) => (
-              <div key={i} style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    fontSize:   "28px",
-                    fontWeight: "800",
-                    color:      "var(--white)",
-                  }}
-                >
-                  {stat.num}
-                </div>
-                <div className="mono muted" style={{ fontSize: "10px", letterSpacing: "2px" }}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+          <div className="hero-actions fade-up">
+            <button className="btn-glow" onClick={() => navigate("/dashboard")}>
+              INITIALIZE_INTERFACE
+            </button>
           </div>
-        </div>
 
-        {/* ── Feature Cards ── */}
-        <div
-          style={{
-            display:               "grid",
-            gridTemplateColumns:   "repeat(auto-fit, minmax(240px, 1fr))",
-            gap:                   "16px",
-            paddingBottom:         "80px",
-          }}
-        >
-          {features.map((f, i) => (
-            <div
-              key={i}
-              className="hero-item glass-card"
-              style={{
-                cursor:     "pointer",
-                transition: "transform 0.2s, border-color 0.2s",
-                borderColor: "var(--border)",
-              }}
-              onClick={() => navigate("/dashboard")}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform   = "translateY(-4px)";
-                e.currentTarget.style.borderColor = f.color;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform   = "translateY(0)";
-                e.currentTarget.style.borderColor = "var(--border)";
-              }}
-            >
-              <div style={{ fontSize: "28px", marginBottom: "12px" }}>
-                {f.icon}
-              </div>
-              <h3
-                style={{
-                  fontSize:     "16px",
-                  marginBottom: "8px",
-                  color:        f.color,
-                }}
-              >
-                {f.title}
-              </h3>
-              <p style={{ fontSize: "13px", lineHeight: "1.6" }}>
-                {f.desc}
-              </p>
+          <div className="stats-grid fade-up">
+            <div className="stat">
+              <span className="stat-num">05</span>
+              <span className="stat-label mono">AI_CORES_ACTIVE</span>
+            </div>
+            <div className="stat">
+              <span className="stat-num">98%</span>
+              <span className="stat-label mono">SCAN_ACCURACY</span>
+            </div>
+            <div className="stat">
+              <span className="stat-num">IMS</span>
+              <span className="stat-label mono">LATENCY_STRENGTH</span>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Forensic Module Grid ── */}
+        <section className="home-modules">
+          {forensicModules.map((m, i) => (
+            <div key={i} className="forensic-card fade-up" style={{ animationDelay: `${i * 0.1}s` }}>
+              <span className="f-icon">{m.icon}</span>
+              <h3 className="f-title" style={{ color: m.color }}>{m.title}</h3>
+              <p className="f-desc mono">{m.desc}</p>
+              <div className="card-glitch"></div>
             </div>
           ))}
-        </div>
+        </section>
 
       </div>
+
+      {/* ── Live System Ticker ── */}
+      <div className="status-ticker">
+        <div className="ticker-content mono">
+          // THREAT_VECTORS_NEUTRALIZED: 1.2M // GLOBAL_SECURITY_PULSE: STABLE // SCANNING_PACKETS: 14.5TB/s // DATABASE_VERSION: V2.1.0_CYBERPUNK //
+        </div>
+      </div>
+
+      <style>{`
+        .stats-grid {
+          display: flex;
+          justify-content: center;
+          gap: 60px;
+          margin-top: 80px;
+        }
+        .stat {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .stat-num {
+          font-size: 40px;
+          font-weight: 900;
+          color: var(--white);
+        }
+        .stat-label {
+          font-size: 9px;
+          color: var(--muted);
+          letter-spacing: 2px;
+          margin-top: 5px;
+        }
+        .hero-actions {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+        }
+      `}</style>
     </div>
   );
 }
+
