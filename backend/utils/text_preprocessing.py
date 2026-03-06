@@ -3,10 +3,20 @@ import string
 import nltk
 from nltk.corpus import stopwords
 
-# Download stopwords if not already downloaded
-nltk.download("stopwords", quiet=True)
-nltk.download("punkt", quiet=True)
+# ── NLTK Data ──
+def init_nltk():
+    try:
+        # Only download if missing to avoid Windows PermissionError
+        nltk.data.find("corpora/stopwords")
+        nltk.data.find("tokenizers/punkt")
+    except LookupError:
+        try:
+            nltk.download("stopwords", quiet=True)
+            nltk.download("punkt", quiet=True)
+        except Exception as e:
+            print(f"Warning: NLTK download failed ({e}). Using existing data.")
 
+init_nltk()
 STOP_WORDS = set(stopwords.words("english"))
 
 # ─────────────────────────────────────────

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberRakshak – AI Scam Detection</title>
+    <meta name="description"
+        content="CyberRakshak: AI-powered platform to detect digital scams, phishing URLs, fake news, and fraudulent loan apps in India." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- ══ NAVBAR ══ -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <span class="brand-icon">🛡️</span>
+                <span class="brand-name">CyberRakshak</span>
+                <span class="brand-badge">AI</span>
+            </div>
+            <div class="nav-status" id="serverStatus">
+                <span class="status-dot offline"></span>
+                <span class="status-text">Checking server...</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ══ HERO ══ -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">🇮🇳 Built for India's Digital Safety</div>
+            <h1 class="hero-title">Detect Digital Scams<br /><span class="gradient-text">Before You Fall Victim</span>
+            </h1>
+            <p class="hero-sub">AI-powered protection against UPI frauds, phishing links, fake news, and loan app scams.
+            </p>
+            <div class="hero-stats">
+                <div class="stat-card"><span class="stat-number">4</span><span class="stat-label">AI Detectors</span>
+                </div>
+                <div class="stat-card"><span class="stat-number">95%+</span><span class="stat-label">Accuracy</span>
+                </div>
+                <div class="stat-card"><span class="stat-number">Real-time</span><span
+                        class="stat-label">Analysis</span></div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="shield-ring">
+                <div class="shield-core">🛡️</div>
+                <div class="orbit orbit-1">
+                    <div class="orbit-dot">💬</div>
+                </div>
+                <div class="orbit orbit-2">
+                    <div class="orbit-dot">🔗</div>
+                </div>
+                <div class="orbit orbit-3">
+                    <div class="orbit-dot">📰</div>
+                </div>
+                <div class="orbit orbit-4">
+                    <div class="orbit-dot">📱</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ MODULE TABS ══ -->
+    <section class="modules-section">
+        <div class="container">
+            <h2 class="section-title">Select a Detection Module</h2>
+
+            <div class="module-tabs" role="tablist">
+                <button class="tab-btn active" id="tab-scam" role="tab" aria-selected="true"
+                    onclick="switchTab('scam')">
+                    <span class="tab-icon">💬</span>
+                    <span class="tab-label">Scam Message</span>
+                </button>
+                <button class="tab-btn" id="tab-phishing" role="tab" aria-selected="false"
+                    onclick="switchTab('phishing')">
+                    <span class="tab-icon">🔗</span>
+                    <span class="tab-label">Phishing URL</span>
+                </button>
+                <button class="tab-btn" id="tab-fakenews" role="tab" aria-selected="false"
+                    onclick="switchTab('fakenews')">
+                    <span class="tab-icon">📰</span>
+                    <span class="tab-label">Fake News</span>
+                </button>
+                <button class="tab-btn" id="tab-loan" role="tab" aria-selected="false" onclick="switchTab('loan')">
+                    <span class="tab-icon">💳</span>
+                    <span class="tab-label">Loan App</span>
+                </button>
+            </div>
+
+            <!-- ── Scam Message Panel ── -->
+            <div class="tab-panel active" id="panel-scam">
+                <div class="panel-header">
+                    <div class="panel-icon">💬</div>
+                    <div>
+                        <h3>Scam Message Detector</h3>
+                        <p>Paste a suspicious SMS or WhatsApp message to check if it's a scam.</p>
+                    </div>
+                </div>
+                <div class="examples-row">
+                    <span class="example-label">Try an example:</span>
+                    <button class="example-btn"
+                        onclick="fillExample('scam','Your KYC will be blocked. Update immediately to avoid account suspension. Call 9876543210 now.')">KYC
+                        Fraud</button>
+                    <button class="example-btn"
+                        onclick="fillExample('scam','Digital arrest notice issued. Pay Rs 50000 fine or face legal action by Cyber Crime Police.')">Digital
+                        Arrest</button>
+                    <button class="example-btn"
+                        onclick="fillExample('scam','Your OTP for SBI login is 452781. Do not share this with anyone.')">Safe
+                        OTP</button>
+                </div>
+                <div class="input-group">
+                    <textarea id="input-scam" class="cyber-textarea" rows="5"
+                        placeholder="Paste your suspicious message here...&#10;&#10;Example: Your UPI account is blocked. Send OTP to 9999999999 immediately."></textarea>
+                </div>
+                <button class="analyze-btn" onclick="analyzeScam()" id="btn-scam">
+                    <span class="btn-icon">🔍</span> Analyze Message
+                </button>
+                <div id="result-scam" class="result-container hidden"></div>
+            </div>
+
+            <!-- ── Phishing URL Panel ── -->
+            <div class="tab-panel" id="panel-phishing">
+                <div class="panel-header">
+                    <div class="panel-icon">🔗</div>
+                    <div>
+                        <h3>Phishing URL Detector</h3>
+                        <p>Paste a suspicious link to check if it's a phishing site.</p>
+                    </div>
+                </div>
+                <div class="examples-row">
+                    <span class="example-label">Try an example:</span>
+                    <button class="example-btn"
+                        onclick="fillExample('phishing','http://secure-sbi-kyc-update.xyz/login')">Fake SBI URL</button>
+                    <button class="example-btn"
+                        onclick="fillExample('phishing','http://bit.ly/upi-reward-claim')">Shortened URL</button>
+                    <button class="example-btn" onclick="fillExample('phishing','https://www.sbi.co.in/')">Real SBI
+                        URL</button>
+                </div>
+                <div class="input-group">
+                    <input id="input-phishing" class="cyber-input" type="url"
+                        placeholder="https://example.com/suspicious-link" />
+                    <div class="url-preview" id="url-preview"></div>
+                </div>
+                <button class="analyze-btn" onclick="analyzePhishing()" id="btn-phishing">
+                    <span class="btn-icon">🔍</span> Check URL
+                </button>
+                <div id="result-phishing" class="result-container hidden"></div>
+            </div>
+
+            <!-- ── Fake News Panel ── -->
+            <div class="tab-panel" id="panel-fakenews">
+                <div class="panel-header">
+                    <div class="panel-icon">📰</div>
+                    <div>
+                        <h3>Fake News Detector</h3>
+                        <p>Paste a news headline or WhatsApp forward to verify its authenticity.</p>
+                    </div>
+                </div>
+                <div class="examples-row">
+                    <span class="example-label">Try an example:</span>
+                    <button class="example-btn"
+                        onclick="fillExample('fakenews','Government gives free Rs 10000 to all Aadhaar card holders. Click this link to claim now!')">Fake
+                        Benefit Claim</button>
+                    <button class="example-btn"
+                        onclick="fillExample('fakenews','WhatsApp will shut down next week unless you forward this message to 10 people immediately.')">WhatsApp
+                        Rumour</button>
+                    <button class="example-btn"
+                        onclick="fillExample('fakenews','RBI raises repo rate by 25 basis points to control inflation in India.')">Real
+                        News</button>
+                </div>
+                <div class="input-group">
+                    <textarea id="input-fakenews" class="cyber-textarea" rows="5"
+                        placeholder="Paste the news headline or message here...&#10;&#10;Example: Government gives free Rs 50000 to all citizens. Apply now before midnight!"></textarea>
+                </div>
+                <button class="analyze-btn" onclick="analyzeFakeNews()" id="btn-fakenews">
+                    <span class="btn-icon">🔍</span> Verify News
+                </button>
+                <div id="result-fakenews" class="result-container hidden"></div>
+            </div>
+
+            <!-- ── Loan App Panel ── -->
+            <div class="tab-panel" id="panel-loan">
+                <div class="panel-header">
+                    <div class="panel-icon">💳</div>
+                    <div>
+                        <h3>Loan App Risk Checker</h3>
+                        <p>Check a loan app's red flags to see if it's likely fraudulent.</p>
+                    </div>
+                </div>
+                <div class="loan-checklist" id="loan-checklist">
+                    <p class="loading-text">Loading checklist...</p>
+                </div>
+                <button class="analyze-btn" onclick="analyzeLoan()" id="btn-loan">
+                    <span class="btn-icon">🔍</span> Check Loan App Risk
+                </button>
+                <div id="result-loan" class="result-container hidden"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ HOW IT WORKS ══ -->
+    <section class="how-section">
+        <div class="container">
+            <h2 class="section-title">How CyberRakshak Works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <div class="step-icon">📋</div>
+                    <h4>You Input</h4>
+                    <p>Paste a suspicious message, URL, or news headline</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <div class="step-icon">🤖</div>
+                    <h4>AI Analyzes</h4>
+                    <p>Our ML models detect patterns using NLP and feature extraction</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <div class="step-icon">📊</div>
+                    <h4>You Get Alerted</h4>
+                    <p>Risk score, label, reason, and safety tips are shown instantly</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ══ -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span>🛡️ <strong>CyberRakshak</strong> — AI Digital Safety Platform</span>
+            <span>Built for AiFi Hackathon · REVA University · Team Arctic Thunder</span>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

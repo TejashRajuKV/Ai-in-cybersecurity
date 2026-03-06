@@ -7,7 +7,7 @@ load_dotenv()
 # ─────────────────────────────────────────
 # Server Config
 # ─────────────────────────────────────────
-PORT   = int(os.getenv("PORT", 5000))
+PORT   = int(os.getenv("PORT", 5050))
 DEBUG  = os.getenv("DEBUG", "True") == "True"
 
 # ─────────────────────────────────────────
@@ -27,6 +27,7 @@ FAKE_NEWS_MODEL_PATH     = os.path.join(MODEL_DIR, "fake_news_model.pkl")
 FAKE_NEWS_VECTORIZER_PATH= os.path.join(MODEL_DIR, "fake_news_vectorizer.pkl")
 
 BEHAVIOR_MODEL_PATH      = os.path.join(MODEL_DIR, "behavior_model.pkl")
+PHISHING_MODEL_PATH      = os.path.join(MODEL_DIR, "phishing_model.pkl")
 
 # ─────────────────────────────────────────
 # Risk Thresholds

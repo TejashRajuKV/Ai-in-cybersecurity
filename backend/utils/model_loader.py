@@ -5,7 +5,8 @@ from config import (
     SCAM_VECTORIZER_PATH,
     FAKE_NEWS_MODEL_PATH,
     FAKE_NEWS_VECTORIZER_PATH,
-    BEHAVIOR_MODEL_PATH
+    BEHAVIOR_MODEL_PATH,
+    PHISHING_MODEL_PATH
 )
 
 # ─────────────────────────────────────────
@@ -52,6 +53,14 @@ def load_models() -> dict:
         _models["behavior_model"] = None
         print("  ✗ Behavior model NOT found — run training/train_behavior.py")
 
+    # ── Phishing Detector ──
+    if os.path.exists(PHISHING_MODEL_PATH):
+        _models["phishing_model"] = joblib.load(PHISHING_MODEL_PATH)
+        print("  ✓ Phishing model loaded")
+    else:
+        _models["phishing_model"] = None
+        print("  ✗ Phishing model NOT found — run training/train_phishing.py")
+
     print("Model loading complete.\n")
     return _models
 
@@ -70,8 +79,9 @@ def models_status() -> dict:
     Used by GET /api/health endpoint.
     """
     return {
-        "scam_radar":       _models.get("scam_model") is not None,
-        "fake_news":        _models.get("news_model") is not None,
-        "behavior_monitor": _models.get("behavior_model") is not None,
-        "loan_scorer":      True  # rule-based, no model needed
+        "scam_radar":         _models.get("scam_model")      is not None,
+        "fake_news":          _models.get("news_model")      is not None,
+        "behavior_monitor":   _models.get("behavior_model")  is not None,
+        "loan_scorer":        True,  # rule-based, no model needed
+        "phishing_detector":  _models.get("phishing_model")  is not None
     }
