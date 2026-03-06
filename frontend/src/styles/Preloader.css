@@ -2,11 +2,23 @@
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: var(--bg);
+    background: #000;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+
+.preloader-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(0, 255, 204, 0.05) 0%, transparent 70%),
+        linear-gradient(rgba(0, 255, 204, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+    z-index: -1;
 }
 
 .preloader-container {
@@ -19,8 +31,28 @@
 
 .progress-wrapper {
     position: relative;
-    width: 220px;
-    height: 220px;
+    width: 240px;
+    height: 240px;
+}
+
+.outer-ring {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 204, 0.05);
+}
+
+.ring-slow {
+    border-top: 1px solid var(--cyan);
+    animation: rotate 8s linear infinite;
+}
+
+.ring-fast {
+    inset: -10px;
+    border-right: 1px solid var(--pink);
+    border-left: 1px solid var(--pink);
+    animation: rotate 4s linear infinite reverse;
+    opacity: 0.4;
 }
 
 .progress-svg {
@@ -29,17 +61,17 @@
 
 .progress-bg {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.03);
-    stroke-width: 4;
+    stroke: rgba(255, 255, 255, 0.02);
+    stroke-width: 6;
 }
 
 .progress-bar {
     fill: none;
     stroke: var(--cyan);
-    stroke-width: 4;
+    stroke-width: 6;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.1s linear;
-    filter: drop-shadow(0 0 8px var(--cyan));
+    filter: drop-shadow(0 0 15px var(--cyan));
 }
 
 .percent-display {
@@ -49,61 +81,62 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
 }
 
 .percent-num {
     font-family: var(--font-main);
-    font-size: 56px;
+    font-size: 64px;
     font-weight: 900;
     color: var(--white);
-    letter-spacing: -2px;
+    letter-spacing: -3px;
+    text-shadow: 0 0 20px var(--cyan);
 }
 
-.status-text {
+.status-label {
     font-size: 9px;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.blink {
+    animation: blink 1s infinite;
     color: var(--cyan);
-    margin-top: -5px;
-    opacity: 0.8;
 }
 
 .scan-needle {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 120px;
+    width: 140px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--pink));
+    background: linear-gradient(90deg, transparent, var(--cyan));
     transform-origin: left center;
     z-index: 5;
-    opacity: 0.6;
+    opacity: 0.5;
     pointer-events: none;
 }
 
-.preloader-grid {
-    position: absolute;
-    inset: -100px;
-    background-image:
-        linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
-    background-size: 30px 30px;
-    transform: perspective(500px) rotateX(60deg);
-    opacity: 0.3;
-    z-index: -1;
+.ticker-container {
+    display: flex;
+    gap: 20px;
+    font-size: 9px;
+    color: var(--muted);
+    opacity: 0.6;
 }
 
-.loading-bar-flat {
-    width: 300px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 1px;
-    overflow: hidden;
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.loading-fill {
-    height: 100%;
-    background: var(--pink);
-    box-shadow: 0 0 10px var(--pink);
-    transition: width 0.1s linear;
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
 }
