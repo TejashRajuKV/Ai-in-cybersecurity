@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Forensic3DScene from "../components/Forensic3DScene";
+import Forensic3DScene   from "../components/Forensic3DScene";
+import NeuralParticles   from "../components/NeuralParticles";
 import "../styles/Home.css";
 
 export default function Home() {
   const navigate = useNavigate();
 
   const stats = [
-    { num: "06", label: "FORENSIC MODULES", color: "var(--cyan)" },
-    { num: "98.4%", label: "DETECTION CAPABILITY", color: "var(--cyan)" },
-    { num: "BHARAT", label: "DATASET ORIGIN", color: "var(--white)" },
-    { num: "ACTIVE", label: "THREAT MONITOR", color: "var(--amber)" }
+    { num: "06",     label: "ACTIVE FORENSIC MODULES", color: "var(--cyan)" },
+    { num: "98.4%",  label: "DETECTION ACCURACY RATE",  color: "var(--cyan)" },
+    { num: "BHARAT", label: "REGIONAL DATASET ORIGIN",  color: "var(--white)" },
+    { num: "LIVE",   label: "THREAT MONITOR STATUS",    color: "var(--green)" }
   ];
 
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       {/* ── SECTION 00: DOSSIER HERO ── */}
       <section className="home-hero dossier-layout">
         <Forensic3DScene isBackground={true} />
+        <NeuralParticles />
         
         <div className="container">
           <div className="technical-index mono fade-in">

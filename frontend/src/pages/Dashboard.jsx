@@ -8,6 +8,7 @@ import LoanRiskScanner  from "../modules/LoanRiskScanner";
 import PhishingDetector from "../modules/PhishingDetector";
 import ThreatAnalyzer   from "../modules/ThreatAnalyzer";
 import Forensic3DScene  from "../components/Forensic3DScene";
+import GuardianSetup    from "../components/GuardianSetup";
 import "../styles/dashboard.css";
 
 const TABS = [
@@ -82,6 +83,7 @@ export default function Dashboard() {
               ))}
               <div className="log-entry cursor">_</div>
             </div>
+            <GuardianSetup />
           </div>
         </div>
 

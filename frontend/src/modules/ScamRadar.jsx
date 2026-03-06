@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { analyzeScam } from "../api/api";
 import ResultPanel from "../components/ResultPanel";
+import GuardianAlert from "../components/GuardianAlert";
 import Loader from "../components/Loader";
+import { loadGuardian, sendGuardianAlert } from "../hooks/useGuardian";
 import "../styles/modules.css";
 
 export default function ScamRadar() {
@@ -10,6 +12,7 @@ export default function ScamRadar() {
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState(null);
   const [moduleId, setModuleId] = useState("");
+  const [guardianAlert, setGuardianAlert] = useState(null);
 
   useEffect(() => {
     setModuleId(`UNIT-${Math.floor(Math.random() * 900 + 100)}-SR`);
@@ -24,6 +27,23 @@ export default function ScamRadar() {
     try {
       const data = await analyzeScam(message);
       setResult(data);
+
+      // ── Guardian Alert on critical risk ──────────────────
+      const risk = data?.confidence ?? data?.risk_score ?? 0;
+      if (risk >= 90) {
+        const guardian = loadGuardian();
+        if (guardian) {
+          const alertResult = await sendGuardianAlert({
+            guardian,
+            module:        "SCAM_RADAR",
+            riskScore:     risk,
+            suspectMessage: message,
+          });
+          if (alertResult.success) setGuardianAlert(alertResult.payload);
+        }
+      }
+      // ─────────────────────────────────────────────────────
+
     } catch (err) {
       setError("Pattern analysis failed. Metadata signature missing.");
     } finally {
@@ -39,6 +59,9 @@ export default function ScamRadar() {
 
   return (
     <div className="forensic-module">
+      {/* ── Guardian Alert Modal ── */}
+      <GuardianAlert alert={guardianAlert} onDismiss={() => setGuardianAlert(null)} />
+
       {/* ── Technical Header ── */}
       <div className="module-header-technical">
         <div className="module-id-label mono">// {moduleId} // PATTERN.PROBE</div>

@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
 import ResultPanel from "../components/ResultPanel";
+import GuardianAlert from "../components/GuardianAlert";
+import DarkWebPulse from "../components/DarkWebPulse";
+import { loadGuardian, sendGuardianAlert } from "../hooks/useGuardian";
 import "../styles/modules.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -14,6 +17,7 @@ export default function ThreatAnalyzer() {
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState(null);
   const [moduleId, setModuleId] = useState("");
+  const [guardianAlert, setGuardianAlert] = useState(null);
 
   useEffect(() => {
     setModuleId(`CORE-${Math.floor(Math.random() * 999 + 1)}-ANALYZER`);
@@ -29,7 +33,25 @@ export default function ThreatAnalyzer() {
       const response = await axios.post(`${BASE_URL}/api/threat`, {
         message, url, app
       });
-      setResult(response.data);
+      const data = response.data;
+      setResult(data);
+
+      // ── Guardian Alert on critical risk ──────────────────
+      const risk = data?.overall_confidence ?? 0;
+      if (risk >= 90) {
+        const guardian = loadGuardian();
+        if (guardian) {
+          const alertResult = await sendGuardianAlert({
+            guardian,
+            module:        "THREAT_ANALYZER",
+            riskScore:     risk,
+            suspectMessage: message || url || app,
+          });
+          if (alertResult.success) setGuardianAlert(alertResult.payload);
+        }
+      }
+      // ─────────────────────────────────────────────────────
+
     } catch (err) {
       setError("Multi-vector correlation failed. Core engine offline.");
     } finally {
@@ -44,6 +66,9 @@ export default function ThreatAnalyzer() {
 
   return (
     <div className="forensic-module">
+      {/* ── Guardian Alert Modal ── */}
+      <GuardianAlert alert={guardianAlert} onDismiss={() => setGuardianAlert(null)} />
+
       {/* ── Technical Header ── */}
       <div className="module-header-technical">
         <div className="module-id-label mono">// {moduleId} // CENTRAL.HUB</div>
@@ -176,6 +201,9 @@ export default function ThreatAnalyzer() {
           )}
         </div>
       )}
+
+      {/* ── Dark Web Pulse Panel ── */}
+      <DarkWebPulse />
     </div>
   );
 }

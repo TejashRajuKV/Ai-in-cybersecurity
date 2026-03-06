@@ -180,16 +180,17 @@
     font-family: var(--font-mono);
     font-size: 13px;
     letter-spacing: 3px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 242, 255, 0.25), 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .btn-technical::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
     transform: translateX(-100%);
     transition: transform 0.5s;
 }
@@ -207,7 +208,16 @@
     background: #fff;
     border-color: #fff;
     letter-spacing: 5px;
-    box-shadow: 0 0 40px rgba(0, 242, 255, 0.4);
+    transform: translateY(-4px);
+    box-shadow:
+        0 10px 30px rgba(0, 242, 255, 0.45),
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 60px rgba(0, 242, 255, 0.2);
+}
+
+.btn-technical:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(0, 242, 255, 0.3);
 }
 
 .btn-outline-technical {
@@ -219,14 +229,21 @@
     font-size: 13px;
     letter-spacing: 3px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-outline-technical:hover {
     border-color: var(--cyan);
     color: var(--cyan);
-    background: rgba(0, 242, 255, 0.04);
+    background: rgba(0, 242, 255, 0.05);
     letter-spacing: 5px;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 150, 255, 0.2), 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-technical:active {
+    transform: translateY(1px);
 }
 
 /* ── Stats Grid ── */
@@ -244,8 +261,28 @@
     padding: 32px;
     border-right: 1px solid var(--border);
     position: relative;
-    transition: background 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    overflow: hidden;
 }
+
+.technical-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+}
+
+.technical-card:hover::before {
+    transform: scaleX(1);
+}
+
 
 .technical-card:last-child {
     border-right: none;
