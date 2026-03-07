@@ -69,6 +69,10 @@ export default function BehaviorMonitor() {
   const [error,    setError]    = useState(null);
   const [moduleId, setModuleId] = useState("");
   const [bars,     setBars]     = useState([]);
+  const [history,  setHistory]  = useState(() => {
+    const saved = localStorage.getItem("bm_history");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
     setModuleId(`UNIT-${Math.floor(Math.random() * 900 + 100)}-BM`);
@@ -89,6 +93,22 @@ export default function BehaviorMonitor() {
 
       // ── Generate bars after result ──
       setBars(generateBars(formData, data.label === "HIGH RISK"));
+
+      // ── Update History (Local Persistence) ──
+      const timestamp = new Intl.DateTimeFormat("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(new Date());
+
+      const historyEntry = {
+        time: timestamp,
+        verdict: data.label,
+        confidence: data.confidence,
+      };
+
+      const newHistory = [historyEntry, ...history].slice(0, 3);
+      setHistory(newHistory);
+      localStorage.setItem("bm_history", JSON.stringify(newHistory));
 
     } catch (err) {
       setError("Forensic probe failed. Connection interrupted.");
@@ -181,6 +201,24 @@ export default function BehaviorMonitor() {
           {!loading && !result && (
             <div className="radar-placeholder" style={{ width: "320px", height: "320px", border: "1px dashed var(--border)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--muted)", fontStyle: "italic", fontSize: "12px", margin: "40px auto" }}>
               WAITING_FOR_DATA_STREAM...
+            </div>
+          )}
+
+          {/* ── Risk Timeline History ── */}
+          {history.length > 0 && (
+            <div className="risk-timeline">
+              <div className="timeline-header mono">RISK_TIMELINE_HISTORY</div>
+              <div className="timeline-items">
+                {history.map((entry, idx) => (
+                  <div key={idx} className={`timeline-entry ${entry.verdict === "HIGH RISK" ? "extreme" : ""}`}>
+                    <span className="time">{entry.time}</span>
+                    <span className="separator">→</span>
+                    <span className={`verdict ${entry.verdict.replace(" ", "-").toLowerCase()}`}>
+                      {entry.verdict} {entry.confidence}% {entry.verdict === "HIGH RISK" ? "⚠" : ""}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
