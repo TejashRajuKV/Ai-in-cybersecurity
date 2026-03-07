@@ -22,18 +22,32 @@ def load_models() -> dict:
     Called in app.py before first request.
     """
     global _models
+    print("\n" + "═"*40)
+    print("   MODEL LOADER DEBUG")
+    print("═"*40)
+    print(f"   CWD:       {os.getcwd()}")
+    print(f"   BASE_DIR:  {BASE_DIR}")
+    print(f"   MODEL_DIR: {MODEL_DIR}")
+    print(f"   SCAM_PATH: {SCAM_MODEL_PATH}")
+    print(f"   SCAM_EXISTS: {os.path.exists(SCAM_MODEL_PATH)}")
+    print("═"*40 + "\n")
 
     print("Loading models...")
 
     # ── Scam Radar ──
     if os.path.exists(SCAM_MODEL_PATH) and os.path.exists(SCAM_VECTORIZER_PATH):
-        _models["scam_model"]  = joblib.load(SCAM_MODEL_PATH)
-        _models["scam_vec"]    = joblib.load(SCAM_VECTORIZER_PATH)
-        print("  ✓ Scam model loaded")
+        try:
+            _models["scam_model"]  = joblib.load(SCAM_MODEL_PATH)
+            _models["scam_vec"]    = joblib.load(SCAM_VECTORIZER_PATH)
+            print("  ✓ Scam model loaded")
+        except Exception as e:
+            print(f"  ✗ ERROR loading Scam model: {e}")
+            _models["scam_model"]  = None
+            _models["scam_vec"]    = None
     else:
         _models["scam_model"]  = None
         _models["scam_vec"]    = None
-        print("  ✗ Scam model NOT found — run training/train_scam.py")
+        print("  ✗ Scam model NOT found")
 
     # ── Fake News ──
     if os.path.exists(FAKE_NEWS_MODEL_PATH) and os.path.exists(FAKE_NEWS_VECTORIZER_PATH):
