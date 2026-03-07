@@ -1,6 +1,8 @@
 import joblib
 import os
 from config import (
+    BASE_DIR,
+    MODEL_DIR,
     SCAM_MODEL_PATH,
     SCAM_VECTORIZER_PATH,
     FAKE_NEWS_MODEL_PATH,
