@@ -22,8 +22,8 @@ export default function TruthGauge({ confidence, loading }) {
   }, [confidence, loading]);
 
   return (
-    <div className="gauge-wrap" style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "20px 0" }}>
-      <div className="gauge-svg-container" style={{ width: "100%", maxWidth: "300px" }}>
+    <div className="gauge-wrap" style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "60px 0 20px 0" }}>
+      <div className="gauge-svg-container" style={{ width: "100%", maxWidth: "300px", padding: "10px" }}>
         <svg viewBox="0 0 200 120" className="gauge-svg" style={{ overflow: "visible" }}>
           {/* Background Arc */}
           <path 
@@ -68,7 +68,7 @@ export default function TruthGauge({ confidence, loading }) {
           </text>
 
           {/* Needle */}
-          <g ref={needleRef} className="needle-group" style={{ transform: "rotate(90deg)" }}>
+          <g ref={needleRef} className="needle-group" style={{ transform: "rotate(90deg)", transformOrigin: "100px 100px" }}>
             <line 
                 x1="100" y1="100" x2="100" y2="50" 
                 stroke="var(--white)" 
