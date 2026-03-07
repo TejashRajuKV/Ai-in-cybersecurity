@@ -80,27 +80,38 @@ export default function Home() {
             <span className="amber-text">INTEL REPORT</span>
           </h2>
           
-          <div className="grid-2-col">
+          <div className="grid-3-col">
             <div className="threat-card report-card fade-up">
               <div className="report-header mono">
                 <span className="status-bit red"></span> ALERT: V-PHISH_01
               </div>
-              <h3 className="t-title">FINANCIAL PHISHING</h3>
+              <h3 className="t-title">EMERGING THREATS</h3>
               <p className="t-desc">
-                Organized UPI fraud syndicates exploiting social engineering to drain digital wallets across Bharat.
+                Rapid rise in UPI scams, loan app frauds, and digital arrest scams targeting users across India.
               </p>
-              <div className="t-meta mono"> IMPACT: HIGH // LOSS CAP: ₹1,750 CR</div>
+              <div className="t-meta mono"> IMPACT: CRITICAL // SCALE: NATIONAL</div>
             </div>
 
             <div className="threat-card report-card fade-up">
               <div className="report-header mono">
-                <span className="status-bit amber"></span> ALERT: M-INFO_02
+                <span className="status-bit amber"></span> ALERT: S-ENG_02
               </div>
-              <h3 className="t-title">WEAPONIZED INFO</h3>
+              <h3 className="t-title">SOCIAL ENGINEERING</h3>
               <p className="t-desc">
-                Viral misinformation clusters designed to destabilize social cohesion via rapid-response WhatsApp networks.
+                Exploitation of low digital literacy through psychological manipulation and fraudulent social engineering.
               </p>
-              <div className="t-meta mono"> VELOCITY: EXTREME // RISK: SOCIAL</div>
+              <div className="t-meta mono"> VECTOR: HUMAN // RISK: EXTREME</div>
+            </div>
+
+            <div className="threat-card report-card fade-up">
+              <div className="report-header mono">
+                <span className="status-bit red"></span> ALERT: I-THEFT_03
+              </div>
+              <h3 className="t-title">IDENTITY & FINANCE</h3>
+              <p className="t-desc">
+                Fake news dissemination and suspicious phishing links causing massive financial and identity theft.
+              </p>
+              <div className="t-meta mono"> TYPE: DATA_DRAIN // SEVERITY: HIGH</div>
             </div>
           </div>
         </div>
