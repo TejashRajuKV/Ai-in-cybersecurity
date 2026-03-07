@@ -6,6 +6,7 @@ from utils.text_preprocessing import clean_text, extract_flagged_words
 from utils.feature_engineering import extract_features, build_reason
 from utils.response_formatter import format_response, format_error
 
+
 # ─────────────────────────────────────────
 # Scam Category Rules
 # ─────────────────────────────────────────
@@ -30,14 +31,12 @@ SCAM_CATEGORIES = {
     ],
     "Lottery Scam": [
         "you won", "winner", "prize", "lottery",
-        "lucky draw", "congratulations you", "claim prize",
-        "free gift", "reward", "selected winner",
-        "prize money", "winning amount"
+        "lucky draw", "claim prize", "reward",
+        "selected winner", "prize money", "winning amount"
     ],
     "Loan Fraud": [
         "instant loan", "pre approved loan", "no documents",
         "guaranteed loan", "easy loan", "loan approved",
-        "low interest loan", "instant approval",
         "loan offer", "personal loan approved"
     ],
     "Phishing": [
@@ -47,14 +46,15 @@ SCAM_CATEGORIES = {
         "account suspended", "reactivate account"
     ],
     "Investment Scam": [
-        "guaranteed returns", "double money", "investment opportunity",
-        "stock tip", "crypto", "bitcoin", "100% returns",
-        "risk free investment", "fixed returns", "daily profit"
+        "guaranteed returns", "double money",
+        "investment opportunity", "crypto", "bitcoin",
+        "100% returns", "risk free investment",
+        "fixed returns", "daily profit"
     ],
     "Bank Impersonation": [
         "sbi", "hdfc", "icici", "axis bank", "rbi",
-        "reserve bank", "bank manager", "bank helpline",
-        "customer care", "bank account blocked",
+        "bank manager", "customer care",
+        "bank account blocked", "reserve bank",
         "net banking", "debit card blocked"
     ]
 }
@@ -62,9 +62,9 @@ SCAM_CATEGORIES = {
 # ─────────────────────────────────────────
 # Severity Groups
 # ─────────────────────────────────────────
-HIGH_SEVERITY   = ["Digital Arrest", "KYC Scam", "Bank Impersonation"]
-MEDIUM_SEVERITY = ["UPI Fraud", "Phishing", "Loan Fraud"]
-LOW_SEVERITY    = ["Lottery Scam", "Investment Scam", "General Scam"]
+HIGH_SEVERITY   = ["Digital Arrest", "KYC Scam",     "Bank Impersonation"]
+MEDIUM_SEVERITY = ["UPI Fraud",      "Phishing",      "Loan Fraud"]
+LOW_SEVERITY    = ["Lottery Scam",   "Investment Scam", "General Scam"]
 
 
 # ─────────────────────────────────────────
@@ -73,7 +73,7 @@ LOW_SEVERITY    = ["Lottery Scam", "Investment Scam", "General Scam"]
 def classify_scam_category(text: str) -> str:
     """
     Classify what TYPE of scam the message is.
-    Returns category name or 'General Scam'
+    Always pass ORIGINAL text — not cleaned text.
     """
     if not text:
         return "Unknown"
@@ -96,7 +96,6 @@ def classify_scam_category(text: str) -> str:
 # Get Category Color
 # ─────────────────────────────────────────
 def get_category_color(category: str) -> str:
-    """Return color for each scam category."""
     colors = {
         "UPI Fraud":           "#FF7A00",
         "KYC Scam":            "#FF2D55",
@@ -116,10 +115,10 @@ def get_category_color(category: str) -> str:
 # Dynamic Confidence Calculator
 # ─────────────────────────────────────────
 def calculate_confidence(
-    prediction:    int,
+    prediction:     int,
     raw_confidence: int,
-    flagged_words: list,
-    category:      str
+    flagged_words:  list,
+    category:       str
 ) -> int:
     """
     Calculate dynamic confidence based on:
@@ -127,16 +126,17 @@ def calculate_confidence(
     - Number of flagged keywords
     - Scam category severity
     """
+    keyword_count = len(flagged_words)
+
     if prediction == 0:
         # ── Safe message ──
         confidence = min(raw_confidence, 30)
 
-        # Bump up slightly if suspicious keywords found
-        if len(flagged_words) >= 3:
+        if keyword_count >= 3:
             confidence = max(confidence, 55)
-        elif len(flagged_words) >= 2:
+        elif keyword_count >= 2:
             confidence = max(confidence, 45)
-        elif len(flagged_words) >= 1:
+        elif keyword_count >= 1:
             confidence = max(confidence, 35)
 
         return confidence
@@ -145,16 +145,16 @@ def calculate_confidence(
         # ── Scam message ──
         base = max(raw_confidence, 65)
 
-        # Boost based on category severity
+        # Severity boost
         if category in HIGH_SEVERITY:
-            base = max(base, 82)
+            base = max(base, 85)
         elif category in MEDIUM_SEVERITY:
-            base = max(base, 73)
+            base = max(base, 75)
         elif category in LOW_SEVERITY:
             base = max(base, 68)
 
-        # Extra boost per flagged keyword — max +15
-        keyword_boost = min(len(flagged_words) * 3, 15)
+        # Keyword boost — max +15
+        keyword_boost = min(keyword_count * 3, 15)
         base          = min(100, base + keyword_boost)
 
         return base
@@ -183,32 +183,31 @@ def predict_scam(text: str, models: dict) -> dict:
         if model is None or vectorizer is None:
             return format_error("scam_radar", "Scam model not loaded")
 
-        # ── Preprocess ──
+        # ── Clean ONLY for ML model ──
         cleaned = clean_text(text)
-
-        # ── Vectorize ──
-        X = vectorizer.transform([cleaned])
+        X       = vectorizer.transform([cleaned])
 
         # ── Predict ──
         prediction  = model.predict(X)[0]
         probability = model.predict_proba(X)[0]
 
-        # Raw confidence from model probability
         if prediction == 1:
             raw_confidence = int(probability[1] * 100)
         else:
             raw_confidence = int(probability[0] * 100)
 
-        # ── Extract explanation ──
-        flagged_words = extract_flagged_words(text)
-        features      = extract_features(text)
-        reason        = build_reason(features)
-
-        # ── Classify scam category ──
+        # ── Use ORIGINAL text for all rule-based logic ──
+        flagged_words  = extract_flagged_words(text)
+        features       = extract_features(text)
+        reason         = build_reason(features)
         category       = classify_scam_category(text)
         category_color = get_category_color(category)
 
-        # ── Calculate dynamic confidence ──
+        # ── Override ML prediction for strong rule matches ──
+        if category in HIGH_SEVERITY and len(flagged_words) >= 2:
+            prediction = 1
+
+        # ── Dynamic confidence ──
         confidence = calculate_confidence(
             prediction     = prediction,
             raw_confidence = raw_confidence,
