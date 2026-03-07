@@ -28,7 +28,7 @@ export default function App() {
 
       {/* ── Routes ── */}
       <Routes>
-        <Route path="/"          element={<Home />}      />
+        <Route path="/"          element={<Home theme={theme} />}      />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*"          element={<Navigate to="/" />} />
       </Routes>

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export default function NeuralParticles() {
+export default function NeuralParticles({ theme }) {
   const canvasRef = useRef(null);
   const mouseRef  = useRef({ x: 0, y: 0 });
 
@@ -10,9 +10,11 @@ export default function NeuralParticles() {
     let animId;
 
     const isDark = !document.body.classList.contains("light-theme");
-    const NODE_COLOR  = isDark ? "rgba(0,242,255," : "rgba(2,132,199,";
-    const LINE_COLOR  = isDark ? "rgba(0,242,255," : "rgba(2,132,199,";
-    const PULSE_COLOR = isDark ? "rgba(0,255,136," : "rgba(22,163,74,";
+    
+    // Luxury Cobalt Palette
+    const NODE_COLOR  = isDark ? "rgba(0,242,255," : "rgba(0,102,255,"; 
+    const LINE_COLOR  = isDark ? "rgba(0,242,255," : "rgba(0,102,255,";
+    const PULSE_COLOR = isDark ? "rgba(0,255,136," : "rgba(0,200,100,";
 
     const resize = () => {
       canvas.width  = canvas.offsetWidth;
@@ -98,13 +100,20 @@ export default function NeuralParticles() {
           const dy   = (nodes[j].y + nodes[j].oy) - (nodes[i].y + nodes[i].oy);
           const dist = Math.hypot(dx, dy);
           if (dist < CONNECT_DIST) {
-            const alpha = (1 - dist / CONNECT_DIST) * 0.3;
+            const alpha = (1 - dist / CONNECT_DIST) * (isDark ? 0.3 : 0.6); // Sharper in light mode
             ctx.beginPath();
             ctx.strokeStyle = `${LINE_COLOR}${alpha})`;
-            ctx.lineWidth = 0.8;
+            ctx.lineWidth = isDark ? 0.8 : 1.5;
+
+            if (!isDark) {
+                ctx.shadowBlur = 4;
+                ctx.shadowColor = "rgba(0, 102, 255, 0.3)";
+            }
+
             ctx.moveTo(nodes[i].x + nodes[i].ox, nodes[i].y + nodes[i].oy);
             ctx.lineTo(nodes[j].x + nodes[j].ox, nodes[j].y + nodes[j].oy);
             ctx.stroke();
+            ctx.shadowBlur = 0;
           }
         }
       }
@@ -117,16 +126,23 @@ export default function NeuralParticles() {
 
         ctx.beginPath();
         ctx.arc(px, py, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = `${NODE_COLOR}${glow})`;
+        ctx.fillStyle = `${NODE_COLOR}${isDark ? glow : 0.9})`;
+        
+        if (!isDark) {
+            ctx.shadowBlur = n.pulse ? 15 : 6;
+            ctx.shadowColor = "rgba(0, 102, 255, 0.5)";
+        }
+
         ctx.fill();
+        ctx.shadowBlur = 0;
 
         if (n.pulse) {
           const ringR = n.r + 4 + 4 * Math.sin(n.pulseT);
-          const ringAlpha = 0.2 * (0.5 + 0.5 * Math.sin(n.pulseT));
+          const ringAlpha = (isDark ? 0.2 : 0.45) * (0.5 + 0.5 * Math.sin(n.pulseT));
           ctx.beginPath();
           ctx.arc(px, py, ringR, 0, Math.PI * 2);
           ctx.strokeStyle = `${PULSE_COLOR}${ringAlpha})`;
-          ctx.lineWidth = 1;
+          ctx.lineWidth = isDark ? 1 : 2;
           ctx.stroke();
         }
       });
@@ -163,7 +179,7 @@ export default function NeuralParticles() {
       window.removeEventListener("resize", resize);
       canvas.parentElement?.removeEventListener("mousemove", handleMouse);
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas

@@ -4,7 +4,7 @@ import Forensic3DScene   from "../components/Forensic3DScene";
 import NeuralParticles   from "../components/NeuralParticles";
 import "../styles/Home.css";
 
-export default function Home() {
+export default function Home({ theme }) {
   const navigate = useNavigate();
 
   const stats = [
@@ -24,7 +24,7 @@ export default function Home() {
       {/* ── SECTION 00: DOSSIER HERO ── */}
       <section className="home-hero dossier-layout">
         <Forensic3DScene isBackground={true} />
-        <NeuralParticles />
+        <NeuralParticles theme={theme} />
         
         <div className="container">
           <div className="technical-index mono fade-in">
