@@ -19,14 +19,16 @@ export default function ScamRadar() {
     setModuleId(`UNIT-${Math.floor(Math.random() * 900 + 100)}-SR`);
   }, []);
 
-  const handleAnalyze = async () => {
-    if (!message.trim()) return;
+  const handleAnalyze = async (manualText = null) => {
+    const textToScan = typeof manualText === "string" ? manualText : message;
+    if (!textToScan.trim()) return;
+
     setLoading(true);
     setResult(null);
     setError(null);
 
     try {
-      const data = await analyzeScam(message);
+      const data = await analyzeScam(textToScan);
       setResult(data);
 
       // ── Guardian Alert on critical risk ──
@@ -38,7 +40,7 @@ export default function ScamRadar() {
             guardian,
             module:         "SCAM_RADAR",
             riskScore:      risk,
-            suspectMessage: message,
+            suspectMessage: textToScan,
           });
           if (alertResult.success) setGuardianAlert(alertResult.payload);
         }
@@ -81,9 +83,9 @@ export default function ScamRadar() {
           <button
             key={i}
             className="btn-demo"
-            onClick={() => setMessage(s)}
+            onClick={() => { setMessage(s); handleAnalyze(s); }}
           >
-            LOAD_SIGNATURE_0{i + 1}
+            [ PROBE_SIGNATURE_0{i + 1} ]
           </button>
         ))}
       </div>
