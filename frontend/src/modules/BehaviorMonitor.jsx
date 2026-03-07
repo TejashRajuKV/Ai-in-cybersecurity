@@ -173,6 +173,7 @@ export default function BehaviorMonitor() {
           {(loading || result) && (
             <NeuralRadar
               loading={loading}
+              confidence={result?.confidence || 0}
               flaggedFields={result?.flagged_words || []}
               isAnomalous={result?.label === "HIGH RISK" || result?.label === "ANOMALY"}
             />

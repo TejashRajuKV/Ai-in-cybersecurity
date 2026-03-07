@@ -24,7 +24,9 @@ SCAM_CATEGORIES = {
         "digital arrest", "cyber arrest", "police notice",
         "arrest warrant", "court order", "cybercrime department",
         "legal action", "fir registered", "cyber police",
-        "enforcement directorate", "ed notice", "cbi notice"
+        "enforcement directorate", "ed notice", "cbi notice",
+        "pay fine", "avoid legal", "warrant against",
+        "crime department", "issued warrant"
     ],
     "Lottery Scam": [
         "you won", "winner", "prize", "lottery",
@@ -56,6 +58,13 @@ SCAM_CATEGORIES = {
         "net banking", "debit card blocked"
     ]
 }
+
+# ─────────────────────────────────────────
+# Severity Groups
+# ─────────────────────────────────────────
+HIGH_SEVERITY   = ["Digital Arrest", "KYC Scam", "Bank Impersonation"]
+MEDIUM_SEVERITY = ["UPI Fraud", "Phishing", "Loan Fraud"]
+LOW_SEVERITY    = ["Lottery Scam", "Investment Scam", "General Scam"]
 
 
 # ─────────────────────────────────────────
@@ -104,6 +113,54 @@ def get_category_color(category: str) -> str:
 
 
 # ─────────────────────────────────────────
+# Dynamic Confidence Calculator
+# ─────────────────────────────────────────
+def calculate_confidence(
+    prediction:    int,
+    raw_confidence: int,
+    flagged_words: list,
+    category:      str
+) -> int:
+    """
+    Calculate dynamic confidence based on:
+    - ML model prediction + probability
+    - Number of flagged keywords
+    - Scam category severity
+    """
+    if prediction == 0:
+        # ── Safe message ──
+        confidence = min(raw_confidence, 30)
+
+        # Bump up slightly if suspicious keywords found
+        if len(flagged_words) >= 3:
+            confidence = max(confidence, 55)
+        elif len(flagged_words) >= 2:
+            confidence = max(confidence, 45)
+        elif len(flagged_words) >= 1:
+            confidence = max(confidence, 35)
+
+        return confidence
+
+    else:
+        # ── Scam message ──
+        base = max(raw_confidence, 65)
+
+        # Boost based on category severity
+        if category in HIGH_SEVERITY:
+            base = max(base, 82)
+        elif category in MEDIUM_SEVERITY:
+            base = max(base, 73)
+        elif category in LOW_SEVERITY:
+            base = max(base, 68)
+
+        # Extra boost per flagged keyword — max +15
+        keyword_boost = min(len(flagged_words) * 3, 15)
+        base          = min(100, base + keyword_boost)
+
+        return base
+
+
+# ─────────────────────────────────────────
 # Predict Scam
 # ─────────────────────────────────────────
 def predict_scam(text: str, models: dict) -> dict:
@@ -135,33 +192,29 @@ def predict_scam(text: str, models: dict) -> dict:
         # ── Predict ──
         prediction  = model.predict(X)[0]
         probability = model.predict_proba(X)[0]
-        confidence  = int(probability[1] * 100)
 
-        # ── If ham (safe) use ham probability ──
-        if prediction == 0:
-            confidence = int(probability[0] * 100)
-            confidence = min(confidence, 30)
+        # Raw confidence from model probability
+        if prediction == 1:
+            raw_confidence = int(probability[1] * 100)
+        else:
+            raw_confidence = int(probability[0] * 100)
 
         # ── Extract explanation ──
         flagged_words = extract_flagged_words(text)
         features      = extract_features(text)
         reason        = build_reason(features)
 
-        # ── Smart confidence override ──
-        if prediction == 0:
-            confidence = min(confidence, 30)
-            if len(flagged_words) >= 3:
-                confidence = max(confidence, 70)
-            elif len(flagged_words) >= 2:
-                confidence = max(confidence, 50)
-            elif len(flagged_words) >= 1:
-                confidence = max(confidence, 35)
-        else:
-            confidence = max(confidence, 70)
-
         # ── Classify scam category ──
         category       = classify_scam_category(text)
         category_color = get_category_color(category)
+
+        # ── Calculate dynamic confidence ──
+        confidence = calculate_confidence(
+            prediction     = prediction,
+            raw_confidence = raw_confidence,
+            flagged_words  = flagged_words,
+            category       = category
+        )
 
         # ── Build result ──
         result = format_response(

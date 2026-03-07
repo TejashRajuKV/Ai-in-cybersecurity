@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { startRadarSweep, animateNeuralNodes } from "../animations/neuralAnimations";
 import "../styles/modules.css";
 
-export default function NeuralRadar({ loading, flaggedFields = [], isAnomalous = false }) {
+export default function NeuralRadar({ loading, confidence = 0, flaggedFields = [], isAnomalous = false }) {
   const sweepRef = useRef(null);
   const nodesRef = useRef([]);
 
@@ -37,6 +37,21 @@ export default function NeuralRadar({ loading, flaggedFields = [], isAnomalous =
       {/* ── Central Hub ── */}
       <div className={`radar-hub ${loading ? "active" : ""}`}>
         <div className="hub-inner"></div>
+        {!loading && (
+            <div className="radar-status-readout mono" style={{
+                position: 'absolute',
+                top: '24px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                fontSize: '10px',
+                color: isAnomalous ? 'var(--red)' : 'var(--cyan)',
+                whiteSpace: 'nowrap',
+                fontWeight: 900,
+                textAlign: 'center'
+            }}>
+                ANOMALY_PROB: {confidence}%
+            </div>
+        )}
       </div>
 
       {/* ── Input Nodes ── */}

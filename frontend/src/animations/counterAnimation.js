@@ -4,8 +4,10 @@ import anime from "animejs";
 // Confidence % Count-up Animation
 // Triggered when confidence value appears
 // ─────────────────────────────────────────
-export const animateCounter = (selector, targetValue) => {
+export const animateCounter = (target, targetValue) => {
     const obj = { value: 0 };
+    const el = typeof target === "string" ? document.querySelector(target) : target;
+    if (!el) return;
 
     anime({
         targets: obj,
@@ -14,8 +16,7 @@ export const animateCounter = (selector, targetValue) => {
         easing: "easeOutCubic",
         round: 1,
         update: () => {
-            const el = document.querySelector(selector);
-            if (el) el.textContent = `${Math.round(obj.value)}%`;
+            el.textContent = `${Math.round(obj.value)}%`;
         },
     });
 };
@@ -24,9 +25,9 @@ export const animateCounter = (selector, targetValue) => {
 // ─────────────────────────────────────────
 // Progress Bar Fill Animation
 // ─────────────────────────────────────────
-export const animateProgressBar = (selector, targetWidth) => {
+export const animateProgressBar = (target, targetWidth) => {
     anime({
-        targets: selector,
+        targets: target,
         width: [`0%`, `${targetWidth}%`],
         duration: 1000,
         easing: "easeOutCubic",
@@ -37,8 +38,10 @@ export const animateProgressBar = (selector, targetWidth) => {
 // ─────────────────────────────────────────
 // Score Number Animate
 // ─────────────────────────────────────────
-export const animateScore = (selector, from, to) => {
+export const animateScore = (target, from, to) => {
     const obj = { value: from };
+    const el = typeof target === "string" ? document.querySelector(target) : target;
+    if (!el) return;
 
     anime({
         targets: obj,
@@ -47,21 +50,20 @@ export const animateScore = (selector, from, to) => {
         easing: "easeOutQuad",
         round: 1,
         update: () => {
-            const el = document.querySelector(selector);
-            if (el) el.textContent = Math.round(obj.value);
+            el.textContent = Math.round(obj.value);
         },
     });
 };
 // ─────────────────────────────────────────
 // Decrypting / Shuffling Animation
 // ─────────────────────────────────────────
-export const animateDecrypt = (selector, targetValue) => {
-    const el = document.querySelector(selector);
+export const animateDecrypt = (target, targetValue) => {
+    const el = typeof target === "string" ? document.querySelector(target) : target;
     if (!el) return;
 
     const symbols = "01$#!?%&@#*";
     let iterations = 0;
-    const maxIterations = 15;
+    const maxIterations = 12; // Slightly faster
 
     const interval = setInterval(() => {
         el.textContent = Array(3)
@@ -73,7 +75,7 @@ export const animateDecrypt = (selector, targetValue) => {
         if (iterations >= maxIterations) {
             clearInterval(interval);
             // After shuffling, trigger the standard count up
-            animateCounter(selector, targetValue);
+            animateCounter(el, targetValue);
         }
     }, 40);
 };

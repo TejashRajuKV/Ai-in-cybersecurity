@@ -1,16 +1,23 @@
 import { useEffect, useRef } from "react";
 import { animateGaugeNeedle } from "../animations/newsAnimations";
+import { animateDecrypt } from "../animations/counterAnimation";
 import "../styles/modules.css";
 
 export default function TruthGauge({ confidence, loading }) {
   const needleRef = useRef(null);
+  const labelRef = useRef(null);
 
   useEffect(() => {
-    if (!loading && needleRef.current) {
+    if (!loading) {
+      if (needleRef.current) {
         // Invert: High confidence (Risk) = Left (Fake/Red)
         // 0 Risk -> 90deg (Right), 100 Risk -> -90deg (Left)
         const rotation = 90 - (confidence * 1.8);
         animateGaugeNeedle(needleRef.current, rotation);
+      }
+      if (labelRef.current) {
+        animateDecrypt(labelRef.current, 100 - confidence);
+      }
     }
   }, [confidence, loading]);
 
@@ -73,7 +80,7 @@ export default function TruthGauge({ confidence, loading }) {
         </svg>
       </div>
       <div className="gauge-label">
-        TRUTH PROBABILITY: <span className="mono">{loading ? "CALCULATING..." : `${100 - confidence}%`}</span>
+        TRUTH PROBABILITY: <span ref={labelRef} className="mono">{loading ? "..." : "0%"}</span>
       </div>
     </div>
   );

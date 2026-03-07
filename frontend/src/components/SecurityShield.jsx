@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { animateShieldLock, animateTickerScroll } from "../animations/loanAnimations";
+import { animateDecrypt } from "../animations/counterAnimation";
 import "../styles/modules.css";
 
 export default function SecurityShield({ loading, riskScore, checkedFactors = [] }) {
@@ -24,8 +25,11 @@ export default function SecurityShield({ loading, riskScore, checkedFactors = []
       ];
       setTickerLogs(logs);
       animateTickerScroll(".metadata-ticker");
+    } else if (riskScore !== undefined) {
+      // Animate integrity number on result
+      animateDecrypt(".integrity-val .val-num", Math.max(0, 100 - riskScore));
     }
-  }, [loading]);
+  }, [loading, riskScore]);
 
   const integrity = Math.max(0, 100 - riskScore);
   const isCompromised = riskScore > 40;
@@ -57,7 +61,7 @@ export default function SecurityShield({ loading, riskScore, checkedFactors = []
             />
           </svg>
           <div className="integrity-val mono">
-            {loading ? "..." : `${integrity}%`}
+            {loading ? "..." : <span className="val-num">0%</span>}
             <span className="sub">INTEGRITY</span>
           </div>
         </div>

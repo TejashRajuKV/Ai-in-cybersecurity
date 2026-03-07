@@ -143,20 +143,31 @@
 /* ── Result Dossier ── */
 .result-dossier {
     margin-top: 48px;
-    background: var(--card);
-    border: 2px solid var(--border);
-    padding: 48px;
+    background: linear-gradient(135deg, var(--card) 0%, var(--card2) 100%);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--cyan);
+    padding: 40px;
     position: relative;
     box-shadow:
-        6px 6px 0px rgba(0, 242, 255, 0.06),
-        12px 12px 0px rgba(0, 0, 0, 0.15);
-    transition: all var(--transition);
-    animation: fadeUp 0.5s ease both;
+        10px 10px 30px rgba(0, 0, 0, 0.3),
+        0 0 1px rgba(0, 242, 255, 0.1) inset;
+    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.result-dossier::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, transparent 50%, rgba(0, 242, 255, 0.05) 50%);
+    pointer-events: none;
 }
 
 .verdict-stamp-wrap {
     position: absolute;
-    top: 24px;
+    top: 72px;
     right: 32px;
 }
 
@@ -189,17 +200,46 @@
 }
 
 .dossier-label {
-    width: 180px;
+    width: 140px;
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     text-transform: uppercase;
+    letter-spacing: 1px;
+    align-self: flex-start;
+    padding-top: 4px;
 }
 
 .dossier-value {
     flex: 1;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text);
+    line-height: 1.5;
+}
+
+/* ── Safety Tip Protocol Box ── */
+.safety-tip-container {
+    margin-top: 32px;
+    background: rgba(0, 242, 255, 0.03);
+    border: 1px dashed rgba(0, 242, 255, 0.2);
+    padding: 24px;
+    border-radius: 4px;
+}
+
+.safety-tip-header {
+    font-size: 10px;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+.safety-tip-body {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    font-style: italic;
+    opacity: 0.9;
 }
 
 /* ── Demo Controls ── */
@@ -553,4 +593,71 @@
     50% {
         opacity: 0.4;
     }
+}
+/* -- Flagged Signatures -- */
+.flagged-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.flagged-word {
+    background: rgba(255, 45, 85, 0.08);
+    color: var(--red);
+    padding: 6px 14px;
+    border: 1px solid rgba(255, 45, 85, 0.3);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* -- Confidence Bar Refinements -- */
+.confidence-wrap {
+    margin: 48px 0;
+    padding: 24px;
+    background: rgba(0, 242, 255, 0.03);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--cyan);
+    border-radius: 0 4px 4px 0;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.confidence-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    font-weight: 900;
+}
+
+.confidence-value {
+    font-size: 22px;
+    font-weight: 950;
+    color: var(--white);
+}
+
+.confidence-track {
+    height: 10px;
+    background: var(--surface);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border);
+}
+
+.confidence-fill {
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }

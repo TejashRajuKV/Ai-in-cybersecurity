@@ -14,7 +14,7 @@ export default function ConfidenceBar({ confidence, color }) {
     }
     if (counterRef.current) {
       // Animate decrypting counter
-      animateDecrypt(`#confidence-counter`, confidence);
+      animateDecrypt(counterRef.current, confidence);
     }
   }, [confidence]);
 
@@ -23,7 +23,6 @@ export default function ConfidenceBar({ confidence, color }) {
       <div className="confidence-label">
         <span>CONFIDENCE LEVEL</span>
         <span
-          id="confidence-counter"
           ref={counterRef}
           className="confidence-value"
           style={{ color: getRiskColor(color) }}
