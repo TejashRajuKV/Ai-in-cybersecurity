@@ -142,10 +142,13 @@ def check_news(text: str, models: dict) -> dict:
         # ── Predict ──
         prediction = model.predict(X)[0]   # 0 = REAL, 1 = FAKE
 
-        # ── Confidence from decision function ──
-        decision   = model.decision_function(X)[0]
-        raw_conf   = abs(decision)
-        confidence = int(min(100, max(0, raw_conf * 20)))
+        # ── Confidence from predict_proba ──
+        try:
+            proba = model.predict_proba(X)[0]
+            confidence = int(proba[1] * 100) if prediction == 1 else int(proba[0] * 100)
+        except Exception:
+            # Fallback for models without predict_proba
+            confidence = 70 if prediction == 1 else 25
 
         # ── Extract explanation ──
         fake_flags   = extract_fake_flags(text)

@@ -7,7 +7,7 @@ import sys
 # Add backend/ to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
@@ -15,28 +15,31 @@ from config import DATA_DIR, MODEL_DIR
 from utils.url_features import extract_url_features, get_feature_values
 
 # ─────────────────────────────────────────
-# Step 1: Generate / Load Dataset
+# Step 1: Load Dataset
 # ─────────────────────────────────────────
-print("Loading phishing URL dataset...")
+print("=" * 60)
+print("  PHISHING DETECTOR — Enhanced Training Pipeline")
+print("=" * 60)
 
 csv_path = os.path.join(DATA_DIR, "phishing_urls.csv")
 
 if not os.path.exists(csv_path) or os.path.getsize(csv_path) < 10:
     print("Dataset missing — generating synthetic data...")
-    # Import and run the data creation script
     sys.path.append(DATA_DIR)
     exec(open(os.path.join(DATA_DIR, "create_phishing_data.py")).read())
 
 df = pd.read_csv(csv_path)
-print(f"  ✓ Loaded {len(df)} URLs ({df['label'].sum()} phishing, {(df['label']==0).sum()} legitimate)")
+print(f"\n  Loaded {len(df)} URLs ({df['label'].sum()} phishing, {(df['label']==0).sum()} legitimate)")
 
 # ─────────────────────────────────────────
 # Step 2: Extract Features
 # ─────────────────────────────────────────
-print("Extracting URL features...")
+print("\nExtracting URL features ...")
 
 feature_list = []
-for url in df["url"]:
+for i, url in enumerate(df["url"]):
+    if i % 200 == 0:
+        print(f"  Processing URL {i+1}/{len(df)} ...")
     features = extract_url_features(url)
     feature_list.append(get_feature_values(features))
 
@@ -47,18 +50,31 @@ y = df["label"].values
 # Step 3: Split
 # ─────────────────────────────────────────
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y, test_size=0.2, random_state=42, stratify=y
 )
 
 # ─────────────────────────────────────────
-# Step 4: Train
+# Step 4: Train Ensemble (RF + GBM)
 # ─────────────────────────────────────────
-print("Training Random Forest model...")
+print("\nTraining Ensemble (Random Forest + Gradient Boosting) ...")
 
-model = RandomForestClassifier(
-    n_estimators=100,
-    max_depth=10,
+rf = RandomForestClassifier(
+    n_estimators=200,
+    max_depth=15,
+    min_samples_split=5,
     random_state=42
+)
+
+gbm = GradientBoostingClassifier(
+    n_estimators=150,
+    max_depth=8,
+    learning_rate=0.1,
+    random_state=42
+)
+
+model = VotingClassifier(
+    estimators=[("rf", rf), ("gbm", gbm)],
+    voting="soft"
 )
 model.fit(X_train, y_train)
 
@@ -68,7 +84,9 @@ model.fit(X_train, y_train)
 y_pred   = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 
-print(f"\nAccuracy: {accuracy * 100:.2f}%")
+print(f"\n{'=' * 40}")
+print(f"  ACCURACY: {accuracy * 100:.2f}%")
+print(f"{'=' * 40}")
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred, target_names=["Legitimate", "Phishing"]))
 
@@ -81,4 +99,4 @@ phishing_model_path = os.path.join(MODEL_DIR, "phishing_model.pkl")
 joblib.dump(model, phishing_model_path)
 
 print(f"\n✓ phishing_model.pkl saved → {phishing_model_path}")
-print("\nPhishing URL Detector training complete!")
+print("\n🛡️  Phishing Detector training complete!")
