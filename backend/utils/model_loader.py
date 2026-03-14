@@ -8,7 +8,9 @@ from config import (
     FAKE_NEWS_MODEL_PATH,
     FAKE_NEWS_VECTORIZER_PATH,
     BEHAVIOR_MODEL_PATH,
-    PHISHING_MODEL_PATH
+    PHISHING_MODEL_PATH,
+    TOXICITY_MODEL_PATH,
+    TOXICITY_VECTORIZER_PATH
 )
 
 # ─────────────────────────────────────────
@@ -77,6 +79,16 @@ def load_models() -> dict:
         _models["phishing_model"] = None
         print("  ✗ Phishing model NOT found — run training/train_phishing.py")
 
+    # ── Toxicity Shield ──
+    if os.path.exists(TOXICITY_MODEL_PATH) and os.path.exists(TOXICITY_VECTORIZER_PATH):
+        _models["toxicity_model"]  = joblib.load(TOXICITY_MODEL_PATH)
+        _models["toxicity_vec"]    = joblib.load(TOXICITY_VECTORIZER_PATH)
+        print("  ✓ Toxicity model loaded")
+    else:
+        _models["toxicity_model"]  = None
+        _models["toxicity_vec"]    = None
+        print("  ✗ Toxicity model NOT found — run training/train_toxicity.py")
+
     print("Model loading complete.\n")
     return _models
 
@@ -99,5 +111,6 @@ def models_status() -> dict:
         "fake_news":          _models.get("news_model")      is not None,
         "behavior_monitor":   _models.get("behavior_model")  is not None,
         "loan_scorer":        True,  # rule-based, no model needed
-        "phishing_detector":  _models.get("phishing_model")  is not None
+        "phishing_detector":  _models.get("phishing_model")  is not None,
+        "toxicity_shield":    _models.get("toxicity_model")  is not None
     }

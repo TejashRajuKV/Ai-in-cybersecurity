@@ -14,6 +14,7 @@ const ENDPOINTS = {
     LOAN: `${BASE_URL}/api/loan`,
     LOAN_RULES: `${BASE_URL}/api/loan/rules`,
     PHISHING: `${BASE_URL}/api/phishing`,
+    TOXICITY: `${BASE_URL}/api/toxicity`,
     THREAT: `${BASE_URL}/api/threat`,
 
     // ── System ──

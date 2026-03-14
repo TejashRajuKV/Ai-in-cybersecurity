@@ -29,6 +29,9 @@ FAKE_NEWS_VECTORIZER_PATH= os.path.join(MODEL_DIR, "fake_news_vectorizer.pkl")
 BEHAVIOR_MODEL_PATH      = os.path.join(MODEL_DIR, "behavior_model.pkl")
 PHISHING_MODEL_PATH      = os.path.join(MODEL_DIR, "phishing_model.pkl")
 
+TOXICITY_MODEL_PATH      = os.path.join(MODEL_DIR, "toxicity_model.pkl")
+TOXICITY_VECTORIZER_PATH = os.path.join(MODEL_DIR, "toxicity_vectorizer.pkl")
+
 # ─────────────────────────────────────────
 # Risk Thresholds
 # ─────────────────────────────────────────

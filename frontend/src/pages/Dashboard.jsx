@@ -6,6 +6,7 @@ import BehaviorMonitor  from "../modules/BehaviorMonitor";
 import FakeNewsChecker  from "../modules/FakeNewsChecker";
 import LoanRiskScanner  from "../modules/LoanRiskScanner";
 import PhishingDetector from "../modules/PhishingDetector";
+import ToxicityShield  from "../modules/ToxicityShield";
 import ThreatAnalyzer   from "../modules/ThreatAnalyzer";
 import Forensic3DScene  from "../components/Forensic3DScene";
 import GuardianSetup    from "../components/GuardianSetup";
@@ -17,6 +18,7 @@ const TABS = [
   { id: "news",     icon: "📰", label: "FACT CHECKER",      component: <FakeNewsChecker /> },
   { id: "loan",     icon: "⚖️", label: "LOAN AUDITOR",      component: <LoanRiskScanner /> },
   { id: "phishing", icon: "🎣", label: "PHISH SCAN",        component: <PhishingDetector /> },
+  { id: "toxicity", icon: "🛡️", label: "TOXICITY SHIELD",   component: <ToxicityShield />  },
   { id: "threat",   icon: "🔎", label: "CORE ANALYZER",     component: <ThreatAnalyzer />  },
 ];
 

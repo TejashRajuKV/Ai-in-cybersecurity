@@ -68,6 +68,15 @@ export const analyzePhishing = async (url) => {
 
 
 // ─────────────────────────────────────────
+// Toxicity Shield
+// ─────────────────────────────────────────
+export const analyzeToxicity = async (message) => {
+  const response = await api.post(ENDPOINTS.TOXICITY, { message });
+  return response.data;
+};
+
+
+// ─────────────────────────────────────────
 // Health Check
 // ─────────────────────────────────────────
 export const checkHealth = async () => {

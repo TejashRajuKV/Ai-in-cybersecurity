@@ -35,6 +35,7 @@ from routes.behavior_routes  import behavior_bp
 from routes.news_routes      import news_bp
 from routes.loan_routes      import loan_bp
 from routes.phishing_routes  import phishing_bp
+from routes.toxicity_routes  import toxicity_bp
 
 app.register_blueprint(health_bp)
 app.register_blueprint(scam_bp)
@@ -42,6 +43,7 @@ app.register_blueprint(behavior_bp)
 app.register_blueprint(news_bp)
 app.register_blueprint(loan_bp)
 app.register_blueprint(phishing_bp)
+app.register_blueprint(toxicity_bp)
 app.register_blueprint(threat_bp, url_prefix="/api")
 
 
@@ -62,7 +64,8 @@ def index():
             "POST /api/behavior",
             "POST /api/phishing",
             "POST /api/loan",
-            "GET  /api/loan/rules"
+            "GET  /api/loan/rules",
+            "POST /api/toxicity"
         ]
     }), 200
 
